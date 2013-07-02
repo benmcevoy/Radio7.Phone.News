@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Radio7.Phone.HtmlCleaner
 {
@@ -59,8 +58,7 @@ namespace Radio7.Phone.HtmlCleaner
 
         public static string Decode(this string html)
         {
-            return html;
-            //return HttpUtility.HtmlDecode(html);
+            return WebUtility.HtmlDecode(html);
         }
     }
 }

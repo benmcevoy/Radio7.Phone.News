@@ -57,6 +57,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\HtmlEncodingServices.cs" />
+    <Compile Include="Entities\HtmlEntity.cs" />
+    <Compile Include="Entities\HtmlEntityDecoder.cs" />
+    <Compile Include="Entities\HtmlEntityEncoder.cs" />
+    <Compile Include="Entities\HtmlEntityTokenizer.cs" />
+    <Compile Include="Entities\Token.cs" />
+    <Compile Include="Entities\TokenType.cs" />
     <Compile Include="Extractors\Content\ContentExtractor.cs" />
     <Compile Include="Extractors\Content\Normalizer.cs" />
     <Compile Include="Extractors\Content\Scorer.cs" />
@@ -74,9 +81,10 @@
     <Compile Include="HtmlHelper.cs" />
     <Compile Include="Extractors\Snippet\ISnippetExtractor.cs" />
     <Compile Include="HtmlResult.cs" />
-    <Compile Include="Models\CandidateNode.cs" />
-    <Compile Include="Models\CleanHtml.cs" />
+    <Compile Include="Entities\CandidateNode.cs" />
+    <Compile Include="Entities\CleanHtml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

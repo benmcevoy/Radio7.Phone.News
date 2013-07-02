@@ -1,7 +1,7 @@
 ﻿using System;
 using HtmlAgilityPack;
 
-namespace Radio7.Phone.HtmlCleaner.Models
+namespace Radio7.Phone.HtmlCleaner.Entities
 {
     public class CandidateNode
     {

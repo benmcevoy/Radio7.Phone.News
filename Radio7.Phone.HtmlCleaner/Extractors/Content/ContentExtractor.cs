@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
-using Radio7.Phone.HtmlCleaner.Models;
+using Radio7.Phone.HtmlCleaner.Entities;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
@@ -15,14 +15,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             var extractedContent = ExtractContent(htmlDocument);
 
-            new Cleaners.HtmlCleaner(extractedContent)
-                    .RemoveAttributes("__score")
-                    .RemoveAttributes("__id")
-                    .RemoveAttributes("style")
-                    .RemoveAttributes("class")
-                    .RemoveAttributes("id");
-
-            return htmlDocument.ConvertToString().RemoveWhitespace();
+            return extractedContent.ConvertToString().RemoveWhitespace();
         }
 
         private HtmlDocument ExtractContent(HtmlDocument htmlDocument)
@@ -41,6 +34,13 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             if (topCandidate != null) container.AppendChild(topCandidate.HtmlNode);
 
             result.DocumentNode.AppendChild(container);
+
+            new Cleaners.HtmlCleaner(result)
+                .RemoveAttributes("style")
+                .RemoveAttributes("class")
+                .RemoveAttributes("id")
+                .RemoveAttributes("width")
+                .RemoveAttributes("height");
 
             return result;
             // select top candidate
@@ -90,8 +90,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             new Normalizer(htmlDocument)
                 .FindBestCandidateFrame()
                 .EnsureBodyElement()
-                .RemoveUnlikelyCandidates()
-                .ReplaceNonBlockDivCandidates()
+                .RemoveBoilerPlateCandidates()
                 .ReplaceFonts()
                 .ReplaceBrCandidates()
                 .RemoveEmptyCandidateElements()

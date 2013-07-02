@@ -10,14 +10,12 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
     {
         private readonly HtmlDocument _htmlDocument;
 
-        private static readonly Regex UnlikeyCandidateRegex = new Regex(
-            @"combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|" +
-            "sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|hidden|aside|advert|" +
-            "overlay|nav|sub-nav|share|toolbar|playlist|addthis|social|modal",
-            RegexOptions.Compiled & RegexOptions.IgnoreCase);
-
-        private static readonly Regex DivToPElements = new Regex(
-            @"/<(a|blockquote|dl|div|img|ol|p|pre|table|ul)",
+        private static readonly Regex BoilerPlateCandidatesRegex = new Regex(
+            @"combx|comment|community|contact|disqus|foot|footer|header|" + 
+            "menu|rss|shoutbox|sidebar|masthead|sponsor|ad-break|agegate|" + 
+            "pagination|pager|popup|tweet|twitter|hidden|aside|advert|footnote|" +
+            "meta|outbrain|promo|related|scroll|shopping|tags|tool|widget|" + 
+            "metadata|overlay|video|nav|sub-nav|share|toolbar|playlist|addthis|social|modal",
             RegexOptions.Compiled & RegexOptions.IgnoreCase);
 
         public Normalizer(HtmlDocument htmlDocument)
@@ -29,7 +27,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         {
             // check if it has any frames
             // find the biggest frame on this domain...
-            //  need url
+            // need url
 
             return this;
         }
@@ -133,29 +131,25 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             return this;
         }
 
-        public Normalizer RemoveUnlikelyCandidates()
+        public Normalizer RemoveBoilerPlateCandidates()
         {
-            // stripUnlikelyCandidates
-            //  for each node, ignore body
-            //      append the class and id together
-            //      search that for stripUnlikelyCandidatesRegex
-            //  if found then remove that node
-
+            // search by class
             var byClassName = _htmlDocument.DocumentNode
                                           .Descendants()
                                           .Where(n =>
                                               n.Name.ToUpperInvariant() != "BODY" &&
                                               n.Attributes.Contains("class") &&
-                                              IsUnlikeyCandidate(n.Attributes["class"].Value))
+                                              IsBoilerPlateCandidate(n.Attributes["class"].Value))
                                               .ToList();
 
             ProcessElements(byClassName, element => element.Remove());
 
+            // search by id
             var byId = _htmlDocument.DocumentNode
                                         .Descendants()
                                         .Where(n =>
                                             n.Name.ToUpperInvariant() != "BODY" &&
-                                            IsUnlikeyCandidate(n.Id))
+                                            IsBoilerPlateCandidate(n.Id))
                                             .ToList();
 
             ProcessElements(byId, element => element.Remove());
@@ -163,35 +157,9 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             return this;
         }
 
-        private bool IsUnlikeyCandidate(string value)
+        private bool IsBoilerPlateCandidate(string value)
         {
-            return !string.IsNullOrEmpty(value) && UnlikeyCandidateRegex.IsMatch(value);
-        }
-
-        public Normalizer ReplaceNonBlockDivCandidates()
-        {
-            // try convert non block divs to p 
-            var elements = _htmlDocument.DocumentNode
-                                           .Descendants()
-                                           .Where(n =>
-                                                  n.Name.ToUpperInvariant() == "DIV" &&
-                                                  IsNonBlockDiv(n.InnerHtml)).ToList();
-
-            ProcessElements(elements, element =>
-                {
-                    var value = element.InnerHtml;
-                    var paragraph = _htmlDocument.CreateElement("p");
-                    paragraph.InnerHtml = value;
-
-                    element.ParentNode.ReplaceChild(paragraph, element);
-                });
-
-            return this;
-        }
-
-        private bool IsNonBlockDiv(string value)
-        {
-            return !string.IsNullOrEmpty(value) && !DivToPElements.IsMatch(value);
+            return !string.IsNullOrEmpty(value) && BoilerPlateCandidatesRegex.IsMatch(value);
         }
     }
 }

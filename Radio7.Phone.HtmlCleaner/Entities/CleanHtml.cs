@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Radio7.Phone.HtmlCleaner.Models
+namespace Radio7.Phone.HtmlCleaner.Entities
 {
     public class CleanHtml
     {
