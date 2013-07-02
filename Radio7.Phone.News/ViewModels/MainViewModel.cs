@@ -30,15 +30,17 @@ namespace Radio7.Phone.News.ViewModels
                     new Topic("australia", 4, new Uri("http://news.google.com/?ned=au&topic=n&output=rss", UriKind.Absolute), Color.FromArgb(255,250,104,0), "/Content/australia.png"),
                     new Topic("science", 5, new Uri("http://news.google.com/?ned=au&topic=snc&output=rss", UriKind.Absolute), Color.FromArgb(255,109,135,100), "/Content/science.png"),
                    // new Topic("technology", 6, new Uri("http://news.google.com/?ned=au&topic=tc&output=rss", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/technology.png")
-                   new Topic("conversation", 6, new Uri("http://theconversation.com/au/society/articles.atom", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/conversation.png"),
-                   // 
+                   //new Topic("conversation", 6, new Uri("http://theconversation.com/au/society/articles.atom", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/conversation.png"),
+                   new Topic("hacker", 6, new Uri("https://news.ycombinator.com/rss", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/conversation.png"),
+                   new Topic("/.", 7, new Uri("http://rss.slashdot.org/Slashdot/slashdot", UriKind.Absolute), Color.FromArgb(255,100,118,135), "/Content/conversation.png"),
+                   //
+                   //new Topic("xkcd", 6, new Uri("http://xkcd.com/rss.xml", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/conversation.png"),
+                   //http://blog.benmcevoy.com.au/feed
+                  // new Topic("me", 7, new Uri("http://blog.benmcevoy.com.au/feed", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/conversation.png"),
                 };
 
-
             NavigateCommand = new DelegateCommand(Navigate, CanAlwaysExecute);
-
             SelectedIndex = 0;
-
             ChainWebCalls(Topics);
         }
 
@@ -65,8 +67,6 @@ namespace Radio7.Phone.News.ViewModels
                         topics[index + 1].Load();
                     };
             }
-
-           
         }
 
         private void Navigate(object obj)
@@ -78,12 +78,10 @@ namespace Radio7.Phone.News.ViewModels
             OnPropertyChanged("SelectedIndex");
         }
 
-
         protected bool CanAlwaysExecute(object state)
         {
             return true;
         }
-
 
         public DelegateCommand NavigateCommand { get; set; }
         public int SelectedIndex { get; set; }

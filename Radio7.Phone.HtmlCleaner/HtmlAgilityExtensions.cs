@@ -54,12 +54,17 @@ namespace Radio7.Phone.HtmlCleaner
             return new HtmlResult();
         }
 
-        public static string ConvertToString(this HtmlDocument htmlDocument)
+        public static string ConvertToUtf8(this HtmlDocument htmlDocument)
         {
-            using (var writer = new StringWriter())
+            using (var stream = new MemoryStream())
             {
-                htmlDocument.Save(writer);
-                return writer.ToString();
+                htmlDocument.Save(stream, new System.Text.UTF8Encoding());
+
+                stream.Position = 0;
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
             }
         }
     }

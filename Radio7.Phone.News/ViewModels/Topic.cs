@@ -39,7 +39,7 @@ namespace Radio7.Phone.News.ViewModels
 
         private void OnFeedLoaded(object sender, EventArgs e)
         {
-            Debug.WriteLine("feed loaded " + Index);
+            Debug.WriteLine("feed loaded " + Title);
             WithDispatcher(() =>
                 {
                     NewsItems = _feed.Items.Select(i => new NewsItem

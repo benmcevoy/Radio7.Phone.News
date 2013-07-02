@@ -26,7 +26,7 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
             return new HtmlCleaner(htmlDocument)
                     .Clean()
                     .ToHtmlDocument()
-                    .ConvertToString()
+                    .ConvertToUtf8()
                     .RemoveWhitespace();
         }
 
@@ -34,7 +34,7 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
         {
             var elementsToRemove = new[] { "script", "noscript", "style", "link", "meta", 
                 "iframe", "input", "button", "select", "option", "audio", "canvas", "head",
-                "h1","header","footer","aside", "hr","nav","video","object","embed", "#comment" };
+                "h1","header","footer","aside", "hr","nav","video","object","embed", "#comment", "svg" };
 
             return RemoveElements(elementsToRemove);
         }
@@ -49,9 +49,9 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
             return this;
         }
 
-        public HtmlCleaner RemoveAttributes(string attribute)
+        public HtmlCleaner RemoveAllAttributes(params string[] except)
         {
-            var elements = _htmlDocument.DocumentNode.SelectNodes(string.Format("//@{0}", attribute));
+            var elements = _htmlDocument.DocumentNode.SelectNodes("//*");
 
             if (elements == null)
             {
@@ -60,12 +60,31 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
 
             foreach (var element in elements)
             {
-                try
+                if (element.Attributes == null) continue;
+
+                for (var i = element.Attributes.Count - 1; i >= 0; i--)
                 {
-                    // TODO: try reverse traversal
-                    element.Attributes[attribute].Remove();
+                    var attribute = element.Attributes[i];
+
+                    if (except.Contains(attribute.Name)) continue;
+
+                    element.Attributes.Remove(attribute);
                 }
-                catch { }
+            }
+
+            return this;
+        }
+
+        public HtmlCleaner RemoveAttributes(string attribute)
+        {
+            var elements = _htmlDocument.DocumentNode.SelectNodes(string.Format("//*[@{0}]", attribute));
+
+            if (elements == null) return this;
+
+            for (var i = elements.Count - 1; i >= 0; i--)
+            {
+                var element = elements[i];
+                element.Attributes[attribute].Remove();
             }
 
             return this;

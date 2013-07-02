@@ -53,8 +53,8 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
                     if (string.IsNullOrEmpty(altText)) return;
 
-                    var figure = _htmlDocument.CreateElement("figure");
-                    var caption = _htmlDocument.CreateElement("figcaption");
+                    var figure = _htmlDocument.CreateElement("div");
+                    var caption = _htmlDocument.CreateElement("sub");
 
                     caption.InnerHtml = altText;
 
@@ -63,6 +63,15 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
                     image.ParentNode.ReplaceChild(figure, image);
                 });
+
+            return this;
+        }
+
+        public Normalizer RemoveImages()
+        {
+            var elements = _htmlDocument.DocumentNode.SelectNodes("//img");
+
+            ProcessElements(elements, image => image.Remove());
 
             return this;
         }

@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
 using Radio7.Phone.HtmlCleaner.Extractors.Title;
+using Radio7.Phone.Common.IO;
 
 namespace Radio7.Phone.News
 {
@@ -26,6 +24,12 @@ namespace Radio7.Phone.News
                 {
                     Browser.OpacityMask = null;
                     Browser.Opacity = 1;
+
+                    WithDispatcher(() =>
+                        {
+                            Browser.InvokeScript("eval",
+                                                 "try{enablePrettyPrinting();}catch(e){}");
+                        });
                 };
         }
 
@@ -43,7 +47,7 @@ namespace Radio7.Phone.News
                 Load(_url);
             }
 
-            SetMessage(this,"loading...");
+            SetMessage(this, "loading...");
 
             base.OnNavigatedTo(e);
         }
@@ -72,7 +76,7 @@ namespace Radio7.Phone.News
                     var te = new TitleExtractor();
                     var title = te.Extract(html);
 
-                    clean = WrapWithStyle(_url, title, clean);
+                    clean = CreatePage(_url, title, clean);
 
                     WithDispatcher(() =>
                         {
@@ -83,24 +87,37 @@ namespace Radio7.Phone.News
             }
         }
 
-        private string WrapWithStyle(string url, string title, string clean)
+        private static string _script;
+        private static string GetScript()
         {
-            const string style = @"<style type='text/css'>
-
-html, body { font-size: 1em; font-family: 'Segoe WP', Arial; margin : 14px; background: black; color: white; font-weight: 400; }
-h1 { font-size: 1.1em; font-weight: 400; text-transform: uppercase;}
-
-a {color: yellow;font-weight: 400;}
-p, div, ul, dl { font-weight: 400; margin : 56px 0px;}
-figure, img, figcaption { display: block;}
-figure, figcaption { font-style: italic; font-weight: 400; font-size: 0.9em; color: #ccc; }
-img { width: 100%; max-width: 440px;}
-
-</style>";
-
-            return string.Format("<h3><a href='{0}'>View original article</a><h3>{1}<h1>{2}</h1>{3}", url, style, title, clean);
+            if (string.IsNullOrEmpty(_script))
+            {
+                _script = ResourceHelper.LoadStringFromResource(new Uri("/Radio7.Phone.News;component/Content/Scripts/prettify.js", UriKind.Relative));
+            }
+            return _script;
         }
 
+        private static string _style;
+        private static string GetStyle()
+        {
+            if (string.IsNullOrEmpty(_style))
+            {
+                _style = ResourceHelper.LoadStringFromResource(new Uri("/Radio7.Phone.News;component/Content/Css/base.css", UriKind.Relative));
+            }
+            return _style;
+        }
+
+        private string CreatePage(string url, string title, string body)
+        {
+            const string wrapper = @"<meta name='Viewport' content='width=320; user-scaleable=yes; initial-scale=1.0' />
+<style type='text/css'>{1}</style>
+<script type'text/javascript'>{0}</script>
+<h3><a href='{2}'>View original article</a><h3>
+<h1>{3}</h1>
+{4}";
+                  
+            return string.Format(wrapper, GetScript(), GetStyle(), url, title, body);
+        }
 
         public static void WithDispatcher(Action action)
         {

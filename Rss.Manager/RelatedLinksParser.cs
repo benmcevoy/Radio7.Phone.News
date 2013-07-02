@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using HtmlAgilityPack;
@@ -24,35 +26,41 @@ namespace Rss.Manager
 
                 htmlDoc.LoadHtml(html);
 
-                var td = htmlDoc.DocumentNode.SelectNodes("//table/tr/td").LastOrDefault();
+                var elements = htmlDoc.DocumentNode.SelectNodes("//table/tr/td");
 
-                if (td != null)
+                if (elements == null) return results;
+
+                var td = elements.LastOrDefault();
+
+                if (td == null) return results;
+
+                var div = td.SelectNodes("font/div");
+
+                if (div == null) return results;
+                if (div.Count == 0) return results;
+
+                var links1 = div.Skip(1).FirstOrDefault();
+
+                if (links1 == null) return results;
+
+                var links = links1.SelectNodes("font/a");
+
+                if (links == null) return results;
+
+                foreach (var relatedLink in links)
                 {
-                    var div = td.SelectNodes("font/div").Skip(1).FirstOrDefault();
-
-                    if (div != null)
-                    {
-                        var links = div.SelectNodes("font/a");
-
-                        if (links != null )
+                    var result = new RelatedLink
                         {
-                            foreach (var relatedLink in links)
-                            {
-                                var result = new RelatedLink
-                                    {
-                                        Title = relatedLink.InnerText.Decode().StripTags(),
-                                        Link = relatedLink.GetAttributeValue("href", "")
-                                    };
+                            Title = relatedLink.InnerText.Decode().StripTags(),
+                            Link = relatedLink.GetAttributeValue("href", "")
+                        };
 
-                                results.Add(result);
-
-                            }
-                        }
-                    }
+                    results.Add(result);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
             }
 
             return results;

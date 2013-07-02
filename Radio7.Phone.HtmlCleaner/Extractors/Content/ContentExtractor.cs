@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Linq;
 using HtmlAgilityPack;
-using Radio7.Phone.HtmlCleaner.Entities;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
@@ -15,18 +14,30 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             var extractedContent = ExtractContent(htmlDocument);
 
-            return extractedContent.ConvertToString().RemoveWhitespace();
+            return extractedContent.ConvertToUtf8();
         }
 
         private HtmlDocument ExtractContent(HtmlDocument htmlDocument)
         {
+            // pre-process
             CleanAndNormalize(htmlDocument);
 
+            // score
             var scorer = new Scorer();
             var candidates = scorer.Score(htmlDocument).ToArray();
 
-            ScaleCandidateScoresByLinkDensity(candidates);
+            // scoring startegy should be passed in somehow
+            // var rawscores = candidates.OrderByDescending(c => c.RawScore);
+            //foreach (var rawscore in candidates)
+            //{
+            //    if (rawscore.RawScore > 2)
+            //    {
+            //        Debug.WriteLine("{2}", rawscore.Score, rawscore.RawScore,
+            //                        rawscore.HtmlNode.InnerText);
+            //    }
+            //}
 
+            // post-process
             var topCandidate = candidates.OrderByDescending(c => c.Score).FirstOrDefault();
             var result = new HtmlDocument();
             var container = result.CreateElement("div");
@@ -35,12 +46,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             result.DocumentNode.AppendChild(container);
 
-            new Cleaners.HtmlCleaner(result)
-                .RemoveAttributes("style")
-                .RemoveAttributes("class")
-                .RemoveAttributes("id")
-                .RemoveAttributes("width")
-                .RemoveAttributes("height");
+            new Cleaners.HtmlCleaner(result).RemoveAllAttributes("src", "href");
 
             return result;
             // select top candidate
@@ -62,27 +68,6 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             //return htmlDocument;
         }
 
-        private void ScaleCandidateScoresByLinkDensity(IEnumerable<CandidateNode> candidateNodes)
-        {
-            foreach (var candidateNode in candidateNodes)
-            {
-                var linkDensity = GetLinkDensity(candidateNode.HtmlNode);
-                candidateNode.Score = candidateNode.Score * (1 - linkDensity);
-            }
-        }
-
-        private double GetLinkDensity(HtmlNode htmlNode)
-        {
-            var links = htmlNode.SelectNodes("a");
-
-            if (links == null) return 0D;
-
-            var linkLength = (double)links.Sum(l => l.InnerText.Length);
-            var textLength = (double)htmlNode.InnerText.Length;
-
-            return linkLength / textLength;
-        }
-
         private void CleanAndNormalize(HtmlDocument htmlDocument)
         {
             new Cleaners.HtmlCleaner(htmlDocument).Clean();
@@ -95,6 +80,8 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 .ReplaceBrCandidates()
                 .RemoveEmptyCandidateElements()
                 .CleanImages();
+                //.RemoveImages();
+            
         }
     }
 }

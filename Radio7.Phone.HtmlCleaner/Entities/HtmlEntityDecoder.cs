@@ -59,7 +59,7 @@ namespace Radio7.Phone.HtmlCleaner.Entities
 
         private static void WriteContent(string text, TextWriter writer)
         {
-            writer.Write(text, writer);
+            writer.Write(text);
         }
 
         private void WriteTextEntity(Token token, TextWriter writer)

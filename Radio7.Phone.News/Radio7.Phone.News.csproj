@@ -75,6 +75,7 @@
     <Compile Include="ReadableView.xaml.cs">
       <DependentUpon>ReadableView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceHelper.cs" />
     <Compile Include="ViewModels\NewsItem.cs" />
     <Compile Include="ViewModels\RelatedNewsItem.cs" />
     <Compile Include="ViewModels\Topic.cs" />
@@ -119,7 +120,9 @@
     <Content Include="Content\australia.png" />
     <Content Include="Content\business.png" />
     <Content Include="Content\conversation.png" />
+    <Resource Include="Content\Css\base.css" />
     <Content Include="Content\science.png" />
+    <Resource Include="Content\Scripts\prettify.js" />
     <Content Include="Content\technology.png" />
     <Content Include="Content\top.png" />
     <Content Include="Content\world.png" />

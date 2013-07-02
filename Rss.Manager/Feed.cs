@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -58,11 +60,31 @@ namespace Rss.Manager
                     switch (xml.Root.Name.LocalName.ToLower())
                     {
                         case "rss":
-                            return xml.Element("rss").Element("channel")
-                                .Element("title").Value;
+                            var xElement = xml.Element("rss");
+
+                            if (xElement != null)
+                            {
+                                var element = xElement.Element("channel");
+
+                                if (element != null)
+                                {
+                                    var xElement1 = element.Element("title");
+
+                                    if (xElement1 != null) return xElement1.Value;
+                                }
+                            }
+                            break;
 
                         case "feed":
-                            return xml.Element("feed").Element("title").Value;
+                            var element1 = xml.Element(_atomNamespace + "feed");
+
+                            if (element1 != null)
+                            {
+                                var xElement2 = element1.Element(_atomNamespace + "title");
+
+                                if (xElement2 != null) return xElement2.Value;
+                            }
+                            break;
                     }
                 }
 
@@ -102,12 +124,12 @@ namespace Rss.Manager
                                 where encoded != null
                                 let title = f.Element("title")
                                 where title != null
-                                let pubDate = f.Element("pubDate")
-                                where pubDate != null
+                                let pubDate = f.Element("pubDate") 
+                                
                                 select new Item(link.Value,
                                                 encoded.Value,
                                                 HttpUtility.HtmlDecode(title.Value),
-                                                pubDate.Value)).ToList();
+                                               pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
                     }
                 }
 
@@ -120,11 +142,11 @@ namespace Rss.Manager
                             let title = f.Element("title")
                             where title != null
                             let pubDate = f.Element("pubDate")
-                            where pubDate != null
+                            
                             select new Item(link.Value,
                                             description.Value,
                                            HttpUtility.HtmlDecode(title.Value),
-                                            pubDate.Value)).ToList();
+                                            pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture): pubDate.Value)).ToList();
             }
             return null;
         }
@@ -141,9 +163,13 @@ namespace Rss.Manager
                         BaseUrl = element.Attribute("href").Value;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
 
-            bool useIdForHref = false; 
+            }
+
+            bool useIdForHref = false;
             // test id element is a url
             try
             {
@@ -157,7 +183,11 @@ namespace Rss.Manager
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+
+                Debug.WriteLine(ex);
+            }
 
 
             return (from f in xml.Descendants(_atomNamespace + "entry")
@@ -169,12 +199,12 @@ namespace Rss.Manager
                     where content != null
                     let title = f.Element(_atomNamespace + "title")
                     where title != null
-                    let published = f.Element(_atomNamespace + "published")
-                    where published != null
+                    let pubDate = f.Element(_atomNamespace + "published")
+                    
                     select new Item(useIdForHref ? id.Value : link.Attribute("href").Value,
                                     content.Value,
                                     HttpUtility.HtmlDecode(title.Value),
-                                    published.Value)).ToList();
+                                    pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
         }
 
         private void GetXml(Uri feedUri)

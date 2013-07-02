@@ -1,0 +1,24 @@
+﻿html, body { font-size: 0.9em; font-family: 'Segoe WP', Arial; margin : 14px; background: black; color: white; font-weight: 400; }
+h1 { font-size: 1em; font-weight: 400; text-transform: uppercase;}
+a {color: yellow;font-weight: 400;}
+p, div, ul, dl  { font-weight: 400; margin : 24px 0; }
+img, sub { display: block;}
+sub { font-style: italic; font-weight: 400; font-size: 0.8em; color: #ccc; }
+img { width: 100%; max-width: 440px;}
+
+pre .str, code .str { color: #65B042; } 
+pre .kwd, code .kwd { color: #E28964; } 
+pre .com, code .com { color: #AEAEAE; font-style: italic; }
+pre .typ, code .typ { color: #89bdff; } 
+pre .lit, code .lit { color: #3387CC; } 
+pre .pun, code .pun { color: #fff; } 
+pre .pln, code .pln { color: #fff; } 
+pre .tag, code .tag { color: #89bdff; } 
+pre .atn, code .atn { color: #bdb76b; } 
+pre .atv, code .atv { color: #65B042; } 
+pre .dec, code .dec { color: #3387CC; }
+pre.prettyprint, code.prettyprint {background-color: #000;;-ms-border-radius: 8px;border-radius: 8px;}
+pre.prettyprint {width: 95%;margin: 1em auto;padding: 1em;white-space: pre-wrap;}
+ol.linenums { margin-top: 0; margin-bottom: 0; color: #AEAEAE; } 
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type: none }
+li.L1,li.L3,li.L5,li.L7,li.L9 { }

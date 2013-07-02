@@ -9,8 +9,10 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
     public class Scorer
     {
+        private static readonly string[] ElementNamesToScore = new[] { "p", "td", "pre", "li", "div", "h2", "h3", "h4", "#text" };
         private const string IdAttributeName = "__content__id";
         private const string ScoreAttributeName = "__content__score";
+        private const string RawScoreAttributeName = "__content__raw";
         private readonly List<CandidateNode> _candidateNodes = new List<CandidateNode>(64);
 
         public IEnumerable<CandidateNode> Score(HtmlDocument htmlDocument)
@@ -22,27 +24,49 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 if (htmlNode.ParentNode == null) continue;
                 if (htmlNode.ParentNode.Name == "body") continue;
 
+                EnsureCandidateScoreAttributes(htmlNode);
                 EnsureCandidateScoreAttributes(htmlNode.ParentNode);
 
                 var score = GetContentDensityScore(htmlNode);
 
                 // add score to parent
                 AddToHtmlNodeScoreAttribute(htmlNode.ParentNode, score);
-
                 UpdateCandidateNode(htmlNode.ParentNode);
 
                 if (htmlNode.ParentNode.ParentNode == null) continue;
                 if (htmlNode.ParentNode.ParentNode.Name == "body") continue;
 
                 EnsureCandidateScoreAttributes(htmlNode.ParentNode.ParentNode);
-
                 // add half to grandparent
                 AddToHtmlNodeScoreAttribute(htmlNode.ParentNode.ParentNode, score / 2D);
-
                 UpdateCandidateNode(htmlNode.ParentNode.ParentNode);
+                UpdateCandidateRawScore(htmlNode);
             }
 
+            ScaleCandidateScoresByLinkDensity(_candidateNodes);
+
             return _candidateNodes;
+        }
+
+        private void ScaleCandidateScoresByLinkDensity(IEnumerable<CandidateNode> candidateNodes)
+        {
+            foreach (var candidateNode in candidateNodes)
+            {
+                var linkDensity = GetLinkDensityScore(candidateNode.HtmlNode);
+                candidateNode.Score = candidateNode.Score * (1 - linkDensity);
+            }
+        }
+
+        private double GetLinkDensityScore(HtmlNode htmlNode)
+        {
+            var links = htmlNode.SelectNodes("a");
+
+            if (links == null) return 0D;
+
+            var linkLength = (double)links.Sum(l => l.InnerText.Length);
+            var textLength = (double)htmlNode.InnerText.Length;
+
+            return linkLength / textLength;
         }
 
         private IEnumerable<HtmlNode> GetNodesToScore(HtmlDocument htmlDocument)
@@ -53,15 +77,31 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 if (htmlNode.ParentNode.Name == "body") continue;
                 if (htmlNode.InnerText.Length < 25) continue;
 
-                var name = htmlNode.Name;
-
-                if (name == "p") yield return htmlNode;
-                if (name == "td") yield return htmlNode;
-                if (name == "pre") yield return htmlNode;
-                if (name == "li") yield return htmlNode;
-                if (name == "div") yield return htmlNode;
-                if (name == "#text") yield return htmlNode;
+                if (ElementNamesToScore.Contains(htmlNode.Name)) yield return htmlNode;
             }
+        }
+
+        private void UpdateCandidateRawScore(HtmlNode htmlNode)
+        {
+            var score = Convert.ToDouble(htmlNode.GetAttributeValue(ScoreAttributeName, "0.0"));
+            var rawScore = Convert.ToDouble(htmlNode.GetAttributeValue(RawScoreAttributeName, "0.0"));
+            var id = Guid.Parse(htmlNode.GetAttributeValue(IdAttributeName, Guid.Empty.ToString("D")));
+
+            var candidateNode = new CandidateNode
+            {
+                HtmlNode = htmlNode,
+                Score = score,
+                RawScore = rawScore,
+                Id = id
+            };
+
+            if (_candidateNodes.Any(c => c.Id == id))
+            {
+                _candidateNodes.First(c => c.Id == id).RawScore = rawScore;
+                return;
+            }
+
+            _candidateNodes.Add(candidateNode);
         }
 
         private void UpdateCandidateNode(HtmlNode htmlNode)
@@ -94,13 +134,17 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             // might let us avoid the whole normalize and clean crap
             // might also let us test any node instead of these candidates
 
-            var score = 1D;
+            var score = 0D;
             var weight = 1D;
 
             if (htmlNode.Name == "p") weight = 10D;
             if (htmlNode.Name == "pre") weight = 5D;
             if (htmlNode.Name == "td") weight = 2D;
             if (htmlNode.Name == "#text") weight = 5D;
+            if (htmlNode.Name == "h2") weight = 5D;
+            if (htmlNode.Name == "h3") weight = 5D;
+            if (htmlNode.Name == "h4") weight = 2D;
+            if (htmlNode.Name == "h5") weight = 2D;
 
             var text = htmlNode.InnerText.RemoveWhitespace();
 
@@ -120,7 +164,19 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 if (wordCount > 35 && wordCount < 50) score += 50D;
             }
 
+            AddToHtmlNodeRawScoreAttribute(htmlNode, GetThresholdScore(score * weight));
+
             return score * weight;
+        }
+
+        private double GetThresholdScore(double x)
+        {
+            var result = Math.Exp(x - 200);
+
+            if (result > 10000000000D) result = 10000000000D;
+            if (double.IsPositiveInfinity(result)) result = 10000000000D;
+
+            return result;
         }
 
         private void EnsureCandidateScoreAttributes(HtmlNode htmlNode)
@@ -128,6 +184,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             if (htmlNode.Attributes.Contains(ScoreAttributeName)) return;
 
             htmlNode.SetAttributeValue(IdAttributeName, Guid.NewGuid().ToString("D"));
+            htmlNode.SetAttributeValue(RawScoreAttributeName, "0.0");
             AddToHtmlNodeScoreAttribute(htmlNode, 0D);
         }
 
@@ -135,6 +192,12 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         {
             var current = Convert.ToDouble(htmlNode.GetAttributeValue(ScoreAttributeName, "0.0"));
             htmlNode.SetAttributeValue(ScoreAttributeName, (current + score).ToString(CultureInfo.InvariantCulture));
+        }
+
+        private void AddToHtmlNodeRawScoreAttribute(HtmlNode htmlNode, double score)
+        {
+            var current = Convert.ToDouble(htmlNode.GetAttributeValue(RawScoreAttributeName, "0.0"));
+            htmlNode.SetAttributeValue(RawScoreAttributeName, (current + score).ToString(CultureInfo.InvariantCulture));
         }
     }
 }

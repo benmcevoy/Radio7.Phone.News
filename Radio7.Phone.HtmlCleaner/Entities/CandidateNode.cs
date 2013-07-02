@@ -9,6 +9,8 @@ namespace Radio7.Phone.HtmlCleaner.Entities
 
         public double Score { get; set; }
 
+        public double RawScore { get; set; }
+
         public HtmlNode HtmlNode { get; set; }
     }
 }
