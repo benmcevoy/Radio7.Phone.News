@@ -1,0 +1,47 @@
+﻿<phone:PhoneApplicationPage 
+    x:Name="self"
+    x:Class="Radio7.Phone.News.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <phone:PhoneApplicationPage.Resources>
+        <ItemsPanelTemplate x:Key="WrapItemsPanelTemplate">
+            <toolkit:WrapPanel/>
+        </ItemsPanelTemplate>
+    </phone:PhoneApplicationPage.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="Transparent" >
+        <controls:Pivot x:Name="MainPivot" Title="GAYBO'S NEWS" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}">
+            <controls:PivotItem Header="topics" >
+                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding Topics}" ItemsPanel="{StaticResource WrapItemsPanelTemplate}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <HyperlinkButton Command="{Binding ElementName=self, Path=DataContext.NavigateCommand}" CommandParameter="{Binding}">
+                                <HyperlinkButton.Template>
+                                    <ControlTemplate TargetType="HyperlinkButton">
+                                        <toolkit:HubTile toolkit:TiltEffect.IsTiltEnabled="True"
+                                            Title="{Binding Title}" Margin="5" 
+                                             Source="{Binding Image}"
+                                             Size="{Binding Size}" Background="{Binding AccentBrush}" />
+                                    </ControlTemplate>
+                                </HyperlinkButton.Template>
+                            </HyperlinkButton>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>
+</phone:PhoneApplicationPage>
