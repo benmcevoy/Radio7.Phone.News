@@ -1,7 +1,9 @@
-﻿namespace Radio7.Phone.HtmlCleaner.Extractors.Content
+﻿using System;
+
+namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
     public interface IContentExtractor
     {
-        string Extract(string html);
+        string Extract(string html, Uri documentUrl);
     }
 }

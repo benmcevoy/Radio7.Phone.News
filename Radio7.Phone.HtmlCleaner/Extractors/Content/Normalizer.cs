@@ -9,18 +9,20 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
     public class Normalizer
     {
         private readonly HtmlDocument _htmlDocument;
+        private readonly Uri _documentUrl;
 
         private static readonly Regex BoilerPlateCandidatesRegex = new Regex(
             @"combx|comment|community|contact|disqus|foot|footer|header|" + 
             "menu|rss|shoutbox|sidebar|masthead|sponsor|ad-break|agegate|" + 
             "pagination|pager|popup|tweet|twitter|hidden|aside|advert|footnote|" +
             "meta|outbrain|promo|related|scroll|shopping|tags|tool|widget|" + 
-            "metadata|overlay|video|nav|sub-nav|share|toolbar|playlist|addthis|social|modal",
+            "metadata|overlay|video|nav|sub-nav|toolbar|playlist|addthis|social|modal",
             RegexOptions.Compiled & RegexOptions.IgnoreCase);
 
-        public Normalizer(HtmlDocument htmlDocument)
+        public Normalizer(HtmlDocument htmlDocument, Uri documentUrl)
         {
             _htmlDocument = htmlDocument;
+            _documentUrl = documentUrl;
         }
 
         public Normalizer FindBestCandidateFrame()
@@ -95,11 +97,54 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             return this;
         }
 
+        public Normalizer RebaseUrls()
+        {
+
+            var elements = _htmlDocument.DocumentNode.SelectNodes("//a");
+
+            ProcessElements(elements, element =>
+                {
+                    var href = element.GetAttributeValue("href", "");
+
+                    if(string.IsNullOrEmpty(href)) return;
+                    if (IsAbsoluteUri(href)) return;
+                    
+                    if (href.StartsWith("?"))
+                    {
+                       var result = string.Format("{0}://{1}{2}{3}",
+                                                        _documentUrl.Scheme,
+                                                        _documentUrl.Host, 
+                                                        _documentUrl.AbsolutePath, 
+                                                        href);
+
+                       if (IsAbsoluteUri(result))
+                        {
+                            element.SetAttributeValue("href", result);
+                        };
+                    }
+
+                    Uri absoluteUri;
+
+                    if (Uri.TryCreate(_documentUrl, href, out absoluteUri))
+                    {
+                        element.SetAttributeValue("href", absoluteUri.ToString());
+                    }
+
+                });
+
+            return this;
+        }
+
+        private bool IsAbsoluteUri(string url)
+        {
+            Uri result;
+            return Uri.TryCreate(url, UriKind.Absolute, out result);
+        }
+
         public Normalizer EnsureBodyElement()
         {
             // if body element is missing then add it
             // why? do i care?
-            // should be part of normalize/clean?
 
             return this;
         }

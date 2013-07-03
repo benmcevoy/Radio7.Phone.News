@@ -72,7 +72,7 @@ namespace Radio7.Phone.News
                     var reader = new StreamReader(stream, Encoding.UTF8);
                     var html = reader.ReadToEnd();
                     var ce = new ContentExtractor();
-                    var clean = ce.Extract(html);
+                    var clean = ce.Extract(html, response.ResponseUri);
                     var te = new TitleExtractor();
                     var title = te.Extract(html);
 

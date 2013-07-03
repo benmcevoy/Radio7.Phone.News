@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+﻿using System;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
 
 namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
@@ -13,7 +14,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(AgeArticle.Html);
+            var result = target.Extract(AgeArticle.Html, new Uri("http://www.test.com"));
             
             // assert
         }
@@ -25,7 +26,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(AgeArticle.Html);
+            var result = target.Extract(AgeArticle.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -38,7 +39,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(Wikipedia.Html);
+            var result = target.Extract(Wikipedia.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -51,7 +52,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(StackoverFlow.Html);
+            var result = target.Extract(StackoverFlow.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -64,7 +65,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(ABC.Html);
+            var result = target.Extract(ABC.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -77,7 +78,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(RLeague.Html);
+            var result = target.Extract(RLeague.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -90,7 +91,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(SunshineCoastDaily.Html);
+            var result = target.Extract(SunshineCoastDaily.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -103,7 +104,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(TheAustralian.Html);
+            var result = target.Extract(TheAustralian.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -117,7 +118,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(SMH.Html);
+            var result = target.Extract(SMH.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -131,7 +132,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(GulfNews.Html);
+            var result = target.Extract(GulfNews.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -145,7 +146,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(BBC.Html);
+            var result = target.Extract(BBC.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -158,7 +159,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(NewYorkTimes.Html);
+            var result = target.Extract(NewYorkTimes.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);
@@ -171,7 +172,7 @@ namespace Radio7.Phone.HtmlCleaner.Tests.Extractors.Content
             var target = new ContentExtractor();
 
             // act
-            var result = target.Extract(WSJ.Html);
+            var result = target.Extract(WSJ.Html, new Uri("http://www.test.com"));
 
             // assert
             Assert.AreNotEqual("", result);

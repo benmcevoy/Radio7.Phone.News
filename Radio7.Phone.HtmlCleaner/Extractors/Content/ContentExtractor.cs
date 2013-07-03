@@ -1,26 +1,27 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using HtmlAgilityPack;
+using System;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
     public class ContentExtractor : IContentExtractor
     {
-        public string Extract(string html)
+        public string Extract(string html, Uri documentUrl)
         {
             var htmlDocument = new HtmlDocument();
 
             htmlDocument.LoadHtml(html);
 
-            var extractedContent = ExtractContent(htmlDocument);
+            var extractedContent = ExtractContent(htmlDocument, documentUrl);
 
             return extractedContent.ConvertToUtf8();
         }
 
-        private HtmlDocument ExtractContent(HtmlDocument htmlDocument)
+        private HtmlDocument ExtractContent(HtmlDocument htmlDocument, Uri documentUrl)
         {
             // pre-process
-            CleanAndNormalize(htmlDocument);
+            CleanAndNormalize(htmlDocument, documentUrl);
 
             // score
             var scorer = new Scorer();
@@ -68,17 +69,18 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             //return htmlDocument;
         }
 
-        private void CleanAndNormalize(HtmlDocument htmlDocument)
+        private void CleanAndNormalize(HtmlDocument htmlDocument, Uri documentUrl)
         {
             new Cleaners.HtmlCleaner(htmlDocument).Clean();
 
-            new Normalizer(htmlDocument)
+            new Normalizer(htmlDocument, documentUrl)
                 .FindBestCandidateFrame()
                 .EnsureBodyElement()
                 .RemoveBoilerPlateCandidates()
                 .ReplaceFonts()
                 .ReplaceBrCandidates()
                 .RemoveEmptyCandidateElements()
+                .RebaseUrls()
                 .CleanImages();
                 //.RemoveImages();
             
