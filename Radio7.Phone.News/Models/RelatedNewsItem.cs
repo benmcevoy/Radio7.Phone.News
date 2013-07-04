@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Radio7.Phone.News.ViewModels
+namespace Radio7.Phone.News.Models
 {
     public class RelatedNewsItem
     {

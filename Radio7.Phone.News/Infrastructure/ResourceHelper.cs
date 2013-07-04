@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows;
 
-namespace Radio7.Phone.Common.IO
+namespace Radio7.Phone.News.Infrastructure
 {
     public class ResourceHelper
     {

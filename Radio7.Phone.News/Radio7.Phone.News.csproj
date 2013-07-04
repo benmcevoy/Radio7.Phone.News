@@ -48,12 +48,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.WP71">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.WP71.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>packages\WPToolkit.4.2013.06.11\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -68,37 +77,47 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DelegateCommand.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ReadableView.xaml.cs">
-      <DependentUpon>ReadableView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ResourceHelper.cs" />
-    <Compile Include="ViewModels\NewsItem.cs" />
-    <Compile Include="ViewModels\RelatedNewsItem.cs" />
-    <Compile Include="ViewModels\Topic.cs" />
-    <Compile Include="NewsItemsControl.xaml.cs">
-      <DependentUpon>NewsItemsControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Data\HtmlRepository.cs" />
+    <Compile Include="Data\TopicRepository.cs" />
+    <Compile Include="Infrastructure\INavigationService.cs" />
+    <Compile Include="Infrastructure\NavigationService.cs" />
+    <Compile Include="Infrastructure\ProgressHelper.cs" />
+    <Compile Include="Infrastructure\ViewModelLocator.cs" />
+    <Compile Include="Infrastructure\ResourceHelper.cs" />
+    <Compile Include="Services\PageService.cs" />
+    <Compile Include="ViewModels\FeedPageViewModel.cs" />
+    <Compile Include="Models\NewsItem.cs" />
+    <Compile Include="Models\RelatedNewsItem.cs" />
+    <Compile Include="Models\Topic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NavigateToStringEventArgs.cs" />
+    <Compile Include="ViewModels\HomePageViewModel.cs" />
+    <Compile Include="ViewModels\ItemPageViewModel.cs" />
+    <Compile Include="Services\GetPageCompleteEventArgs.cs" />
+    <Compile Include="Views\FeedPage.xaml.cs">
+      <DependentUpon>FeedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ItemPage.xaml.cs">
+      <DependentUpon>ItemPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\FeedPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewsItemsControl.xaml">
+    <Page Include="Views\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ReadableView.xaml">
+    <Page Include="Views\ItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,9 +139,12 @@
     <Content Include="Content\australia.png" />
     <Content Include="Content\business.png" />
     <Content Include="Content\conversation.png" />
-    <Resource Include="Content\Css\base.css" />
+    <Resource Include="Resources\Css\base.css" />
+    <Resource Include="Resources\Images\bottom.png" />
+    <Resource Include="Resources\Html\PageWrapper.html" />
+    <Content Include="Resources\Images\top.png" />
     <Content Include="Content\science.png" />
-    <Resource Include="Content\Scripts\prettify.js" />
+    <Resource Include="Resources\Scripts\prettify.js" />
     <Content Include="Content\technology.png" />
     <Content Include="Content\top.png" />
     <Content Include="Content\world.png" />

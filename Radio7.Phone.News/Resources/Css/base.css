@@ -1,11 +1,13 @@
-﻿html, body { font-size: 0.9em; font-family: 'Segoe WP', Arial; margin : 14px; background: black; color: white; font-weight: 400; }
-h1 { font-size: 1em; font-weight: 400; text-transform: uppercase;}
-a {color: yellow;font-weight: 400;}
-p, div, ul, dl  { font-weight: 400; margin : 24px 0; }
+﻿html, body { font-size: 0.9em; font-family:'Segoe WP', Arial; margin : 14px; background: black; color: #FDFDFD; font-weight: 200; }
+h1 {  text-transform: uppercase;}
+h1,h2,h3,h4,h5,h6 { font-family: Georgia;}
+a {color: yellow;font-weight: 200;}
+p, div, ul, dl  { font-weight: 200; margin : 24px 0; }
 img, sub { display: block;}
-sub { font-style: italic; font-weight: 400; font-size: 0.8em; color: #ccc; }
-img { width: 100%; max-width: 440px;}
+sub { font-style: italic; font-weight: 200; font-size: 0.85em; color: #ccc; }
+img { max-width: 400px;margin: 0 auto;}
 
+pre, code { font-family: Courier;}
 pre .str, code .str { color: #65B042; } 
 pre .kwd, code .kwd { color: #E28964; } 
 pre .com, code .com { color: #AEAEAE; font-style: italic; }
@@ -21,4 +23,3 @@ pre.prettyprint, code.prettyprint {background-color: #000;;-ms-border-radius: 8p
 pre.prettyprint {width: 95%;margin: 1em auto;padding: 1em;white-space: pre-wrap;}
 ol.linenums { margin-top: 0; margin-bottom: 0; color: #AEAEAE; } 
 li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type: none }
-li.L1,li.L3,li.L5,li.L7,li.L9 { }
