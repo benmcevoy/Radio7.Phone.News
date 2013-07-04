@@ -28,7 +28,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="{Binding Title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Topic.Title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -44,7 +44,7 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="10,0,0,0" BorderBrush="{Binding ElementName=self, Path=DataContext.AccentBrush}"  Margin="0,0,0,17">
+                        <Border BorderThickness="10,0,0,0" BorderBrush="{Binding ElementName=self, Path=DataContext.Topic.AccentBrush}"  Margin="0,0,0,17">
                             <HyperlinkButton Margin="0,3,0,3" Grid.Row="0" Command="{Binding ElementName=self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}">
                                 <HyperlinkButton.Template>
                                     <ControlTemplate TargetType="HyperlinkButton">
@@ -71,7 +71,7 @@
                                                                 <ControlTemplate TargetType="HyperlinkButton">
                                                                     <TextBlock Text="{Binding Title}" 
                                                                        TextTrimming="WordEllipsis"
-                                                                       Style="{StaticResource PhoneTextNormalStyle}" Foreground ="{Binding ElementName=self, Path=DataContext.AccentBrush}"/>
+                                                                       Style="{StaticResource PhoneTextNormalStyle}" Foreground ="{Binding ElementName=self, Path=DataContext.Topic.AccentBrush}"/>
                                                                 </ControlTemplate>
                                                             </HyperlinkButton.Template>
                                                         </HyperlinkButton>

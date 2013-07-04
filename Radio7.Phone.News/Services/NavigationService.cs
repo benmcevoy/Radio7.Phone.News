@@ -3,13 +3,11 @@ using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 
-namespace Radio7.Phone.News.Infrastructure
+namespace Radio7.Phone.News.Services
 {
     public class NavigationService : INavigationService
     {
         private PhoneApplicationFrame _mainFrame;
-
-        public event NavigatingCancelEventHandler Navigating;
 
         public void NavigateTo(Uri pageUri)
         {
@@ -21,8 +19,7 @@ namespace Radio7.Phone.News.Infrastructure
 
         public void GoBack()
         {
-            if (EnsureMainFrame()
-                && _mainFrame.CanGoBack)
+            if (EnsureMainFrame() && _mainFrame.CanGoBack)
             {
                 _mainFrame.GoBack();
             }
@@ -30,10 +27,7 @@ namespace Radio7.Phone.News.Infrastructure
 
         private bool EnsureMainFrame()
         {
-            if (_mainFrame != null)
-            {
-                return true;
-            }
+            if (_mainFrame != null)return true;
 
             _mainFrame = Application.Current.RootVisual as PhoneApplicationFrame;
 
@@ -53,5 +47,7 @@ namespace Radio7.Phone.News.Infrastructure
 
             return false;
         }
+
+        public event NavigatingCancelEventHandler Navigating;
     }
 }

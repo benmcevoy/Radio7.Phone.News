@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Navigation;
 
-namespace Radio7.Phone.News.Infrastructure
+namespace Radio7.Phone.News.Services
 {
     public interface INavigationService
     {

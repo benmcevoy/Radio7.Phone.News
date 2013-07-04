@@ -28,7 +28,7 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
 
                 sentanceScores.Add(new SentanceScore
                     {
-                        Score = score * weight,
+                        Score = (score * weight),
                         WordCount = wordCount
                     });
 
@@ -61,5 +61,15 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
 
 
         //}
+
+        private double GetThresholdScore(double x)
+        {
+            var result = Math.Exp(x - 200);
+
+            if (result > 10000000000D) result = 10000000000D;
+            if (double.IsPositiveInfinity(result)) result = 10000000000D;
+
+            return result;
+        }
     }
 }

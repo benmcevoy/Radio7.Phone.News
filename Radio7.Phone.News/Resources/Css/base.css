@@ -1,11 +1,13 @@
-﻿html, body { font-size: 0.9em; font-family:'Segoe WP', Arial; margin : 14px; background: black; color: #FDFDFD; font-weight: 200; }
+﻿html, body { font-size: 1em; font-family:'Segoe WP', Arial; margin : 14px; background: black; color: #FDFDFD;  }
 h1 {  text-transform: uppercase;}
 h1,h2,h3,h4,h5,h6 { font-family: Georgia;}
-a {color: yellow;font-weight: 200;}
-p, div, ul, dl  { font-weight: 200; margin : 24px 0; }
+a {color: yellow;}
+p, div, ul, dl  {  margin : 24px 0; }
 img, sub { display: block;}
-sub { font-style: italic; font-weight: 200; font-size: 0.85em; color: #ccc; }
+sub { font-style: italic;  font-size: 0.85em; color: #ccc; }
 img { max-width: 400px;margin: 0 auto;}
+
+.view-original {text-transform: uppercase;font-size: 1em;font-weight: 500; }
 
 pre, code { font-family: Courier;}
 pre .str, code .str { color: #65B042; } 

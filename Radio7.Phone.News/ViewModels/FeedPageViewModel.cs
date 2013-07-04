@@ -1,76 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Windows;
-using System.Windows.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Phone.Controls;
 using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Models;
-using Rss.Manager;
+using Radio7.Phone.News.Services;
 using Radio7.Phone.News.Data;
 
 namespace Radio7.Phone.News.ViewModels
 {
     public class FeedPageViewModel : ViewModelBase
     {
+        private readonly INewsService _newsService;
         private readonly INavigationService _navigationService;
         private readonly TopicRepository _topicRepository;
-        private Feed _feed;
 
-        public FeedPageViewModel(INavigationService navigationService, TopicRepository topicRepository)
+        public FeedPageViewModel(INewsService newsService, INavigationService navigationService, TopicRepository topicRepository)
         {
+            _newsService = newsService;
             _navigationService = navigationService;
             _topicRepository = topicRepository;
+
+            _newsService.GetNewsComplete += NewsServiceOnGetNewsComplete;
 
             LaunchCommand = new RelayCommand<Uri>(Launch);
             NewsItems = Enumerable.Empty<NewsItem>();
         }
 
-        public void Load(int id)
+        private void NewsServiceOnGetNewsComplete(object sender, GetNewsCompleteEventArgs getNewsCompleteEventArgs)
         {
-            var topic = _topicRepository.Get(id);
-
-            Title = topic.Title;
-            Url = topic.Url;
-            Size = topic.Size;
-            AccentBrush = topic.AccentBrush;
-            Image = topic.Image;
-
-            WithDispatcher(() =>
-                {
-                    RaisePropertyChanged("Title");
-                    RaisePropertyChanged("Url");
-                    RaisePropertyChanged("Size");
-                    RaisePropertyChanged("AccentBrush");
-                    RaisePropertyChanged("Image");
-                });
-
-            _feed = new Feed(topic.Url);
-            _feed.FeedLoaded += OnFeedLoaded;
-            _feed.GetItemsFromWeb();
+            // TODO: raise progress message
+            ProgressHelper.ClearMessage();
+            NewsItems = getNewsCompleteEventArgs.NewsItems;
+            WithDispatcher(() => RaisePropertyChanged("NewsItems"));
         }
 
-        private void OnFeedLoaded(object sender, EventArgs e)
+        public void Load(int id)
         {
-            Debug.WriteLine("feed loaded " + Title);
+            Topic = _topicRepository.Get(id);
 
-            NewsItems = _feed.Items.Select(i => new NewsItem
-                {
-                    Title = i.Title,
-                    Url = new Uri(i.Id, UriKind.Absolute),
-                    Snippet = i.Snippet,
-                    RelatedNewsItems = RelatedLinksParser.GetRelatedLinks(i.Content).Select(r => new RelatedNewsItem
-                        {
-                            Title = r.Title,
-                            Url = new Uri(r.Link, UriKind.Absolute)
-                        }).ToList()
-                });
+            WithDispatcher(() => RaisePropertyChanged("Topic"));
 
-            WithDispatcher(() => RaisePropertyChanged("NewsItems"));
+            // TODO: raise progress message
+            ProgressHelper.SetMessage("loading...");
+
+            _newsService.BeginGetNews(Topic.Url);
         }
 
         private void Launch(Uri uri)
@@ -88,21 +65,9 @@ namespace Radio7.Phone.News.ViewModels
             _navigationService.NavigateTo(new Uri("/Views/ItemPage.xaml?url=" + HttpUtility.UrlEncode(url), UriKind.Relative));
         }
 
-        public string Image { get; set; }
-
-        public string Title { get; set; }
-
-        public Uri Url { get; set; }
-
-        public bool IsActive { get; set; }
-
-        public int Index { get; set; }
+        public Topic Topic { get; set; }
 
         public IEnumerable<NewsItem> NewsItems { get; set; }
-
-        public TileSize Size { get; set; }
-
-        public SolidColorBrush AccentBrush { get; set; }
 
         public RelayCommand<Uri> LaunchCommand { get; set; }
 

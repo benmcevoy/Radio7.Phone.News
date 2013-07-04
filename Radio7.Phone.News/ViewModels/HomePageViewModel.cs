@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Radio7.Phone.News.Data;
-using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Models;
+using Radio7.Phone.News.Services;
 
 namespace Radio7.Phone.News.ViewModels
 {

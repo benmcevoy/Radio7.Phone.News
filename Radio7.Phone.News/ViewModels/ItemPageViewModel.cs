@@ -6,9 +6,9 @@ namespace Radio7.Phone.News.ViewModels
 {
     public class ItemPageViewModel : ViewModelBase
     {
-        private readonly PageService _pageService;
+        private readonly IPageService _pageService;
 
-        public ItemPageViewModel(PageService pageService)
+        public ItemPageViewModel(IPageService pageService)
         {
             _pageService = pageService;
             _pageService.GetPageComplete += PageServiceOnGetPageComplete;

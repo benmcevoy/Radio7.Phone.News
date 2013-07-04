@@ -79,8 +79,12 @@
     </Compile>
     <Compile Include="Data\HtmlRepository.cs" />
     <Compile Include="Data\TopicRepository.cs" />
-    <Compile Include="Infrastructure\INavigationService.cs" />
-    <Compile Include="Infrastructure\NavigationService.cs" />
+    <Compile Include="Services\INewsService.cs" />
+    <Compile Include="Services\NewsService.cs" />
+    <Compile Include="Services\GetNewsCompleteEventArgs.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\IPageService.cs" />
+    <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Infrastructure\ProgressHelper.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Infrastructure\ResourceHelper.cs" />

@@ -9,6 +9,6 @@ namespace Radio7.Phone.News.Services
             Content = content;
         }
 
-        public string Content { get; set; }
+        public string Content { get; private set; }
     }
 }

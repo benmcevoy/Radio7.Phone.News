@@ -3,8 +3,8 @@ using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Radio7.Phone.News.ViewModels;
 using Radio7.Phone.News.Infrastructure;
+using Radio7.Phone.News.ViewModels;
 
 namespace Radio7.Phone.News.Views
 {
@@ -33,8 +33,9 @@ namespace Radio7.Phone.News.Views
 
             (self.DataContext as ItemPageViewModel).NavigateToString += (o, args) => WithDispatcher(() =>
                 {
-                    Browser.NavigateToString(args.Content);
+                    // TODO: delete this once progress messages built
                     ProgressHelper.ClearMessage();
+                    Browser.NavigateToString(args.Content);
                 });
         }
 
@@ -48,8 +49,9 @@ namespace Radio7.Phone.News.Views
                 // TODO: replace with messaging
                 if (vm != null)
                 {
-                    vm.BeginLoad(url);
+                    // TODO: delete this once progress messages built
                     ProgressHelper.SetMessage("loading...");
+                    vm.BeginLoad(url);
                 }
             }
 

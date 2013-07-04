@@ -7,11 +7,6 @@ namespace Radio7.Phone.News.Infrastructure
 {
     public static class ProgressHelper
     {
-        private static void WithDispatcher(Action action)
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(action);
-        }
-
         public static void SetMessage(string message)
         {
             if (string.IsNullOrEmpty(message))
@@ -27,17 +22,22 @@ namespace Radio7.Phone.News.Infrastructure
                 Text = message
             };
 
-            SystemTray.SetProgressIndicator(GetVisual(), progress);
+            WithDispatcher(() => SystemTray.SetProgressIndicator(GetVisual(), progress));
         }
 
         public static void ClearMessage()
         {
-            SystemTray.SetProgressIndicator(GetVisual(), null);
+            WithDispatcher(() => SystemTray.SetProgressIndicator(GetVisual(), null));
         }
 
-        private static PhoneApplicationFrame GetVisual()
+        private static PhoneApplicationPage GetVisual()
         {
-            return Application.Current.RootVisual as PhoneApplicationFrame;
+            return (Application.Current.RootVisual as PhoneApplicationFrame).Content as PhoneApplicationPage;
+        }
+
+        private static void WithDispatcher(Action action)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(action);
         }
     }
 }

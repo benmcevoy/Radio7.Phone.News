@@ -79,6 +79,8 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
         private IEnumerable<HtmlNode> GetNodesToScore(HtmlDocument htmlDocument)
         {
+            if (htmlDocument.DocumentNode.FirstChild == null) yield break;
+
             foreach (var htmlNode in htmlDocument.DocumentNode.SelectNodes("//*"))
             {
                 if (htmlNode.ParentNode == null) continue;
@@ -133,59 +135,9 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             _candidateNodes.Add(candidateNode);
         }
 
-        private double GetContentDensityScore(HtmlNode htmlNode)
-        {
-            // TODO: refactor to INodeScorer or something
-            // TODO: try with an exponential modifier to push good results
-            // through the roof.  then we could try and extract just the content
-            // and build our own tree
-            // might let us avoid the whole normalize and clean crap
-            // might also let us test any node instead of these candidates
+    
 
-            var score = 0D;
-            var weight = 1D;
-
-            if (htmlNode.Name == "p") weight = 10D;
-            if (htmlNode.Name == "pre") weight = 5D;
-            if (htmlNode.Name == "td") weight = 2D;
-            if (htmlNode.Name == "#text") weight = 5D;
-            if (htmlNode.Name == "h2") weight = 5D;
-            if (htmlNode.Name == "h3") weight = 5D;
-            if (htmlNode.Name == "h4") weight = 2D;
-            if (htmlNode.Name == "h5") weight = 2D;
-
-            var text = htmlNode.InnerText.RemoveWhitespace();
-
-            if (string.IsNullOrEmpty(text)) return score;
-
-            var sentances = text.Split(new[] { '.', '?', '!', ';' });
-
-            foreach (var sentance in sentances)
-            {
-                if (string.IsNullOrWhiteSpace(sentance)) continue;
-
-                var wordCount = sentance.Split(' ').Length;
-
-                if (wordCount > 8 && wordCount < 12) score += 50D;
-                if (wordCount > 12 && wordCount < 30) score += 300D;
-                if (wordCount > 30 && wordCount < 35) score += 200D;
-                if (wordCount > 35 && wordCount < 50) score += 50D;
-            }
-
-            
-
-            return score * weight;
-        }
-
-        private double GetThresholdScore(double x)
-        {
-            var result = Math.Exp(x - 200);
-
-            if (result > 10000000000D) result = 10000000000D;
-            if (double.IsPositiveInfinity(result)) result = 10000000000D;
-
-            return result;
-        }
+       
 
         private void EnsureCandidateScoreAttributes(HtmlNode htmlNode)
         {
