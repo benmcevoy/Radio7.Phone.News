@@ -25,6 +25,11 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             _documentUrl = documentUrl;
         }
 
+        public static Normalizer With(HtmlDocument htmlDocument, Uri documentUrl)
+        {
+            return new Normalizer(htmlDocument, documentUrl);
+        }
+
         public Normalizer FindBestCandidateFrame()
         {
             // check if it has any frames
@@ -48,6 +53,9 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         public Normalizer CleanImages()
         {
             var elements = _htmlDocument.DocumentNode.SelectNodes("//img");
+
+            // TODO: conisder a HEAD request and try and get content-length
+            // if image size is very small it is probably rubbish?
 
             ProcessElements(elements, image =>
                 {
@@ -99,40 +107,51 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
         public Normalizer RebaseUrls()
         {
+            var anchors = _htmlDocument.DocumentNode.SelectNodes("//a");
 
-            var elements = _htmlDocument.DocumentNode.SelectNodes("//a");
-
-            ProcessElements(elements, element =>
+            ProcessElements(anchors, element =>
                 {
                     var href = element.GetAttributeValue("href", "");
+                    var url = EnsureUrlAbsolute(href);
 
-                    if(string.IsNullOrEmpty(href)) return;
-                    if (IsAbsoluteUri(href)) return;
-                    
-                    if (href.StartsWith("?"))
-                    {
-                       var result = string.Format("{0}://{1}{2}{3}",
-                                                        _documentUrl.Scheme,
-                                                        _documentUrl.Host, 
-                                                        _documentUrl.AbsolutePath, 
-                                                        href);
-
-                       if (IsAbsoluteUri(result))
-                        {
-                            element.SetAttributeValue("href", result);
-                        };
-                    }
-
-                    Uri absoluteUri;
-
-                    if (Uri.TryCreate(_documentUrl, href, out absoluteUri))
-                    {
-                        element.SetAttributeValue("href", absoluteUri.ToString());
-                    }
-
+                    element.SetAttributeValue("href", url);
                 });
 
+            var images = _htmlDocument.DocumentNode.SelectNodes("//img");
+
+            ProcessElements(images, element =>
+            {
+                var href = element.GetAttributeValue("src", "");
+                var url = EnsureUrlAbsolute(href);
+
+                element.SetAttributeValue("src", url);
+            });
+
             return this;
+        }
+
+        private string EnsureUrlAbsolute(string url)
+        {
+            if (string.IsNullOrEmpty(url)) return "#";
+            if (IsAbsoluteUri(url)) return url;
+
+            if (url.StartsWith("?"))
+            {
+                var result = string.Format("{0}://{1}{2}{3}",
+                                           _documentUrl.Scheme,
+                                           _documentUrl.Host,
+                                           _documentUrl.AbsolutePath,
+                                           url);
+
+                if (IsAbsoluteUri(result))
+                {
+                    return result;
+                }
+            }
+
+            Uri absoluteUri;
+
+            return Uri.TryCreate(_documentUrl, url, out absoluteUri) ? absoluteUri.ToString() : "#";
         }
 
         private bool IsAbsoluteUri(string url)

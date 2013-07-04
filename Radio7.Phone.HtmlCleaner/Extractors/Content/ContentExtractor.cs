@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using HtmlAgilityPack;
 using System;
 
@@ -47,7 +46,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             result.DocumentNode.AppendChild(container);
 
-            new Cleaners.HtmlCleaner(result).RemoveAllAttributes("src", "href");
+            Cleaners.HtmlCleaner.With(result).RemoveAllAttributesExcept("src", "href");
 
             return result;
             // select top candidate
@@ -71,19 +70,16 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
         private void CleanAndNormalize(HtmlDocument htmlDocument, Uri documentUrl)
         {
-            new Cleaners.HtmlCleaner(htmlDocument).Clean();
+            Cleaners.HtmlCleaner.With(htmlDocument).Clean();
 
-            new Normalizer(htmlDocument, documentUrl)
+            Normalizer.With(htmlDocument, documentUrl)
                 .FindBestCandidateFrame()
                 .EnsureBodyElement()
                 .RemoveBoilerPlateCandidates()
                 .ReplaceFonts()
-                .ReplaceBrCandidates()
                 .RemoveEmptyCandidateElements()
                 .RebaseUrls()
                 .CleanImages();
-                //.RemoveImages();
-            
         }
     }
 }

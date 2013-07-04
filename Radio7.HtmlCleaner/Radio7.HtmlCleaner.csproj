@@ -69,6 +69,12 @@
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\HtmlEntityTokenizer.cs">
       <Link>Entities\HtmlEntityTokenizer.cs</Link>
     </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\SentanceScore.cs">
+      <Link>Entities\SentanceScore.cs</Link>
+    </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\SentanceStatistics.cs">
+      <Link>Entities\SentanceStatistics.cs</Link>
+    </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\Token.cs">
       <Link>Entities\Token.cs</Link>
     </Compile>
@@ -122,6 +128,15 @@
     </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\HtmlResult.cs">
       <Link>HtmlResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Scorer\GaussianContentDensityScorer.cs">
+      <Link>Scorer\GaussianContentDensityScorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Scorer\INodeScorer.cs">
+      <Link>Scorer\INodeScorer.cs</Link>
+    </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Scorer\WeightedElementContentDensityScorer.cs">
+      <Link>Scorer\WeightedElementContentDensityScorer.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebUtility.cs" />

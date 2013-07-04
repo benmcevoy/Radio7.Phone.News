@@ -4,33 +4,41 @@ using System.Globalization;
 using System.Linq;
 using HtmlAgilityPack;
 using Radio7.Phone.HtmlCleaner.Entities;
+using Radio7.Phone.HtmlCleaner.Scorer;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
     public class Scorer
     {
-        private static readonly string[] ElementNamesToScore = new[] { "p", "td", "pre", "li", "div", "h2", "h3", "h4", "#text" };
+        private readonly INodeScorer _nodeSorer;
+        private static readonly string[] ElementNamesToScore = new[] { "p", "td", "pre", "blockquote", "li", "div", "h2", "h3", "h4", "#text" };
         private const string IdAttributeName = "__content__id";
         private const string ScoreAttributeName = "__content__score";
         private const string RawScoreAttributeName = "__content__raw";
         private readonly List<CandidateNode> _candidateNodes = new List<CandidateNode>(64);
 
+        public Scorer()
+        {
+            _nodeSorer = new GaussianContentDensityScorer();
+        }
+
         public IEnumerable<CandidateNode> Score(HtmlDocument htmlDocument)
         {
+            // TODO: to IFilter or something
             var nodesToScore = GetNodesToScore(htmlDocument);
 
             foreach (var htmlNode in nodesToScore)
             {
-                if (htmlNode.ParentNode == null) continue;
-                if (htmlNode.ParentNode.Name == "body") continue;
-
                 EnsureCandidateScoreAttributes(htmlNode);
                 EnsureCandidateScoreAttributes(htmlNode.ParentNode);
 
-                var score = GetContentDensityScore(htmlNode);
+                var nodeStatistics = _nodeSorer.Score(htmlNode);
+
+                // add raw score to self
+                AddToHtmlNodeRawScoreAttribute(htmlNode, nodeStatistics.TotalScore);
 
                 // add score to parent
-                AddToHtmlNodeScoreAttribute(htmlNode.ParentNode, score);
+                AddToHtmlNodeScoreAttribute(htmlNode.ParentNode, nodeStatistics.TotalScore);
                 UpdateCandidateNode(htmlNode.ParentNode);
 
                 if (htmlNode.ParentNode.ParentNode == null) continue;
@@ -38,7 +46,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
                 EnsureCandidateScoreAttributes(htmlNode.ParentNode.ParentNode);
                 // add half to grandparent
-                AddToHtmlNodeScoreAttribute(htmlNode.ParentNode.ParentNode, score / 2D);
+                AddToHtmlNodeScoreAttribute(htmlNode.ParentNode.ParentNode, nodeStatistics.TotalScore / 2D);
                 UpdateCandidateNode(htmlNode.ParentNode.ParentNode);
                 UpdateCandidateRawScore(htmlNode);
             }
@@ -164,7 +172,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 if (wordCount > 35 && wordCount < 50) score += 50D;
             }
 
-            AddToHtmlNodeRawScoreAttribute(htmlNode, GetThresholdScore(score * weight));
+            
 
             return score * weight;
         }

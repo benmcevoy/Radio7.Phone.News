@@ -12,6 +12,11 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
             _htmlDocument = htmlDocument;
         }
 
+        public static HtmlCleaner With(HtmlDocument htmlDocument)
+        {
+            return new HtmlCleaner(htmlDocument);
+        }
+
         public HtmlDocument ToHtmlDocument()
         {
             return _htmlDocument;
@@ -49,7 +54,7 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
             return this;
         }
 
-        public HtmlCleaner RemoveAllAttributes(params string[] except)
+        public HtmlCleaner RemoveAllAttributesExcept(params string[] whitelist)
         {
             var elements = _htmlDocument.DocumentNode.SelectNodes("//*");
 
@@ -66,7 +71,7 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
                 {
                     var attribute = element.Attributes[i];
 
-                    if (except.Contains(attribute.Name)) continue;
+                    if (whitelist.Contains(attribute.Name)) continue;
 
                     element.Attributes.Remove(attribute);
                 }
