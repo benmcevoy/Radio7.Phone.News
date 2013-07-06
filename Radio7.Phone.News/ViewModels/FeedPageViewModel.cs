@@ -45,7 +45,7 @@ namespace Radio7.Phone.News.ViewModels
             WithDispatcher(() => RaisePropertyChanged("Topic"));
 
             // TODO: raise progress message
-            ProgressHelper.SetMessage("loading...");
+            ProgressHelper.SetMessage(" ");
 
             _newsService.BeginGetNews(Topic.Url);
         }

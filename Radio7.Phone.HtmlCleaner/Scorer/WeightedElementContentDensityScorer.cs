@@ -33,7 +33,8 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
 
             if (string.IsNullOrEmpty(text)) return new SentanceStatistics();
 
-            var sentances = text.Split(new[] { '.', '?', '!', ';' });
+            // TODO: DRY - to sentance extractor?
+            var sentances = text.Split(new[] { ".", "?", "!", ";", ".\"", "?\"", "!\"", "|" }, StringSplitOptions.RemoveEmptyEntries);
             var sentanceCount = sentances.Count();
             var sentanceScores = new List<SentanceScore>(sentanceCount);
 

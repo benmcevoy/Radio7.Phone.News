@@ -14,7 +14,7 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
 
             if (string.IsNullOrEmpty(text)) return new SentanceStatistics();
 
-            var sentances = text.Split(new[] { '.', '?', '!', ';' });
+            var sentances = text.Split(new[] { ".", "?", "!", ";", ".\"", "?\"", "!\"", "|" }, StringSplitOptions.RemoveEmptyEntries);
             var score = 0D;
             var weight = 500D;
             var sentanceCount = sentances.Count();

@@ -54,22 +54,30 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         {
             var elements = _htmlDocument.DocumentNode.SelectNodes("//img");
 
-            // TODO: conisder a HEAD request and try and get content-length
+            // TODO: consider a HEAD request and try and get content-length
             // if image size is very small it is probably rubbish?
 
             ProcessElements(elements, image =>
                 {
+                    var src = image.GetAttributeValue("src", "");
+
+                    if (src.Contains(".gif") || string.IsNullOrEmpty(src) )
+                    {
+                        image.ParentNode.Remove();
+                    }
+
                     var altText = image.GetAttributeValue("alt", "");
-
-                    if (string.IsNullOrEmpty(altText)) return;
-
                     var figure = _htmlDocument.CreateElement("div");
-                    var caption = _htmlDocument.CreateElement("sub");
-
-                    caption.InnerHtml = altText;
 
                     figure.AppendChild(image.Clone());
-                    figure.AppendChild(caption);
+
+                    if (!string.IsNullOrEmpty(altText))
+                    {
+                        var caption = _htmlDocument.CreateElement("sub");
+
+                        caption.InnerHtml = altText;
+                        figure.AppendChild(caption);
+                    }
 
                     image.ParentNode.ReplaceChild(figure, image);
                 });

@@ -1,12 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using HtmlAgilityPack;
 using System;
+using Radio7.Phone.HtmlCleaner.Entities;
+using Radio7.Phone.HtmlCleaner.Extractors.Title;
+using Radio7.Portable.OpenTextSummarizer;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
     public class ContentExtractor : IContentExtractor
     {
-        public string Extract(string html, Uri documentUrl)
+        public ExtractedContent Extract(string html, Uri documentUrl)
         {
             var htmlDocument = new HtmlDocument();
 
@@ -14,7 +19,66 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             var extractedContent = ExtractContent(htmlDocument, documentUrl);
 
-            return extractedContent.ConvertToUtf8();
+            var title = new TitleExtractor().Extract(html);
+            var text = NormalizeText(extractedContent);
+            var summary = GetSummary(text);
+                
+            return new ExtractedContent
+                {
+                    Url = documentUrl,
+                    Title = title,
+                    Html = extractedContent.ConvertToUtf8(),
+                    Text = text,
+                    Summary = ToText(summary.Sentences),
+                    Keywords = summary.Concepts
+                };
+        }
+
+        private SummarizedDocument GetSummary(string text)
+        {
+            var summary = Summarizer.Summarize(new SummarizerArguments
+                {
+                    InputString = text
+                });
+
+            return summary;
+        }
+
+        private string ToText(IEnumerable<string> sentances)
+        {
+            var newLine = Environment.NewLine + Environment.NewLine;
+            return string.Join(newLine, sentances);
+        }
+
+        private string NormalizeText(HtmlDocument htmlDocument)
+        {
+            Cleaners.HtmlCleaner.With(htmlDocument).RemoveElements("sub");
+
+            var result = new StringBuilder();
+            //htmlDocument.DocumentNode.SelectNodes("//text()[normalize-space(.) != '']");
+            var innerText = htmlDocument.DocumentNode.InnerText;
+            var sentances = innerText.Split(new[] { ".", "?", "!", ";", ".\"", "?\"", "!\"", "|", ".)" }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var sentance in sentances)
+            {
+                var cleanSentance = sentance.Decode().RemoveDodgyCharacters().RemoveWhitespace();
+
+                if(cleanSentance.StartsWith("("))
+                {
+                    cleanSentance = cleanSentance.Remove(0, 1).Trim();
+                }
+
+                if (cleanSentance.StartsWith(")"))
+                {
+                    cleanSentance = cleanSentance.Remove(0, 1).Trim();
+                }
+
+                if (cleanSentance.Split(' ').Length <= 1) continue;
+
+                result.AppendFormat("{0}{1}{2}{2}", cleanSentance, ".", Environment.NewLine);
+            }
+
+            return result.ToString();
         }
 
         private HtmlDocument ExtractContent(HtmlDocument htmlDocument, Uri documentUrl)

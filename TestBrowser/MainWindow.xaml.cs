@@ -2,21 +2,12 @@
 using System.Reflection;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Radio7.Phone.HtmlCleaner.Extractors.Title;
+using Radio7.Portable.OpenTextSummarizer;
 
 namespace TestBrowser
 {
@@ -33,7 +24,6 @@ namespace TestBrowser
                 {
                     original.Navigated += (a, b) => HideScriptErrors(original, true);
                 };
-
         }
 
         public void HideScriptErrors(WebBrowser wb, bool hide)
@@ -47,59 +37,46 @@ namespace TestBrowser
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            //var hasLoaded = false;
-
-            //original.LoadCompleted += (o, args) =>
-            //    {
-            //        if (hasLoaded) return;
-
-            //        var htmlDocument = (mshtml.HTMLDocument)original.Document;
-            //        var html = htmlDocument.documentElement.outerHTML;
-            //        hasLoaded = true;
-            //        var ce = new ContentExtractor();
-            //        var clean = ce.Extract(html);
-            //        var te = new TitleExtractor();
-            //        var title = te.Extract(html);
-            //        clean = wrapwithstyle(title, clean);
-
-            //        readable.NavigateToString(clean);
-            //    };
-
             original.Navigate(address.Text);
 
-            //using (var wc = new WebClient())
-            //{
-                
-            //    var html = wc.DownloadString(address.Text);
-
-            //    var ce = new ContentExtractor();
-            //    var clean = ce.Extract(html);
-
-            //    readable.NavigateToString(clean);
-            //}
-
             var webRequest = (HttpWebRequest)WebRequest.Create(address.Text);
-            
+
             webRequest.CookieContainer = new CookieContainer();
-            
+
             var webResponse = webRequest.GetResponse();
 
-            
             using (var stream = webResponse.GetResponseStream())
             {
                 var reader = new StreamReader(stream, Encoding.UTF8);
                 var html = reader.ReadToEnd();
                 var ce = new ContentExtractor();
                 var clean = ce.Extract(html, new Uri(address.Text));
-                var te = new TitleExtractor();
-                var title = te.Extract(html);
-                
-                clean = wrapwithstyle(title, clean);
-                readable.NavigateToString(clean);
+                var wrappedHtml  = WrapWithStyle(clean.Title, clean.Html);
+
+                readable.NavigateToString(wrappedHtml);
+
+                var summaryDoc = Summarizer.Summarize(new SummarizerArguments()
+                    {
+                        InputString = clean.Text
+                    });
+
+                summary.Text = "";
+
+                foreach (var sentance in summaryDoc.Sentences)
+                {
+                    summary.Text += sentance.Trim() + Environment.NewLine + Environment.NewLine;
+                }
+
+                summary.Text += Environment.NewLine + "---------------------" + Environment.NewLine;
+
+                foreach (var concept in summaryDoc.Concepts)
+                {
+                    summary.Text += concept + Environment.NewLine;
+                }
             }
         }
 
-        private string wrapwithstyle(string title, string clean)
+        private string WrapWithStyle(string title, string clean)
         {
             var style = @"<style type='text/css'>
 

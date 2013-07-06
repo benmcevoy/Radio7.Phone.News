@@ -54,6 +54,9 @@
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\CleanHtml.cs">
       <Link>Entities\CleanHtml.cs</Link>
     </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\ExtractedContent.cs">
+      <Link>Entities\ExtractedContent.cs</Link>
+    </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\HtmlEncodingServices.cs">
       <Link>Entities\HtmlEncodingServices.cs</Link>
     </Compile>
@@ -144,7 +147,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Radio7.Portable.OpenTextSummarizer\Radio7.Portable.OpenTextSummarizer.csproj">
+      <Project>{5e51329e-d368-444e-a731-abce9946fda5}</Project>
+      <Name>Radio7.Portable.OpenTextSummarizer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

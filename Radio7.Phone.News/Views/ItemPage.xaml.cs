@@ -50,7 +50,7 @@ namespace Radio7.Phone.News.Views
                 if (vm != null)
                 {
                     // TODO: delete this once progress messages built
-                    ProgressHelper.SetMessage("loading...");
+                    ProgressHelper.SetMessage(" ");
                     vm.BeginLoad(url);
                 }
             }

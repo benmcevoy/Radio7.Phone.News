@@ -101,6 +101,10 @@
       <Project>{4a2ea62e-65b5-4e4f-943b-03be945cb529}</Project>
       <Name>Radio7.HtmlCleaner</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Radio7.Portable.OpenTextSummarizer\Radio7.Portable.OpenTextSummarizer.csproj">
+      <Project>{5e51329e-d368-444e-a731-abce9946fda5}</Project>
+      <Name>Radio7.Portable.OpenTextSummarizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

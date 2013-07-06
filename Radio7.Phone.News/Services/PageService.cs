@@ -45,9 +45,7 @@ namespace Radio7.Phone.News.Services
                     var html = reader.ReadToEnd();
                     var ce = new ContentExtractor();
                     var clean = ce.Extract(html, response.ResponseUri);
-                    var te = new TitleExtractor();
-                    var title = te.Extract(html);
-                    var page = CreatePage(_url.ToString(), title, clean);
+                    var page = CreatePage(_url.ToString(), clean.Title, ToHtml(clean.Summary));
 
                     if (GetPageComplete != null)
                     {
@@ -68,6 +66,20 @@ namespace Radio7.Phone.News.Services
             //    // TODO: raise progress message
             //    //_progressService.ClearMessage();
             //}
+        }
+
+        private string ToHtml(string text)
+        {
+            var paragraphs = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+            var result = new StringBuilder((int)(text.Length * 1.2));
+
+            foreach (var paragraph in paragraphs)
+            {
+                result.AppendFormat("<p>{0}</p>", paragraph);
+            }
+
+            return result.ToString();
         }
 
         private string CreatePage(string url, string title, string body)

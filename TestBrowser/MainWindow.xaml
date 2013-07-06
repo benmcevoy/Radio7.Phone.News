@@ -10,6 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="480px"/>
+            <ColumnDefinition Width="480px"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="0" Grid.ColumnSpan="2" Height="32" VerticalAlignment="Top">
@@ -22,9 +23,11 @@
             <Button Grid.Column="1"  Click="ButtonBase_OnClick" Content="GO"/>
 
         </Grid>
-        
-        <WebBrowser Grid.Row="1" Grid.Column="0" x:Name="original"></WebBrowser>
-        <WebBrowser Grid.Row="1" Grid.Column="1" x:Name="readable"></WebBrowser>
-        
+
+        <WebBrowser Grid.Row="1" Grid.Column="0" x:Name="original" />
+        <WebBrowser Grid.Row="1" Grid.Column="1" x:Name="readable" />
+        <ScrollViewer Grid.Row="1" Grid.Column="2" >
+            <TextBlock TextWrapping="Wrap"  x:Name="summary" />
+        </ScrollViewer>
     </Grid>
 </Window>
