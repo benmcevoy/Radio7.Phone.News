@@ -1,6 +1,5 @@
 ﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Radio7.Phone.News.ViewModels;
 using System.Windows;
 using System.Windows.Navigation;
 
@@ -98,12 +97,12 @@ namespace Radio7.Phone.News
         #region Phone application initialization
 
         // Avoid double-initialization
-        private bool phoneApplicationInitialized = false;
+        private bool _phoneApplicationInitialized;
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication()
         {
-            if (phoneApplicationInitialized)
+            if (_phoneApplicationInitialized)
                 return;
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
@@ -115,7 +114,7 @@ namespace Radio7.Phone.News
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;
 
             // Ensure we don't initialize again
-            phoneApplicationInitialized = true;
+            _phoneApplicationInitialized = true;
         }
 
         // Do not add any additional code to this method

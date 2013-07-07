@@ -19,9 +19,15 @@ namespace Radio7.Phone.News.Views
                 Browser.OpacityMask = null;
                 Browser.Opacity = 1;
 
-                WithDispatcher(() => Browser.InvokeScript("eval",
-                                                          "try{enablePrettyPrinting();}catch(e){}"));
-
+                WithDispatcher(() =>
+                    {
+                        try
+                        {
+                            Browser.InvokeScript("eval",
+                                                 "try{enablePrettyPrinting();}catch(e){}");
+                        }
+                        catch{}
+                    });
             };
 
             Loaded += ItemPage_Loaded;
@@ -31,12 +37,25 @@ namespace Radio7.Phone.News.Views
         {
             Loaded -= ItemPage_Loaded;
 
-            (self.DataContext as ItemPageViewModel).NavigateToString += (o, args) => WithDispatcher(() =>
-                {
-                    // TODO: delete this once progress messages built
-                    ProgressHelper.ClearMessage();
-                    Browser.NavigateToString(args.Content);
-                });
+            var itemPageViewModel = Self.DataContext as ItemPageViewModel;
+
+            if (itemPageViewModel != null)
+            {
+                itemPageViewModel.NavigateToString += (o, args) => WithDispatcher(() =>
+                    {
+                        if (string.IsNullOrEmpty(args.Content))
+                        {
+                            Browser.Navigate(args.Url);
+                        }
+                        else
+                        {
+                            Browser.NavigateToString(args.Content);    
+                        }
+
+                        // TODO: delete this once progress messages built
+                        ProgressHelper.ClearMessage();
+                    });
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -44,7 +63,7 @@ namespace Radio7.Phone.News.Views
             if (NavigationContext.QueryString.ContainsKey("url"))
             {
                 var url = new Uri(HttpUtility.UrlDecode(NavigationContext.QueryString["url"]));
-                var vm = self.DataContext as ItemPageViewModel;
+                var vm = Self.DataContext as ItemPageViewModel;
 
                 // TODO: replace with messaging
                 if (vm != null)

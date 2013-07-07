@@ -19,7 +19,7 @@
         <view:ViewModelLocator x:Key="ViewModelLocator"/>
     </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="self" Background="Transparent" DataContext="{Binding FeedPageViewModel, Source={StaticResource ViewModelLocator}}">
+    <Grid x:Name="Self" Background="Transparent" DataContext="{Binding FeedPageViewModel, Source={StaticResource ViewModelLocator}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -44,8 +44,8 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="10,0,0,0" BorderBrush="{Binding ElementName=self, Path=DataContext.Topic.AccentBrush}"  Margin="0,0,0,17">
-                            <HyperlinkButton Margin="0,3,0,3" Grid.Row="0" Command="{Binding ElementName=self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}">
+                        <Border BorderThickness="10,0,0,0" BorderBrush="{Binding ElementName=Self, Path=DataContext.Topic.AccentBrush}"  Margin="0,0,0,17">
+                            <HyperlinkButton Margin="0,3,0,3" Grid.Row="0" Command="{Binding ElementName=Self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}">
                                 <HyperlinkButton.Template>
                                     <ControlTemplate TargetType="HyperlinkButton">
                                         <Grid >
@@ -66,12 +66,12 @@
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <HyperlinkButton Command="{Binding ElementName=self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}" >
+                                                        <HyperlinkButton Command="{Binding ElementName=Self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}" >
                                                             <HyperlinkButton.Template>
                                                                 <ControlTemplate TargetType="HyperlinkButton">
                                                                     <TextBlock Text="{Binding Title}" 
                                                                        TextTrimming="WordEllipsis"
-                                                                       Style="{StaticResource PhoneTextNormalStyle}" Foreground ="{Binding ElementName=self, Path=DataContext.Topic.AccentBrush}"/>
+                                                                       Style="{StaticResource PhoneTextNormalStyle}" Foreground ="{Binding ElementName=Self, Path=DataContext.Topic.AccentBrush}"/>
                                                                 </ControlTemplate>
                                                             </HyperlinkButton.Template>
                                                         </HyperlinkButton>

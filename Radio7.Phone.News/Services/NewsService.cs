@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using Radio7.Phone.News.Data;
-using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Models;
 using Rss.Manager;
 

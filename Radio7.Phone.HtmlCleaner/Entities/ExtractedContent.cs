@@ -16,5 +16,7 @@ namespace Radio7.Phone.HtmlCleaner.Entities
         public IEnumerable<string> Keywords { get; set; }
 
         public string Html { get; set; }
+
+        public string Domain { get; set; }
     }
 }

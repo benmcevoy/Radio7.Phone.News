@@ -7,8 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Radio7.Phone.News.Infrastructure"
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP71"
+    xmlns:converter="clr-namespace:Radio7.Phone.News.Converters"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -18,18 +17,27 @@
     
     <phone:PhoneApplicationPage.Resources>
         <view:ViewModelLocator x:Key="ViewModelLocator"/>
+        <converter:EnumBooleanConverter x:Key="EnumBooleanConverter" />
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="self" Background="Transparent"  DataContext="{Binding ItemPageViewModel, Source={StaticResource ViewModelLocator}}">
+    <Grid x:Name="Self" Background="Transparent"  DataContext="{Binding ItemPageViewModel, Source={StaticResource ViewModelLocator}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,0">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+        <StackPanel Grid.Row="0" Margin="12,17,0,0" Orientation="Horizontal">
+            <RadioButton GroupName="ContentLevel" Content="Summary" 
+                         Command="{Binding ContentLevelCommand}" CommandParameter="{Binding ContentLevel}"
+                         IsChecked="{Binding ContentLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Summary}" />
+            <RadioButton GroupName="ContentLevel" Content="Article" 
+                         Command="{Binding ContentLevelCommand}" CommandParameter="{Binding ContentLevel}"
+                         IsChecked="{Binding ContentLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Article}" />
+            <RadioButton GroupName="ContentLevel" Content="Original" 
+                         Command="{Binding ContentLevelCommand}" CommandParameter="{Binding ContentLevel}"
+                         IsChecked="{Binding ContentLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Original}" />
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="ContentPanel" Margin="12">

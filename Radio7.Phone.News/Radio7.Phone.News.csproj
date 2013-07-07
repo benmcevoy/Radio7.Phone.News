@@ -77,8 +77,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\EnumBooleanConverter.cs" />
     <Compile Include="Data\HtmlRepository.cs" />
     <Compile Include="Data\TopicRepository.cs" />
+    <Compile Include="Models\ContentLevel.cs" />
     <Compile Include="Services\INewsService.cs" />
     <Compile Include="Services\NewsService.cs" />
     <Compile Include="Services\GetNewsCompleteEventArgs.cs" />

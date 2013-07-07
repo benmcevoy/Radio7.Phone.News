@@ -15,8 +15,8 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             @"combx|comment|community|contact|disqus|foot|footer|header|" + 
             "menu|rss|shoutbox|sidebar|masthead|sponsor|ad-break|agegate|" + 
             "pagination|pager|popup|tweet|twitter|hidden|aside|advert|footnote|" +
-            "meta|outbrain|promo|related|scroll|shopping|tags|tool|widget|" + 
-            "metadata|overlay|video|nav|sub-nav|toolbar|playlist|addthis|social|modal",
+            "meta|outbrain|promo|related|scroll|shopping|tags|tool|widget|pop\\-up|" + 
+            "metadata|overlay|video|nav|sub\\-nav|toolbar|playlist|addthis|social|modal",
             RegexOptions.Compiled & RegexOptions.IgnoreCase);
 
         public Normalizer(HtmlDocument htmlDocument, Uri documentUrl)
@@ -241,6 +241,27 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         private bool IsBoilerPlateCandidate(string value)
         {
             return !string.IsNullOrEmpty(value) && BoilerPlateCandidatesRegex.IsMatch(value);
+        }
+
+        public Normalizer RemoveXoXo()
+        {
+            var elements = _htmlDocument.DocumentNode
+                                         .Descendants()
+                                         .Where(n =>
+                                             n.Name.ToUpperInvariant() != "BODY" &&
+                                             (n.Name == "ul" || n.Name == "ol" || n.Name == "dl"))
+                                             .ToList();
+
+            ProcessElements(elements, element =>
+            {
+                // TODO: refactor to reduce coupling
+                if(Scorer.GetLinkDensityScore(element) > .5)
+                {
+                    element.Remove();
+                }
+            });
+
+            return this;
         }
     }
 }

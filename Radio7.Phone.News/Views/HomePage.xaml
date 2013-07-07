@@ -25,7 +25,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot contains the root grid where all other page content is placed-->
-    <Grid x:Name="self" DataContext="{Binding HomePageViewModel, Source={StaticResource ViewModelLocator}}">
+    <Grid x:Name="Self" DataContext="{Binding HomePageViewModel, Source={StaticResource ViewModelLocator}}">
         <controls:Panorama Title="my application">
 
             <!--Panorama item one-->
@@ -34,7 +34,7 @@
                     <ListBox ItemsSource="{Binding Topics}" ItemsPanel="{StaticResource WrapItemsPanelTemplate}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <HyperlinkButton Command="{Binding DataContext.NavigateCommand, ElementName=self}" CommandParameter="{Binding}">
+                                <HyperlinkButton Command="{Binding DataContext.NavigateCommand, ElementName=Self}" CommandParameter="{Binding}">
                                     <HyperlinkButton.Template>
                                         <ControlTemplate TargetType="HyperlinkButton">
                                             <toolkit:HubTile toolkit:TiltEffect.IsTiltEnabled="True"

@@ -32,7 +32,14 @@ namespace Radio7.Phone.News.Infrastructure
 
         private static PhoneApplicationPage GetVisual()
         {
-            return (Application.Current.RootVisual as PhoneApplicationFrame).Content as PhoneApplicationPage;
+            var phoneApplicationFrame = Application.Current.RootVisual as PhoneApplicationFrame;
+
+            if (phoneApplicationFrame == null)
+            {
+                throw new NullReferenceException("PhoneApplicationFrame not found");
+            }
+
+            return phoneApplicationFrame.Content as PhoneApplicationPage;
         }
 
         private static void WithDispatcher(Action action)

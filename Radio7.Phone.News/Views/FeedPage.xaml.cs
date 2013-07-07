@@ -18,7 +18,7 @@ namespace Radio7.Phone.News.Views
             if (NavigationContext.QueryString.ContainsKey("id"))
             {
                 var id = Convert.ToInt32(HttpUtility.UrlDecode(NavigationContext.QueryString["id"]));
-                var vm = self.DataContext as FeedPageViewModel;
+                var vm = Self.DataContext as FeedPageViewModel;
 
                 // TODO: replace with messaging?
                 if (vm != null) vm.Load(id);

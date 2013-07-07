@@ -22,7 +22,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             var title = new TitleExtractor().Extract(html);
             var text = NormalizeText(extractedContent);
             var summary = GetSummary(text);
-                
+
             return new ExtractedContent
                 {
                     Url = documentUrl,
@@ -30,15 +30,24 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                     Html = extractedContent.ConvertToUtf8(),
                     Text = text,
                     Summary = ToText(summary.Sentences),
-                    Keywords = summary.Concepts
+                    Keywords = summary.Concepts,
+                    Domain = GetDomain(documentUrl)
                 };
+        }
+
+        private string GetDomain(Uri documentUrl)
+        {
+            var host = documentUrl.Host;
+            return host.StartsWith("www.") ? host.Remove(0, 4) : host;
         }
 
         private SummarizedDocument GetSummary(string text)
         {
             var summary = Summarizer.Summarize(new SummarizerArguments
                 {
-                    InputString = text
+                    InputString = text,
+                    DisplayPercent = 0,
+                    DisplayLines = 2
                 });
 
             return summary;
@@ -63,7 +72,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             {
                 var cleanSentance = sentance.Decode().RemoveDodgyCharacters().RemoveWhitespace();
 
-                if(cleanSentance.StartsWith("("))
+                if (cleanSentance.StartsWith("("))
                 {
                     cleanSentance = cleanSentance.Remove(0, 1).Trim();
                 }
@@ -110,7 +119,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             result.DocumentNode.AppendChild(container);
 
-            Cleaners.HtmlCleaner.With(result).RemoveAllAttributesExcept("src", "href");
+            Cleaners.HtmlCleaner.With(result).Clean().RemoveAllAttributesExcept("src", "href");
 
             return result;
             // select top candidate
@@ -141,6 +150,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 .EnsureBodyElement()
                 .RemoveBoilerPlateCandidates()
                 .ReplaceFonts()
+                .RemoveXoXo()
                 .RemoveEmptyCandidateElements()
                 .RebaseUrls()
                 .CleanImages();

@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
-using Radio7.Phone.HtmlCleaner.Extractors.Title;
 using Radio7.Phone.News.Data;
 
 namespace Radio7.Phone.News.Services
@@ -45,11 +44,12 @@ namespace Radio7.Phone.News.Services
                     var html = reader.ReadToEnd();
                     var ce = new ContentExtractor();
                     var clean = ce.Extract(html, response.ResponseUri);
-                    var page = CreatePage(_url.ToString(), clean.Title, ToHtml(clean.Summary));
+                    var page = CreatePage(_url.ToString(), clean.Title, clean.Html, clean.Domain);
+                    var summary = CreatePage(_url.ToString(), clean.Title, ToHtml(clean.Summary), clean.Domain);
 
                     if (GetPageComplete != null)
                     {
-                        GetPageComplete(this, new GetPageCompleteEventArgs(page));
+                        GetPageComplete(this, new GetPageCompleteEventArgs(clean.Url, clean.Title, clean.Text, summary, clean.Keywords, page));
                     }
                 }
             }
@@ -57,9 +57,9 @@ namespace Radio7.Phone.News.Services
             {
                 if (GetPageComplete == null) return;
 
-                var page = CreatePage("#", "An error occurred", "<br/><br/><br/><br/>");
+                var page = CreatePage("#", "An error occurred", "<br/><br/><br/><br/>", "");
 
-                GetPageComplete(this, new GetPageCompleteEventArgs(page));
+                GetPageComplete(this, new GetPageCompleteEventArgs(null, "", "", page, null, page));
             }
             //finally
             //{
@@ -82,13 +82,13 @@ namespace Radio7.Phone.News.Services
             return result.ToString();
         }
 
-        private string CreatePage(string url, string title, string body)
+        private string CreatePage(string url, string title, string body, string domain)
         {
             var wrapper = _htmlRepository.GetWrapper();
             var script = _htmlRepository.GetScript();
             var style = _htmlRepository.GetStyle();
 
-            return string.Format(wrapper, script, style, url, title, body, HttpUtility.HtmlEncode(title));
+            return string.Format(wrapper, script, style, url, title, body, HttpUtility.HtmlEncode(title), domain);
         }
 
         // TODO: replace with messaging

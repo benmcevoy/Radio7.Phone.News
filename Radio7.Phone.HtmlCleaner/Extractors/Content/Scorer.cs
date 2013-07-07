@@ -65,9 +65,9 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             }
         }
 
-        private double GetLinkDensityScore(HtmlNode htmlNode)
+        public static double GetLinkDensityScore(HtmlNode htmlNode)
         {
-            var links = htmlNode.SelectNodes("a");
+            var links = htmlNode.SelectNodes("//a");
 
             if (links == null) return 0D;
 
