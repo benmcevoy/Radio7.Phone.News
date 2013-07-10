@@ -38,7 +38,13 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         private string GetDomain(Uri documentUrl)
         {
             var host = documentUrl.Host;
-            return host.StartsWith("www.") ? host.Remove(0, 4) : host;
+
+            if (host.StartsWith("www.")) return host.Remove(0, 4);
+            if (host.StartsWith("m.")) return host.Remove(0, 2);
+            if (host.StartsWith("mobile.")) return host.Remove(0, 7);
+            if (host.StartsWith("mobi.")) return host.Remove(0, 5);
+
+            return host;
         }
 
         private SummarizedDocument GetSummary(string text)

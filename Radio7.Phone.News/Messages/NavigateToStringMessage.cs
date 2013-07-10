@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Radio7.Phone.News.ViewModels
+namespace Radio7.Phone.News.Messages
 {
-    public class NavigateToStringEventArgs : EventArgs
+    public class NavigateToStringMessage
     {
-        public NavigateToStringEventArgs(string content, Uri url)
+        public NavigateToStringMessage(string content, Uri url)
         {
             Content = content;
             Url = url;
@@ -15,4 +15,3 @@ namespace Radio7.Phone.News.ViewModels
         public Uri Url { get; set; }
     }
 }
-

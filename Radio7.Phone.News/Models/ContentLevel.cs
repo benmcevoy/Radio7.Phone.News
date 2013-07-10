@@ -2,8 +2,8 @@
 {
     public enum ContentLevel
     {
-        Summary,
-        Article,
-        Original
+        Summary = 0,
+        Article = 1,
+        Original = 2
     }
 }

@@ -3,8 +3,9 @@ using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Radio7.Phone.News.Infrastructure;
+using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace Radio7.Phone.News.Views
 {
@@ -13,6 +14,8 @@ namespace Radio7.Phone.News.Views
         public ItemPage()
         {
             InitializeComponent();
+
+            Messenger.Default.Register<NavigateToStringMessage>(this, NavigateToString);
 
             Browser.LoadCompleted += (sender, args) =>
             {
@@ -26,60 +29,57 @@ namespace Radio7.Phone.News.Views
                             Browser.InvokeScript("eval",
                                                  "try{enablePrettyPrinting();}catch(e){}");
                         }
-                        catch{}
+                        catch { }
                     });
             };
-
-            Loaded += ItemPage_Loaded;
         }
 
-        private void ItemPage_Loaded(object sender, RoutedEventArgs e)
+        private void NavigateToString(NavigateToStringMessage message)
         {
-            Loaded -= ItemPage_Loaded;
-
-            var itemPageViewModel = Self.DataContext as ItemPageViewModel;
-
-            if (itemPageViewModel != null)
-            {
-                itemPageViewModel.NavigateToString += (o, args) => WithDispatcher(() =>
+            WithDispatcher(() =>
+                {
+                    if (string.IsNullOrEmpty(message.Content))
                     {
-                        if (string.IsNullOrEmpty(args.Content))
-                        {
-                            Browser.Navigate(args.Url);
-                        }
-                        else
-                        {
-                            Browser.NavigateToString(args.Content);    
-                        }
-
-                        // TODO: delete this once progress messages built
-                        ProgressHelper.ClearMessage();
-                    });
-            }
+                        Browser.Navigate(message.Url);
+                    }
+                    else
+                    {
+                        Browser.NavigateToString(message.Content);
+                    }
+                });
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (NavigationContext.QueryString.ContainsKey("url"))
-            {
-                var url = new Uri(HttpUtility.UrlDecode(NavigationContext.QueryString["url"]));
-                var vm = Self.DataContext as ItemPageViewModel;
-
-                // TODO: replace with messaging
-                if (vm != null)
-                {
-                    // TODO: delete this once progress messages built
-                    ProgressHelper.SetMessage(" ");
-                    vm.BeginLoad(url);
-                }
-            }
-
             base.OnNavigatedTo(e);
+
+            string url;
+
+            if (!NavigationContext.QueryString.TryGetValue("url", out url)) return;
+
+            if (ViewModel != null) ViewModel.BeginLoad(new Uri(HttpUtility.HtmlDecode(url)));
         }
 
-        public static void WithDispatcher(Action action)
+        private void OnFlick(object sender, FlickGestureEventArgs e)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(action);
+            if (ViewModel == null) return;
+            if (e.Direction != System.Windows.Controls.Orientation.Horizontal) return;
+
+            // User flicked towards left
+            if (e.HorizontalVelocity < 0) ViewModel.LoadNextView();
+
+            // User flicked towards right
+            if (e.HorizontalVelocity > 0) ViewModel.LoadPreviousView();
+        }
+
+        private ItemPageViewModel ViewModel
+        {
+            get { return Self.DataContext as ItemPageViewModel; }
+        }
+
+        private void WithDispatcher(Action action)
+        {
+            Dispatcher.BeginInvoke(action);
         }
     }
 }

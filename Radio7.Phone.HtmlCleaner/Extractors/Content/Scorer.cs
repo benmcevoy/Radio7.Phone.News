@@ -134,11 +134,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             _candidateNodes.Add(candidateNode);
         }
-
-    
-
-       
-
+        
         private void EnsureCandidateScoreAttributes(HtmlNode htmlNode)
         {
             if (htmlNode.Attributes.Contains(ScoreAttributeName)) return;

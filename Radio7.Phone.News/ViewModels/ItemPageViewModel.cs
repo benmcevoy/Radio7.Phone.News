@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Services;
 using Radio7.Phone.News.Models;
 
@@ -9,27 +11,33 @@ namespace Radio7.Phone.News.ViewModels
     public class ItemPageViewModel : ViewModelBase
     {
         private readonly IPageService _pageService;
+        private readonly IMessenger _messenger;
 
-        public ItemPageViewModel(IPageService pageService)
+        public ItemPageViewModel(IPageService pageService, IMessenger messenger)
         {
             _pageService = pageService;
+            _messenger = messenger;
             _pageService.GetPageComplete += PageServiceOnGetPageComplete;
 
-            ContentLevelCommand = new RelayCommand<ContentLevel>(SetContentLevel);
+            ContentLevelCommand = new RelayCommand<string>(SetContentLevel);
         }
 
-        private void SetContentLevel(ContentLevel contentLevel)
+        private void SetContentLevel(string contentLevel)
         {
-            switch (contentLevel)
+            var level = (ContentLevel)Enum.Parse(ContentLevel.GetType(), contentLevel, true);
+
+            ContentLevel = level;
+
+            switch (level)
             {
                 case ContentLevel.Summary:
-                    RaiseNavigateToString(Summary, Original);
+                    _messenger.Send(new NavigateToStringMessage(Summary, Original));
                     break;
                 case ContentLevel.Article:
-                    RaiseNavigateToString(Article, Original);
+                    _messenger.Send(new NavigateToStringMessage(Article, Original));
                     break;
                 case ContentLevel.Original:
-                    RaiseNavigateToString("", Original);
+                    _messenger.Send(new NavigateToStringMessage("", Original));
                     break;
             }
         }
@@ -41,15 +49,7 @@ namespace Radio7.Phone.News.ViewModels
             Article = getPageCompleteEventArgs.Html;
             Original = getPageCompleteEventArgs.Url;
 
-            SetContentLevel(ContentLevel);
-        }
-
-        private void RaiseNavigateToString(string html, Uri url)
-        {
-            if (NavigateToString != null)
-            {
-                NavigateToString(this, new NavigateToStringEventArgs(html, url));
-            }
+            SetContentLevel(ContentLevel.ToString());
         }
 
         public void BeginLoad(Uri url)
@@ -70,7 +70,7 @@ namespace Radio7.Phone.News.ViewModels
             }
         }
 
-        public RelayCommand<ContentLevel> ContentLevelCommand { get; set; }
+        public RelayCommand<string> ContentLevelCommand { get; set; }
 
         public string Title { get; set; }
 
@@ -78,9 +78,32 @@ namespace Radio7.Phone.News.ViewModels
 
         public string Article { get; set; }
 
-        public Uri  Original { get; set; }
+        public Uri Original { get; set; }
 
-        // TODO: replace with messaging
-        public event EventHandler<NavigateToStringEventArgs> NavigateToString;
+        public void LoadNextView()
+        {
+            var contentLevel = ((int)ContentLevel);
+
+            contentLevel++;
+
+            if (contentLevel > 2) return;
+
+            var newContentLevel = (ContentLevel)contentLevel;
+
+            SetContentLevel(newContentLevel.ToString());
+        }
+
+        public void LoadPreviousView()
+        {
+            var contentLevel = ((int)ContentLevel);
+
+            contentLevel--;
+
+            if (contentLevel < 0) return;
+
+            var newContentLevel = (ContentLevel)contentLevel;
+
+            SetContentLevel(newContentLevel.ToString());
+        }
     }
 }

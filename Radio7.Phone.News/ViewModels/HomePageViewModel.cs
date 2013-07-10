@@ -13,7 +13,7 @@ namespace Radio7.Phone.News.ViewModels
         private readonly INavigationService _navigationService;
         private readonly TopicRepository _topicRepository;
         
-        public HomePageViewModel(INavigationService navigationService, TopicRepository topicRepository )
+        public HomePageViewModel(INavigationService navigationService, TopicRepository topicRepository)
         {
             _navigationService = navigationService;
             _topicRepository = topicRepository;

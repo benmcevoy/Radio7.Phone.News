@@ -39,6 +39,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack">
@@ -67,7 +69,9 @@
     <Compile Include="Entities\SentanceScore.cs" />
     <Compile Include="Entities\Token.cs" />
     <Compile Include="Entities\TokenType.cs" />
+    <Compile Include="Extractors\Content\AllNodeScorer.cs" />
     <Compile Include="Extractors\Content\ContentExtractor.cs" />
+    <Compile Include="Extractors\Content\NoCleanContractExtractor.cs" />
     <Compile Include="Extractors\Content\Normalizer.cs" />
     <Compile Include="Extractors\Content\Scorer.cs" />
     <Compile Include="Extractors\Snippet\DefaultSnippetExtractor.cs" />

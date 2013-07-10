@@ -46,6 +46,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
@@ -77,9 +79,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ContentLevelToColorConverter.cs" />
     <Compile Include="Converters\EnumBooleanConverter.cs" />
     <Compile Include="Data\HtmlRepository.cs" />
     <Compile Include="Data\TopicRepository.cs" />
+    <Compile Include="Infrastructure\ProgressMessageListener.cs" />
+    <Compile Include="Messages\NavigateToStringMessage.cs" />
+    <Compile Include="Messages\ProgressMessage.cs" />
     <Compile Include="Models\ContentLevel.cs" />
     <Compile Include="Services\INewsService.cs" />
     <Compile Include="Services\NewsService.cs" />
@@ -96,7 +102,6 @@
     <Compile Include="Models\RelatedNewsItem.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\NavigateToStringEventArgs.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\ItemPageViewModel.cs" />
     <Compile Include="Services\GetPageCompleteEventArgs.cs" />

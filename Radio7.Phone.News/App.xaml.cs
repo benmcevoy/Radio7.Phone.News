@@ -1,12 +1,16 @@
-﻿using Microsoft.Phone.Controls;
+﻿using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;
 using System.Windows.Navigation;
+using Radio7.Phone.News.Infrastructure;
 
 namespace Radio7.Phone.News
 {
     public partial class App : Application
     {
+        private readonly ProgressMessageListener _progressMessageListener = new ProgressMessageListener(Messenger.Default);
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>

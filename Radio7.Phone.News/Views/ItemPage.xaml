@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Radio7.Phone.News.Infrastructure"
     xmlns:converter="clr-namespace:Radio7.Phone.News.Converters"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -17,7 +18,7 @@
     
     <phone:PhoneApplicationPage.Resources>
         <view:ViewModelLocator x:Key="ViewModelLocator"/>
-        <converter:EnumBooleanConverter x:Key="EnumBooleanConverter" />
+        <converter:ContentLevelToColorConverter x:Key="ContentLevelToColorConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -29,15 +30,15 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,0" Orientation="Horizontal">
-            <RadioButton GroupName="ContentLevel" Content="Summary" 
-                         Command="{Binding ContentLevelCommand}" CommandParameter="{Binding ContentLevel}"
-                         IsChecked="{Binding ContentLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Summary}" />
-            <RadioButton GroupName="ContentLevel" Content="Article" 
-                         Command="{Binding ContentLevelCommand}" CommandParameter="{Binding ContentLevel}"
-                         IsChecked="{Binding ContentLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Article}" />
-            <RadioButton GroupName="ContentLevel" Content="Original" 
-                         Command="{Binding ContentLevelCommand}" CommandParameter="{Binding ContentLevel}"
-                         IsChecked="{Binding ContentLevel, Mode=TwoWay, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Original}" />
+            <Button Content="S" 
+                    Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Summary}"
+                    Command="{Binding ContentLevelCommand}" CommandParameter="Summary" />
+            <Button Content="A" 
+                    Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Article}"
+                    Command="{Binding ContentLevelCommand}" CommandParameter="Article" />
+            <Button Content="O" 
+                    Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Original}"
+                    Command="{Binding ContentLevelCommand}" CommandParameter="Original" />
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="ContentPanel" Margin="12">
@@ -48,7 +49,9 @@
                 OpacityMask="{StaticResource PhoneBackgroundBrush}"
                 Background="{StaticResource PhoneBackgroundBrush}" x:Name="Browser" >
 
- 
+                <toolkit:GestureService.GestureListener>
+                    <toolkit:GestureListener Flick="OnFlick"/>
+                </toolkit:GestureService.GestureListener>
 
             </phone:WebBrowser>
         </Grid>

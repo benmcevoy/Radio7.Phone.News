@@ -2,12 +2,14 @@
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Radio7.Phone.News.Infrastructure;
 
 namespace Radio7.Phone.News.Services
 {
     public class NavigationService : INavigationService
     {
         private PhoneApplicationFrame _mainFrame;
+        
 
         public void NavigateTo(Uri pageUri)
         {

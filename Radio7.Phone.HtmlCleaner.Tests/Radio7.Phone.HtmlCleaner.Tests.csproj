@@ -76,6 +76,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="BBC.cs" />
+    <Compile Include="BBC_PlaneCrash.cs" />
     <Compile Include="Extractors\Content\ContentExtractorTest.cs" />
     <Compile Include="Extractors\Title\TitleByTitleTagCandidateTest.cs" />
     <Compile Include="Extractors\Title\TitleByH1TagCandidateTest.cs" />

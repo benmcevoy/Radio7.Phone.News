@@ -28,9 +28,9 @@ namespace TestBrowser
 
         public void HideScriptErrors(WebBrowser wb, bool hide)
         {
-            FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+            var fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
             if (fiComWebBrowser == null) return;
-            object objComWebBrowser = fiComWebBrowser.GetValue(wb);
+            var objComWebBrowser = fiComWebBrowser.GetValue(wb);
             if (objComWebBrowser == null) return;
             objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { hide });
         }
@@ -49,30 +49,30 @@ namespace TestBrowser
             {
                 var reader = new StreamReader(stream, Encoding.UTF8);
                 var html = reader.ReadToEnd();
-                var ce = new ContentExtractor();
+                var ce = new NoCleanContractExtractor();
                 var clean = ce.Extract(html, new Uri(address.Text));
                 var wrappedHtml  = WrapWithStyle(clean.Title, clean.Html);
 
                 readable.NavigateToString(wrappedHtml);
 
-                var summaryDoc = Summarizer.Summarize(new SummarizerArguments()
-                    {
-                        InputString = clean.Text
-                    });
+                //var summaryDoc = Summarizer.Summarize(new SummarizerArguments()
+                //    {
+                //        InputString = clean.Text
+                //    });
 
-                summary.Text = "";
+                //summary.Text = "";
 
-                foreach (var sentance in summaryDoc.Sentences)
-                {
-                    summary.Text += sentance.Trim() + Environment.NewLine + Environment.NewLine;
-                }
+                //foreach (var sentance in summaryDoc.Sentences)
+                //{
+                //    summary.Text += sentance.Trim() + Environment.NewLine + Environment.NewLine;
+                //}
 
-                summary.Text += Environment.NewLine + "---------------------" + Environment.NewLine;
+                //summary.Text += Environment.NewLine + "---------------------" + Environment.NewLine;
 
-                foreach (var concept in summaryDoc.Concepts)
-                {
-                    summary.Text += concept + Environment.NewLine;
-                }
+                //foreach (var concept in summaryDoc.Concepts)
+                //{
+                //    summary.Text += concept + Environment.NewLine;
+                //}
             }
         }
 

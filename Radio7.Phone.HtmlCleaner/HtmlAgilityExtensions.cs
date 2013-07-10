@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using HtmlAgilityPack;
 
 namespace Radio7.Phone.HtmlCleaner
@@ -54,13 +54,14 @@ namespace Radio7.Phone.HtmlCleaner
             return new HtmlResult();
         }
 
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static string ConvertToUtf8(this HtmlDocument htmlDocument)
         {
             using (var stream = new MemoryStream())
             {
                 htmlDocument.Save(stream, new System.Text.UTF8Encoding());
-
                 stream.Position = 0;
+
                 using (var reader = new StreamReader(stream))
                 {
                     return reader.ReadToEnd();

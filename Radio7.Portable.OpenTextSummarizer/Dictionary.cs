@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml.Linq;
 using System.Reflection;
@@ -25,6 +26,7 @@ namespace Radio7.Portable.OpenTextSummarizer
 
         private Dictionary() { }
 
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         private static string GetResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();

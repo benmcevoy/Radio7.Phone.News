@@ -2,19 +2,23 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using GalaSoft.MvvmLight.Messaging;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
 using Radio7.Phone.News.Data;
+using Radio7.Phone.News.Messages;
 
 namespace Radio7.Phone.News.Services
 {
     public class PageService : IPageService
     {
         private readonly HtmlRepository _htmlRepository;
+        private readonly IMessenger _messenger;
         private Uri _url;
 
-        public PageService(HtmlRepository htmlRepository)
+        public PageService(HtmlRepository htmlRepository, IMessenger messenger)
         {
             _htmlRepository = htmlRepository;
+            _messenger = messenger;
         }
 
         public void BeginGetPage(Uri uri)
@@ -27,8 +31,7 @@ namespace Radio7.Phone.News.Services
             webRequest.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3";
             webRequest.BeginGetResponse(OnLoad, webRequest);
 
-            // TODO: raise progress message
-            //_progressService.SetMessage("loading...");
+            _messenger.Send(new ProgressMessage(" "));
         }
 
         private void OnLoad(IAsyncResult ar)
@@ -38,8 +41,7 @@ namespace Radio7.Phone.News.Services
             try
             {
                 using (var response = request.EndGetResponse(ar))
-                using (var stream = response.GetResponseStream())
-                using (var reader = new StreamReader(stream, Encoding.UTF8))
+                using (var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
                 {
                     var html = reader.ReadToEnd();
                     var ce = new ContentExtractor();
@@ -61,11 +63,10 @@ namespace Radio7.Phone.News.Services
 
                 GetPageComplete(this, new GetPageCompleteEventArgs(null, "", "", page, null, page));
             }
-            //finally
-            //{
-            //    // TODO: raise progress message
-            //    //_progressService.ClearMessage();
-            //}
+            finally
+            {
+                _messenger.Send(new ProgressMessage());
+            }
         }
 
         private string ToHtml(string text)

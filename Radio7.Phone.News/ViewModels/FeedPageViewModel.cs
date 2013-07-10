@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Models;
 using Radio7.Phone.News.Services;
 using Radio7.Phone.News.Data;
+using System.Net;
 
 namespace Radio7.Phone.News.ViewModels
 {
@@ -32,29 +31,24 @@ namespace Radio7.Phone.News.ViewModels
 
         private void NewsServiceOnGetNewsComplete(object sender, GetNewsCompleteEventArgs getNewsCompleteEventArgs)
         {
-            // TODO: raise progress message
-            ProgressHelper.ClearMessage();
             NewsItems = getNewsCompleteEventArgs.NewsItems;
+
             WithDispatcher(() => RaisePropertyChanged("NewsItems"));
         }
 
-        public void Load(int id)
+        public void Load(int topicId)
         {
-            Topic = _topicRepository.Get(id);
+            Topic = _topicRepository.Get(topicId);
 
             WithDispatcher(() => RaisePropertyChanged("Topic"));
-
-            // TODO: raise progress message
-            ProgressHelper.SetMessage(" ");
 
             _newsService.BeginGetNews(Topic.Url);
         }
 
         private void Launch(Uri uri)
         {
+            const string splitOn = "&url=";
             var url = uri.ToString();
-
-            const string splitOn = "&amp;url=";
             var startIndex = url.IndexOf(splitOn, StringComparison.Ordinal);
 
             if (startIndex > -1)
@@ -62,7 +56,7 @@ namespace Radio7.Phone.News.ViewModels
                 url = url.Substring(startIndex + splitOn.Length);
             }
 
-            _navigationService.NavigateTo(new Uri("/Views/ItemPage.xaml?url=" + HttpUtility.UrlEncode(url), UriKind.Relative));
+            _navigationService.NavigateTo(new Uri("/Views/ItemPage.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));
         }
 
         public Topic Topic { get; set; }

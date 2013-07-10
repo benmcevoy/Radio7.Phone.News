@@ -15,8 +15,6 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
             if (string.IsNullOrEmpty(text)) return new SentanceStatistics();
 
             var sentances = text.Split(new[] { ".", "?", "!", ";", ".\"", "?\"", "!\"", "|" }, StringSplitOptions.RemoveEmptyEntries);
-            var score = 0D;
-            var weight = 500D;
             var sentanceCount = sentances.Count();
             var sentanceScores = new List<SentanceScore>(sentanceCount);
 
@@ -26,13 +24,13 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
 
                 var wordCount = sentance.Split(' ').Length;
 
+                var score = GetProbabilty(wordCount) * 500D;
+
                 sentanceScores.Add(new SentanceScore
                     {
-                        Score = (score * weight),
+                        Score = score,
                         WordCount = wordCount
                     });
-
-                score += GetProbabilty(wordCount);
             }
 
             return new SentanceStatistics
@@ -51,16 +49,9 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
             const double inverseStandardDeviationBysquareRoot2Pi = 0.0797884560800001D;
 
             return (inverseStandardDeviationBysquareRoot2Pi *
-                    Math.Exp(-(Math.Pow(x - mean, 2D) / standardDeviationSquareBy2)));
+                    Math.Exp(-(Math.Pow(x - mean, 2D) / standardDeviationSquareBy2))) * 100D;
+
         }
-
-        //private double GetNormalProbabilty(double x, double mean, double standardDeviation)
-        //{
-        //    return (1D / standardDeviation * (Math.Sqrt(2 * Math.PI)) *
-        //            Math.Exp(-(Math.Pow(x - mean, 2D) / 2D * Math.Pow(standardDeviation, 2))));
-
-
-        //}
 
         private double GetThresholdScore(double x)
         {

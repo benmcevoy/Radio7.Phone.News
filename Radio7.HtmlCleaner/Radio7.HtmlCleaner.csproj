@@ -84,11 +84,17 @@
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Entities\TokenType.cs">
       <Link>Entities\TokenType.cs</Link>
     </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\AllNodeScorer.cs">
+      <Link>Extractors\Content\AllNodeScorer.cs</Link>
+    </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\ContentExtractor.cs">
       <Link>Extractors\Content\ContentExtractor.cs</Link>
     </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\IContentExtractor.cs">
       <Link>Extractors\Content\IContentExtractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\NoCleanContractExtractor.cs">
+      <Link>Extractors\Content\NoCleanContractExtractor.cs</Link>
     </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\Normalizer.cs">
       <Link>Extractors\Content\Normalizer.cs</Link>

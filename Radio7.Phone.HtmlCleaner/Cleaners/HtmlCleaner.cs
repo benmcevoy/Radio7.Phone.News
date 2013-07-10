@@ -37,7 +37,7 @@ namespace Radio7.Phone.HtmlCleaner.Cleaners
 
         public HtmlCleaner Clean()
         {
-            var elementsToRemove = new[] { "script", "noscript", "style", "link", "meta", "textarea",
+            var elementsToRemove = new[] { "script", "noscript", "style", "link", "meta", "textarea", "br",
                 "iframe", "input", "button", "select", "option", "audio", "canvas", "head", "fieldset",
                 "h1", "header", "footer", "aside", "hr", "nav", "video", "object", "embed", "#comment", "svg" };
 
