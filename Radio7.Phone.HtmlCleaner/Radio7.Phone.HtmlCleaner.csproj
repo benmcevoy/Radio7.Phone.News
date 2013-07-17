@@ -74,6 +74,8 @@
     <Compile Include="Extractors\Content\NoCleanContractExtractor.cs" />
     <Compile Include="Extractors\Content\Normalizer.cs" />
     <Compile Include="Extractors\Content\Scorer.cs" />
+    <Compile Include="Extractors\Content\TextNodeExtractor.cs" />
+    <Compile Include="Extractors\Content\TextNodeScorer.cs" />
     <Compile Include="Extractors\Snippet\DefaultSnippetExtractor.cs" />
     <Compile Include="Extractors\Snippet\GoogleNewsRssSnippetExtractor.cs" />
     <Compile Include="Cleaners\HtmlCleaner.cs" />

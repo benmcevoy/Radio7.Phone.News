@@ -12,11 +12,11 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         private readonly Uri _documentUrl;
 
         private static readonly Regex BoilerPlateCandidatesRegex = new Regex(
-            @"combx|comment|community|contact|disqus|foot|footer|header|" + 
-            "menu|rss|shoutbox|sidebar|masthead|sponsor|ad-break|agegate|" + 
+            @"combx|comment|community|contact|disqus|foot|footer|header|" +
+            "menu|rss|shoutbox|sidebar|masthead|sponsor|ad-break|agegate|" +
             "pagination|pager|popup|tweet|twitter|hidden|aside|advert|footnote|" +
-            "meta|outbrain|promo|related|scroll|shopping|tags|tool|widget|pop\\-up|" + 
-            "metadata|overlay|video|nav|sub\\-nav|toolbar|playlist|addthis|social|modal",
+            "meta|outbrain|promo|related|scroll|shopping|tags|tool|pop\\-up|" +
+            "metadata|video|nav|sub\\-nav|toolbar|playlist|addthis|social|share",
             RegexOptions.Compiled & RegexOptions.IgnoreCase);
 
         public Normalizer(HtmlDocument htmlDocument, Uri documentUrl)
@@ -61,7 +61,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 {
                     var src = image.GetAttributeValue("src", "");
 
-                    if (src.Contains(".gif") || string.IsNullOrEmpty(src) )
+                    if (src.Contains(".gif") || string.IsNullOrEmpty(src))
                     {
                         image.ParentNode.Remove();
                     }
@@ -146,7 +146,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             if (url.StartsWith("?"))
             {
                 var result = string.Format("{0}://{1}{2}{3}",
-                                           _documentUrl.Scheme,
+                                           string.IsNullOrEmpty(_documentUrl.Scheme) ? "http" : _documentUrl.Scheme,
                                            _documentUrl.Host,
                                            _documentUrl.AbsolutePath,
                                            url);
@@ -165,7 +165,18 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         private bool IsAbsoluteUri(string url)
         {
             Uri result;
-            return Uri.TryCreate(url, UriKind.Absolute, out result);
+            var isOk = Uri.TryCreate(url, UriKind.Absolute, out result);
+
+            if (isOk)
+            {
+                // default scheme seems to be file:
+                // some url's will come in as "valid", but with no scheme.  
+                // e.g. //upload.wikimedia.org/wikipedia/etc etc
+                if (result.Scheme != "http" || result.Scheme != "https")
+                    return false;
+            }
+
+            return isOk;
         }
 
         public Normalizer EnsureBodyElement()
@@ -255,7 +266,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             ProcessElements(elements, element =>
             {
                 // TODO: refactor to reduce coupling
-                if(Scorer.GetLinkDensityScore(element) > .5)
+                if (Scorer.GetLinkDensityScore(element) > .5)
                 {
                     element.Remove();
                 }

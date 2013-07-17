@@ -102,6 +102,12 @@
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\Scorer.cs">
       <Link>Extractors\Content\Scorer.cs</Link>
     </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\TextNodeExtractor.cs">
+      <Link>Extractors\Content\TextNodeExtractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\TextNodeScorer.cs">
+      <Link>Extractors\Content\TextNodeScorer.cs</Link>
+    </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Snippet\DefaultSnippetExtractor.cs">
       <Link>Extractors\Snippet\DefaultSnippetExtractor.cs</Link>
     </Compile>

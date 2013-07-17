@@ -6,6 +6,7 @@ using Microsoft.Phone.Controls;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
+using System.Diagnostics;
 
 namespace Radio7.Phone.News.Views
 {
@@ -64,6 +65,7 @@ namespace Radio7.Phone.News.Views
         {
             if (ViewModel == null) return;
             if (e.Direction != System.Windows.Controls.Orientation.Horizontal) return;
+            if (!(Math.Abs(e.HorizontalVelocity) > Math.Abs(e.VerticalVelocity*5))) return;
 
             // User flicked towards left
             if (e.HorizontalVelocity < 0) ViewModel.LoadNextView();

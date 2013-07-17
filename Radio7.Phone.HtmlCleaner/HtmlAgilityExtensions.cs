@@ -14,7 +14,7 @@ namespace Radio7.Phone.HtmlCleaner
             {
                 return new HtmlResult
                     {
-                        IsSuccess = true,
+                        IsSuccess = !string.IsNullOrWhiteSpace(result.OuterHtml),
                         Value = result.OuterHtml
                     };
             }
@@ -30,7 +30,7 @@ namespace Radio7.Phone.HtmlCleaner
             {
                 return new HtmlResult
                     {
-                        IsSuccess = true,
+                        IsSuccess = !string.IsNullOrWhiteSpace(result.InnerText),
                         Value = result.InnerText
                     };
             }
@@ -46,7 +46,7 @@ namespace Radio7.Phone.HtmlCleaner
             {
                 return new HtmlResult
                     {
-                        IsSuccess = true,
+                        IsSuccess = !string.IsNullOrWhiteSpace(result.InnerText),
                         Value = result.InnerText
                     };
             }

@@ -28,7 +28,8 @@ namespace Radio7.Phone.News.Services
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
 
             webRequest.CookieContainer = new CookieContainer();
-            webRequest.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3";
+            // seemed like a good idea, but most mobile sites are "modern"(ish), getting crap like ajax in the content and so on. Gratuitous Ajax.
+            // webRequest.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3";
             webRequest.BeginGetResponse(OnLoad, webRequest);
 
             _messenger.Send(new ProgressMessage(" "));

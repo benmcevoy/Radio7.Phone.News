@@ -8,7 +8,7 @@ using Radio7.Phone.HtmlCleaner.Scorer;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
-    public class Scorer
+    public class TextNodeScorer
     {
         private readonly INodeScorer _nodeScorer;
         private static readonly string[] ElementNamesToScore = new[] { "p", "td", "pre", "blockquote", "li", "div", "h2", "h3", "h4", "#text" };
@@ -17,7 +17,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         private const string RawScoreAttributeName = "__content__raw";
         private readonly List<CandidateNode> _candidateNodes = new List<CandidateNode>(64);
 
-        public Scorer()
+        public TextNodeScorer()
         {
             _nodeScorer = new GaussianContentDensityScorer();
         }
@@ -25,7 +25,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         public IEnumerable<CandidateNode> Score(HtmlDocument htmlDocument)
         {
             // TODO: to IFilter or something
-            var nodesToScore = GetNodesToScore(htmlDocument);
+            var nodesToScore = GetNodesToScore(htmlDocument).ToList();
 
             foreach (var htmlNode in nodesToScore)
             {
@@ -81,10 +81,11 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         {
             if (htmlDocument.DocumentNode.FirstChild == null) yield break;
 
-            foreach (var htmlNode in htmlDocument.DocumentNode.SelectNodes("//*"))
+            foreach (var htmlNode in htmlDocument.DocumentNode.SelectNodes("//text()[normalize-space(.) != '']"))
             {
                 if (htmlNode.ParentNode == null) continue;
                 if (htmlNode.ParentNode.Name == "body") continue;
+                if (htmlNode.InnerText.Length < 25) continue;
 
                 if (ElementNamesToScore.Contains(htmlNode.Name)) yield return htmlNode;
             }
@@ -133,7 +134,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             _candidateNodes.Add(candidateNode);
         }
-        
+
         private void EnsureCandidateScoreAttributes(HtmlNode htmlNode)
         {
             if (htmlNode.Attributes.Contains(ScoreAttributeName)) return;

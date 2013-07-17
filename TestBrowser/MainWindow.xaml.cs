@@ -49,46 +49,39 @@ namespace TestBrowser
             {
                 var reader = new StreamReader(stream, Encoding.UTF8);
                 var html = reader.ReadToEnd();
-                var ce = new NoCleanContractExtractor();
+                var ce = new ContentExtractor();
                 var clean = ce.Extract(html, new Uri(address.Text));
                 var wrappedHtml  = WrapWithStyle(clean.Title, clean.Html);
 
                 readable.NavigateToString(wrappedHtml);
+                
+                summary.Text = clean.Summary;
+                summary.Text += Environment.NewLine + "---------------------" + Environment.NewLine;
 
-                //var summaryDoc = Summarizer.Summarize(new SummarizerArguments()
-                //    {
-                //        InputString = clean.Text
-                //    });
-
-                //summary.Text = "";
-
-                //foreach (var sentance in summaryDoc.Sentences)
-                //{
-                //    summary.Text += sentance.Trim() + Environment.NewLine + Environment.NewLine;
-                //}
-
-                //summary.Text += Environment.NewLine + "---------------------" + Environment.NewLine;
-
-                //foreach (var concept in summaryDoc.Concepts)
-                //{
-                //    summary.Text += concept + Environment.NewLine;
-                //}
+                foreach (var concept in clean.Keywords)
+                {
+                    summary.Text += concept + Environment.NewLine;
+                }
             }
         }
 
         private string WrapWithStyle(string title, string clean)
         {
-            var style = @"<style type='text/css'>
+            var style = @"<!DOCTYPE html>
+<html>
+<head>
+    <title>-</title>
+    <meta charset=""utf-8"" />
+<style type='text/css'>{2}</style></head>
+    <body>
+<h1>{0}</h1>
+<div>{1}</div></body></html>";
 
-html, body, div, p { font-family: Arial; margin : 12px; }
+            return string.Format(style, title, clean, @"html, body, div, p { font-family: Arial; margin : 12px; }
 p { font-size: 0.9em;}
 figure, img, figcaption { display: block;}
 figcaption { font-style: italic; font-size: 0.8em; }
-img {width: 100%; max-width: 440px;}
-
-</style>";
-
-            return string.Format("{0}<h1>{1}</h1>{2}", style, title, clean);
+img {width: 100%; max-width: 440px;}");
         }
     }
 }

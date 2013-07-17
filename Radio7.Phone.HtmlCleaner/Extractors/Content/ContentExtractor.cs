@@ -156,6 +156,7 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                 .EnsureBodyElement()
                 .RemoveBoilerPlateCandidates()
                 .ReplaceFonts()
+                .ReplaceBrCandidates()
                 .RemoveXoXo()
                 .RemoveEmptyCandidateElements()
                 .RebaseUrls()

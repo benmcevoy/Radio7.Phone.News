@@ -10,7 +10,15 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
     {
         public SentanceStatistics Score(HtmlNode htmlNode)
         {
-            var text = htmlNode.InnerText.RemoveWhitespace();
+            if (!htmlNode.HasChildNodes) return new SentanceStatistics();
+
+            var children = htmlNode.ChildNodes.Where(c => c.NodeType == HtmlNodeType.Text);
+
+            if(!children.Any()) return new SentanceStatistics();
+            
+            var text = htmlNode.ChildNodes.Where(c => c.NodeType == HtmlNodeType.Text)
+                               .Select(n => n.InnerText)
+                               .Aggregate((current, next) => current + " " + next).RemoveWhitespace();
 
             if (string.IsNullOrEmpty(text)) return new SentanceStatistics();
 
@@ -42,13 +50,13 @@ namespace Radio7.Phone.HtmlCleaner.Scorer
 
         private double GetProbabilty(double x)
         {
-            const double mean = 14.3D; // average sentance length
+            const double mean = 20.0D; // average sentance length
             //const double standardDeviation = 5D;
             //const double squareRoot2Pi = 2.50662827463D;
             const double standardDeviationSquareBy2 = 50D;
-            const double inverseStandardDeviationBysquareRoot2Pi = 0.0797884560800001D;
+            const double inverseStandardDeviationBySquareRoot2Pi = 0.0797884560800001D;
 
-            return (inverseStandardDeviationBysquareRoot2Pi *
+            return (inverseStandardDeviationBySquareRoot2Pi *
                     Math.Exp(-(Math.Pow(x - mean, 2D) / standardDeviationSquareBy2))) * 100D;
 
         }
