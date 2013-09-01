@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml.Linq;
+using Rss.Manager.RelatedLinks;
 
 namespace Rss.Manager
 {
@@ -13,35 +14,21 @@ namespace Rss.Manager
     {
         private readonly XNamespace _atomNamespace = "http://www.w3.org/2005/Atom";
         private readonly XNamespace _purlNamespace = "http://purl.org/rss/1.0/modules/content/";
-        private IRelatedLinksParser _relatedLinksParser = new NoRelatedLinksParser();
+        private readonly IRelatedLinksParser _relatedLinksParser;
 
-        public Feed(Uri feedUri)
+        public Feed(Uri feedUri) : this(feedUri, feedUri) { }
+
+        public Feed(Uri feedUri, Uri htmlUri)
         {
             FeedUri = feedUri;
             Items = new List<Item>();
-            HtmlUri = feedUri;
-        }
-
-        public Feed(Uri feedUri, string title, Uri htmlUri)
-        {
-            FeedUri = feedUri;
-            Items = new List<Item>();
-            Title = title;
             HtmlUri = htmlUri;
+
+            _relatedLinksParser = new RelatedLinksParserResolver().Resolve(FeedUri.Host);
         }
 
         public void GetItemsFromWeb()
         {
-            if (FeedUri.Host.ToLowerInvariant() == "news.ycombinator.com")
-            {
-                _relatedLinksParser = new HackerNewsRelatedLinksParser();
-            }
-
-            if (FeedUri.Host.ToLowerInvariant() == "news.google.com")
-            {
-                _relatedLinksParser = new GoogleNewsRelatedLinksParser();
-            }
-
             GetXml(FeedUri);
         }
 

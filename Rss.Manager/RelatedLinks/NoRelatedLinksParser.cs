@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Rss.Manager
+namespace Rss.Manager.RelatedLinks
 {
     public class NoRelatedLinksParser : IRelatedLinksParser
     {

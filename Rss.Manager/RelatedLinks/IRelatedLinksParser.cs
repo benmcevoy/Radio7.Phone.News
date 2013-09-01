@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Rss.Manager
+namespace Rss.Manager.RelatedLinks
 {
     public interface IRelatedLinksParser
     {

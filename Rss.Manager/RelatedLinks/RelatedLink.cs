@@ -1,4 +1,4 @@
-﻿namespace Rss.Manager
+﻿namespace Rss.Manager.RelatedLinks
 {
     public class RelatedLink
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Rss.Manager
 {
@@ -10,11 +9,6 @@ namespace Rss.Manager
         public RssManager()
         {
             _feeds = new List<Feed>();
-        }
-
-        public void Subscribe(Uri feedUri, string title, Uri htmlUri)
-        {
-            Subscribe(new Feed(feedUri, title, htmlUri));
         }
 
         public void Subscribe(Feed feed)

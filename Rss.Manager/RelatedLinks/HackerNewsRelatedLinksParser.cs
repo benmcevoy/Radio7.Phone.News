@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Rss.Manager
+namespace Rss.Manager.RelatedLinks
 {
+    [RelatedLinkParserFor("news.ycombinator.com")]
     public class HackerNewsRelatedLinksParser : IRelatedLinksParser
     {
         public IEnumerable<RelatedLink> GetRelatedLinks(string html)

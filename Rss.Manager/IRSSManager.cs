@@ -9,8 +9,6 @@ namespace Rss.Manager
 
         void Subscribe(Feed feed);
 
-        void Subscribe(Uri feedUri, string title, Uri htmlUri);
-
         void Unsubscribe(Feed feed);
     }
 }

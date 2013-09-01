@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using HtmlAgilityPack;
 using Radio7.Phone.HtmlCleaner;
 
-namespace Rss.Manager
+namespace Rss.Manager.RelatedLinks
 {
+    [RelatedLinkParserFor("news.google.com")]
     public class GoogleNewsRelatedLinksParser : IRelatedLinksParser
     {
         public IEnumerable<RelatedLink> GetRelatedLinks(string html)
