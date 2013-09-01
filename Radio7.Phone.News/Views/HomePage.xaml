@@ -14,16 +14,19 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="False"
+    toolkit:TiltEffect.IsTiltEnabled="True">
 
     <phone:PhoneApplicationPage.Resources>
         <view:ViewModelLocator x:Key="ViewModelLocator"/>
-        
+
         <ItemsPanelTemplate x:Key="WrapItemsPanelTemplate">
             <toolkit:WrapPanel/>
         </ItemsPanelTemplate>
     </phone:PhoneApplicationPage.Resources>
 
+   
+    
     <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="Self" DataContext="{Binding HomePageViewModel, Source={StaticResource ViewModelLocator}}">
         <controls:Panorama Title="my application">
@@ -38,7 +41,7 @@
                                     <HyperlinkButton.Template>
                                         <ControlTemplate TargetType="HyperlinkButton">
                                             <toolkit:HubTile toolkit:TiltEffect.IsTiltEnabled="True"
-                                            Title="{Binding Title}" Margin="5" 
+                                            Title="{Binding Title}" Margin="6" 
                                              Source="{Binding Image}"
                                              Size="{Binding Size}" Background="{Binding AccentBrush}" />
                                         </ControlTemplate>
@@ -51,8 +54,77 @@
             </controls:PanoramaItem>
 
             <!--Panorama item two-->
-            <controls:PanoramaItem Header="item2">
-                <Grid/>
+            <controls:PanoramaItem Header="manage">
+                <Grid>
+                    <StackPanel Orientation="Vertical">
+
+                        <Button BorderThickness="0"
+                            Command="{Binding AddFeedCommand}"
+                                HorizontalContentAlignment="Left">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="0">
+                                    <Grid>
+                                        <Grid Name="backgroundGrid" Width="32" Height="32" >
+                                            <Path Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" />
+                                        </Grid>
+                                        <Path Data="M19.833,0L32.5,0 32.5,19.833999 52.334,19.833999 52.334,32.500999 32.5,32.500999 32.5,52.333 19.833,52.333 19.833,32.500999 0,32.500999 0,19.833999 19.833,19.833999z" Stretch="Uniform" Fill="{StaticResource PhoneForegroundBrush}" Width="16" Height="16" />
+                                    </Grid>
+                                </Viewbox>
+                                <TextBlock Margin="12,0,0,0" Grid.Column="1">add feed</TextBlock>
+                            </Grid>
+
+                        </Button>
+
+                        <Button BorderThickness="0"
+                            Command="{Binding ListFeedsCommand}"
+                                HorizontalContentAlignment="Left">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="0">
+
+                                    <Grid>
+                                        <Grid Width="32" Height="32" >
+                                            <Path Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}" />
+                                        </Grid>
+                                        <Path Data="M36.859001,46.439999L59.237999,46.439999 59.237999,54.801998 36.859001,54.801998z M0,37.242001L26.756001,37.242001 26.756001,64 0,64z M36.859001,9.1940002L59.237999,9.1940002 59.237999,17.555 36.859001,17.555z M0,0L26.756001,0 26.756001,26.754 0,26.754z" Stretch="Uniform" Fill="{StaticResource PhoneForegroundBrush}" Width="16" Height="16"  />
+                                    </Grid>
+                                </Viewbox>
+                                <TextBlock Margin="12,0,0,0" Grid.Column="1">list feeds</TextBlock>
+                            </Grid>
+
+                        </Button>
+
+                        <Button BorderThickness="0"
+                            Command="{Binding ChangeDisplayCommand}"
+                                HorizontalContentAlignment="Left">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox>
+                                    <Grid>
+                                        <Grid Width="32" Height="32" >
+                                            <Path Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" Stretch="Fill" Fill="{StaticResource PhoneForegroundBrush}"  />
+                                        </Grid>
+                                        <Path Data="M32.0068359375,12.6235275268555L33.062744140625,12.6357355117798 33.49609375,13.0629806518555 33.990478515625,16.5663986206055 34.1064453125,20.5825119018555 33.99658203125,21.1806564331055 33.49609375,21.4125900268555 32.745361328125,21.3393478393555 32.2998046875,20.7289962768555 31.15234375,18.0251388549805 29.8095703125,16.4077072143555 28.6209106445313,15.7561569213867 27.056884765625,15.2907638549805 25.1174926757813,15.0115280151367 22.802734375,14.9184494018555 21.234130859375,15.0283126831055 20.5810546875,15.3579025268555 20.5078125,15.7729415893555 20.5078125,40.1137619018555 20.69091796875,41.441276550293 21.240234375,42.2988204956055 22.332763671875,42.893913269043 24.1455078125,43.4340744018555 24.871826171875,43.5988693237305 25.1953125,43.7026290893555 25.439453125,44.6303634643555 24.90234375,45.2407150268555 24.627685546875,45.2346115112305 23.9013671875,45.1674728393555 18.017578125,44.8745040893555 13.2568359375,45.1186447143555 11.962890625,45.1186447143555 11.6455078125,44.5327072143555 11.761474609375,43.8796310424805 12.5,43.4829025268555 14.2578125,42.8908615112305 15.33203125,42.1889572143555 15.95458984375,41.0720138549805 16.162109375,39.4301681518555 16.162109375,15.7729415893555 15.9423828125,15.2114191055298 15.283203125,14.9428634643555 14.874267578125,14.9245529174805 13.8427734375,14.9184494018555 9.814453125,15.3212814331055 7.0068359375,16.5297775268555 5.438232421875,18.2265548706055 4.052734375,20.9243087768555 3.558349609375,21.5895919799805 2.9052734375,21.5834884643555 2.337646484375,21.2600021362305 2.294921875,20.6801681518555 2.93579077720642,17.5002384185791 3.14941382408142,13.2338790893555 3.52172827720642,12.8371524810791 4.638671875,12.7700119018555 10.19287109375,13.0263595581055 16.30859375,13.1118087768555 21.8307476043701,13.0812911987305 26.2878398895264,12.9897384643555 29.6798686981201,12.8371505737305 32.0068359375,12.6235275268555z" Stretch="Uniform" Width="16" Height="16" Fill="{StaticResource PhoneForegroundBrush}" />
+                                    </Grid>
+                                </Viewbox>
+
+                                <TextBlock Margin="12,0,0,0" Grid.Column="1">display</TextBlock>
+                            </Grid>
+
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
             </controls:PanoramaItem>
         </controls:Panorama>
     </Grid>

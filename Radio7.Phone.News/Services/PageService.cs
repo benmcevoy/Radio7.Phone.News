@@ -73,7 +73,6 @@ namespace Radio7.Phone.News.Services
         private string ToHtml(string text)
         {
             var paragraphs = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
             var result = new StringBuilder((int)(text.Length * 1.2));
 
             foreach (var paragraph in paragraphs)

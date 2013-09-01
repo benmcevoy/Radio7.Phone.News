@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
-using Radio7.Phone.News.Infrastructure;
 
 namespace Radio7.Phone.News.Services
 {

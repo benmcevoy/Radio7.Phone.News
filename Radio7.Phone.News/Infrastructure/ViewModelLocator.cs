@@ -18,5 +18,7 @@ namespace Radio7.Phone.News.Infrastructure
         public FeedPageViewModel FeedPageViewModel { get { return new FeedPageViewModel(NewsService, NavigationService, TopicRepository); } }
 
         public ItemPageViewModel ItemPageViewModel { get { return new ItemPageViewModel(PageService, Messenger.Default); } }
+
+        public AddFeedPageViewModel AddFeedPageViewModel { get { return new AddFeedPageViewModel(TopicRepository); } }
     }
 }

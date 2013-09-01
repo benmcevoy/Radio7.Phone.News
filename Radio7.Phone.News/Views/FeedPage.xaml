@@ -18,6 +18,8 @@
     <phone:PhoneApplicationPage.Resources>
         <view:ViewModelLocator x:Key="ViewModelLocator"/>
     </phone:PhoneApplicationPage.Resources>
+
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="Self" Background="Transparent" DataContext="{Binding FeedPageViewModel, Source={StaticResource ViewModelLocator}}">
         <Grid.RowDefinitions>

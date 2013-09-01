@@ -58,8 +58,9 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>packages\WPToolkit.4.2013.06.11\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Practices.ServiceLocation">
@@ -85,6 +86,7 @@
     <Compile Include="Data\TopicRepository.cs" />
     <Compile Include="Infrastructure\ProgressMessageListener.cs" />
     <Compile Include="Messages\NavigateToStringMessage.cs" />
+    <Compile Include="Messages\NavigateToStringCompleteMessage.cs" />
     <Compile Include="Messages\ProgressMessage.cs" />
     <Compile Include="Models\ContentLevel.cs" />
     <Compile Include="Services\INewsService.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Infrastructure\ResourceHelper.cs" />
     <Compile Include="Services\PageService.cs" />
+    <Compile Include="ViewModels\AddFeedPageViewModel.cs" />
     <Compile Include="ViewModels\FeedPageViewModel.cs" />
     <Compile Include="Models\NewsItem.cs" />
     <Compile Include="Models\RelatedNewsItem.cs" />
@@ -105,6 +108,12 @@
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\ItemPageViewModel.cs" />
     <Compile Include="Services\GetPageCompleteEventArgs.cs" />
+    <Compile Include="Views\AddFeedPage.xaml.cs">
+      <DependentUpon>AddFeedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangeDisplaySettingsPage.xaml.cs">
+      <DependentUpon>ChangeDisplaySettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FeedPage.xaml.cs">
       <DependentUpon>FeedPage.xaml</DependentUpon>
     </Compile>
@@ -114,12 +123,23 @@
     <Compile Include="Views\ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ListFeedsPage.xaml.cs">
+      <DependentUpon>ListFeedsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Views\AddFeedPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChangeDisplaySettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FeedPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ListFeedsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,6 +174,14 @@
     <Content Include="Content\australia.png" />
     <Content Include="Content\business.png" />
     <Content Include="Content\conversation.png" />
+    <Content Include="Content\hacker.png" />
+    <Content Include="Content\slashdot.png" />
+    <Content Include="README_FIRST.txt" />
+    <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <Resource Include="Resources\Css\base.css" />
     <Resource Include="Resources\Images\bottom.png" />
     <Resource Include="Resources\Html\PageWrapper.html" />

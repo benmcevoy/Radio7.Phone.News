@@ -2,21 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using HtmlAgilityPack;
 using Radio7.Phone.HtmlCleaner;
 
 namespace Rss.Manager
 {
-    public class RelatedLink
+    public class GoogleNewsRelatedLinksParser : IRelatedLinksParser
     {
-        public string Title { get; set; }
-        public string Link { get; set; }
-    }
-
-    public static class RelatedLinksParser
-    {
-        public static IEnumerable<RelatedLink> GetRelatedLinks(string html)
+        public IEnumerable<RelatedLink> GetRelatedLinks(string html)
         {
             var results = new List<RelatedLink>();
 

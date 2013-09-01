@@ -21,24 +21,23 @@
         <converter:ContentLevelToColorConverter x:Key="ContentLevelToColorConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
+   <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="Self" Background="Transparent"  DataContext="{Binding ItemPageViewModel, Source={StaticResource ViewModelLocator}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,0" Orientation="Horizontal">
-            <Button Content="S" 
+            <Button Content="summary" x:Name="SummaryButton"
                     Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Summary}"
                     Command="{Binding ContentLevelCommand}" CommandParameter="Summary" />
-            <Button Content="A" 
+            <Button Content="article" x:Name="ArticleButton"
                     Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Article}"
                     Command="{Binding ContentLevelCommand}" CommandParameter="Article" />
-            <Button Content="O" 
+            <!--<Button Content="O" 
                     Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Original}"
-                    Command="{Binding ContentLevelCommand}" CommandParameter="Original" />
+                    Command="{Binding ContentLevelCommand}" CommandParameter="Original" />-->
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="ContentPanel" Margin="12">
@@ -49,9 +48,9 @@
                 OpacityMask="{StaticResource PhoneBackgroundBrush}"
                 Background="{StaticResource PhoneBackgroundBrush}" x:Name="Browser" >
 
-                <toolkit:GestureService.GestureListener>
+                <!--<toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener Flick="OnFlick"/>
-                </toolkit:GestureService.GestureListener>
+                </toolkit:GestureService.GestureListener>-->
 
             </phone:WebBrowser>
         </Grid>

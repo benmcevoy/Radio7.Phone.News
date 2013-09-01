@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Radio7.Phone.HtmlCleaner;
 using Radio7.Phone.News.Models;
 using Radio7.Phone.News.Services;
 using Radio7.Phone.News.Data;
@@ -48,8 +49,8 @@ namespace Radio7.Phone.News.ViewModels
         private void Launch(Uri uri)
         {
             const string splitOn = "&url=";
-            var url = uri.ToString();
-            var startIndex = url.IndexOf(splitOn, StringComparison.Ordinal);
+            var url = uri.ToString().Decode();
+            var startIndex = url.LastIndexOf(splitOn, StringComparison.Ordinal);
 
             if (startIndex > -1)
             {

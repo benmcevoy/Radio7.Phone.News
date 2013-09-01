@@ -1,4 +1,5 @@
-﻿using Radio7.Phone.HtmlCleaner.Cleaners;
+﻿using System.Collections.Generic;
+using Radio7.Phone.HtmlCleaner.Cleaners;
 using Radio7.Phone.HtmlCleaner.Extractors.Snippet;
 
 namespace Rss.Manager
@@ -34,5 +35,7 @@ namespace Rss.Manager
         public string Title { get; set; }
 
         public string PublishedDateTime { get; set; }
+
+        public IEnumerable<RelatedLink> RelatedLinks { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Rss.Manager
     {
         private readonly XNamespace _atomNamespace = "http://www.w3.org/2005/Atom";
         private readonly XNamespace _purlNamespace = "http://purl.org/rss/1.0/modules/content/";
+        private IRelatedLinksParser _relatedLinksParser = new NoRelatedLinksParser();
 
         public Feed(Uri feedUri)
         {
@@ -31,6 +32,16 @@ namespace Rss.Manager
 
         public void GetItemsFromWeb()
         {
+            if (FeedUri.Host.ToLowerInvariant() == "news.ycombinator.com")
+            {
+                _relatedLinksParser = new HackerNewsRelatedLinksParser();
+            }
+
+            if (FeedUri.Host.ToLowerInvariant() == "news.google.com")
+            {
+                _relatedLinksParser = new GoogleNewsRelatedLinksParser();
+            }
+
             GetXml(FeedUri);
         }
 
@@ -48,6 +59,11 @@ namespace Rss.Manager
                 case "feed":
                     Items = GetAtom(xml);
                     break;
+            }
+
+            foreach (var item in Items)
+            {
+                item.RelatedLinks = _relatedLinksParser.GetRelatedLinks(item.Raw);
             }
         }
 
@@ -291,7 +307,5 @@ namespace Rss.Manager
         }
 
         public event EventHandler FeedLoaded;
-
-
     }
 }

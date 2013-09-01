@@ -12,6 +12,7 @@ namespace Radio7.Phone.News.ViewModels
     {
         private readonly IPageService _pageService;
         private readonly IMessenger _messenger;
+        private bool _setContentLevelCommandCanExecute;
 
         public ItemPageViewModel(IPageService pageService, IMessenger messenger)
         {
@@ -19,7 +20,20 @@ namespace Radio7.Phone.News.ViewModels
             _messenger = messenger;
             _pageService.GetPageComplete += PageServiceOnGetPageComplete;
 
-            ContentLevelCommand = new RelayCommand<string>(SetContentLevel);
+            _messenger.Register<NavigateToStringCompleteMessage>(this, NavigateToStringComplete);
+
+            ContentLevelCommand = new RelayCommand<string>(SetContentLevel, ContentLevelCommandCanExecute);
+        }
+
+        private void NavigateToStringComplete(NavigateToStringCompleteMessage message)
+        {
+            _setContentLevelCommandCanExecute = true;
+            ContentLevelCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool ContentLevelCommandCanExecute(string arg)
+        {
+            return _setContentLevelCommandCanExecute;
         }
 
         private void SetContentLevel(string contentLevel)
@@ -57,7 +71,7 @@ namespace Radio7.Phone.News.ViewModels
             _pageService.BeginGetPage(url);
         }
 
-        private ContentLevel _contentLevel;
+        private ContentLevel _contentLevel = ContentLevel.Article;
         public ContentLevel ContentLevel
         {
             get { return _contentLevel; }
@@ -86,7 +100,8 @@ namespace Radio7.Phone.News.ViewModels
 
             contentLevel++;
 
-            if (contentLevel > 2) return;
+            // TODO: limited to article view
+            if (contentLevel > 1) return;
 
             var newContentLevel = (ContentLevel)contentLevel;
 

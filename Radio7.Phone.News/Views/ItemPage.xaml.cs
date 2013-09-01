@@ -3,6 +3,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Tasks;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
@@ -18,10 +19,14 @@ namespace Radio7.Phone.News.Views
 
             Messenger.Default.Register<NavigateToStringMessage>(this, NavigateToString);
 
+            Browser.Navigating += BrowserOnNavigating;
+
             Browser.LoadCompleted += (sender, args) =>
             {
                 Browser.OpacityMask = null;
                 Browser.Opacity = 1;
+
+                Messenger.Default.Send(new NavigateToStringCompleteMessage());
 
                 WithDispatcher(() =>
                     {
@@ -33,6 +38,12 @@ namespace Radio7.Phone.News.Views
                         catch { }
                     });
             };
+        }
+
+        private void BrowserOnNavigating(object sender, NavigatingEventArgs navigatingEventArgs)
+        {
+            navigatingEventArgs.Cancel = true;
+            new WebBrowserTask { Uri = navigatingEventArgs.Uri }.Show();
         }
 
         private void NavigateToString(NavigateToStringMessage message)
@@ -65,7 +76,7 @@ namespace Radio7.Phone.News.Views
         {
             if (ViewModel == null) return;
             if (e.Direction != System.Windows.Controls.Orientation.Horizontal) return;
-            if (!(Math.Abs(e.HorizontalVelocity) > Math.Abs(e.VerticalVelocity*5))) return;
+            if (!(Math.Abs(e.HorizontalVelocity) > Math.Abs(e.VerticalVelocity * 5))) return;
 
             // User flicked towards left
             if (e.HorizontalVelocity < 0) ViewModel.LoadNextView();
