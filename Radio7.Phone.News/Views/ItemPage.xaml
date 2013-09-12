@@ -29,12 +29,12 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="12,17,0,0" Orientation="Horizontal">
-            <Button Content="summary" x:Name="SummaryButton"
+            <!--<Button Content="summary" x:Name="SummaryButton"
                     Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Summary}"
-                    Command="{Binding ContentLevelCommand}" CommandParameter="Summary" />
-            <Button Content="article" x:Name="ArticleButton"
+                    Command="{Binding ContentLevelCommand}" CommandParameter="Summary" />-->
+            <Button Content="download" x:Name="ArticleButton"
                     Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Article}"
-                    Command="{Binding ContentLevelCommand}" CommandParameter="Article" />
+                    Command="{Binding DownloadArticleCommand}" CommandParameter="{Binding Original}" />
             <!--<Button Content="O" 
                     Foreground="{Binding ContentLevel, Converter={StaticResource ContentLevelToColorConverter}, ConverterParameter=Original}"
                     Command="{Binding ContentLevelCommand}" CommandParameter="Original" />-->
@@ -47,11 +47,6 @@
                 Opacity="0"
                 OpacityMask="{StaticResource PhoneBackgroundBrush}"
                 Background="{StaticResource PhoneBackgroundBrush}" x:Name="Browser" >
-
-                <!--<toolkit:GestureService.GestureListener>
-                    <toolkit:GestureListener Flick="OnFlick"/>
-                </toolkit:GestureService.GestureListener>-->
-
             </phone:WebBrowser>
         </Grid>
     </Grid>

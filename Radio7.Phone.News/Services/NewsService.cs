@@ -32,11 +32,13 @@ namespace Radio7.Phone.News.Services
             {
                 Title = i.Title,
                 Url = new Uri(i.Id, UriKind.Absolute),
-                Snippet = i.Snippet,
+                Snippet = i.Snippet.Trim(),
+                Content = i.Content,
                 RelatedNewsItems = i.RelatedLinks.Select(r => new RelatedNewsItem
                 {
                     Title = r.Title,
-                    Url = new Uri(r.Link, UriKind.Absolute)
+                    Url = new Uri(r.Link, UriKind.Absolute),
+                    IsComment = r.IsComment
                 }).ToList()
             });
 

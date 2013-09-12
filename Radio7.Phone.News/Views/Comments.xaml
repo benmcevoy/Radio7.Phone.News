@@ -1,0 +1,45 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Radio7.Phone.News.Views.Comments"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:Radio7.Phone.News.Views" xmlns:infrastructure="clr-namespace:Radio7.Phone.News.Infrastructure"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.Resources>
+        <infrastructure:ViewModelLocator x:Key="ViewModelLocator"/>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="Self" Background="Transparent"
+          DataContext="{Binding CommentsViewModel, Source={StaticResource ViewModelLocator}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="hNews" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="comments" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1" x:Name="ContentPanel" Margin="12">
+            <ScrollViewer>
+                <phone:WebBrowser x:Name="Browser"
+                                  Background="Black"
+                                  IsScriptEnabled="True"
+                                  ScriptNotify="WebBrowser_OnScriptNotify"
+                                  view:WebBrowserAttachedProperties.Html="{Binding Comments}"/>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>

@@ -4,6 +4,6 @@ namespace Rss.Manager.RelatedLinks
 {
     public interface IRelatedLinksParser
     {
-        IEnumerable<RelatedLink> GetRelatedLinks(string html);
+        IEnumerable<RelatedLink> GetRelatedLinks(Item item);
     }
 }

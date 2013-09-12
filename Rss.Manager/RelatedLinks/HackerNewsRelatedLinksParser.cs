@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Radio7.Portable.StrategyResolver;
 
 namespace Rss.Manager.RelatedLinks
 {
-    [RelatedLinkParserFor("news.ycombinator.com")]
+    [StrategyFor("news.ycombinator.com")]
     public class HackerNewsRelatedLinksParser : IRelatedLinksParser
     {
-        public IEnumerable<RelatedLink> GetRelatedLinks(string html)
+        public IEnumerable<RelatedLink> GetRelatedLinks(Item item)
         {
             return new List<RelatedLink> { new RelatedLink
                 {
-                    Link = GetHref(html),
-                    Title = "comments"
+                    Link = GetHref(item.Content),
+                    Title = "comments",
+                    IsComment = true
                 } };
         }
 

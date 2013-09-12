@@ -11,6 +11,8 @@ namespace Radio7.Phone.News.Models
 
         public string Snippet { get; set; }
 
+        public string Content { get; set; }
+
         public List<RelatedNewsItem> RelatedNewsItems { get; set; }
     }
 }

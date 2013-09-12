@@ -7,5 +7,7 @@ namespace Radio7.Phone.News.Services
         void BeginGetPage(Uri uri);
 
         event EventHandler<GetPageCompleteEventArgs> GetPageComplete;
+
+        string CreatePage(string title, string html, Uri url);
     }
 }

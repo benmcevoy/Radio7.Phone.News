@@ -35,6 +35,14 @@ namespace Radio7.Phone.News.Services
             _messenger.Send(new ProgressMessage(" "));
         }
 
+        public string CreatePage(string title, string html, Uri url)
+        {
+            var ce = new ContentExtractor();
+            var clean = ce.Extract(html, url);
+
+            return CreatePage(url.ToString(), title, clean.Html, clean.Domain);
+        }
+
         private void OnLoad(IAsyncResult ar)
         {
             var request = ((HttpWebRequest)ar.AsyncState);

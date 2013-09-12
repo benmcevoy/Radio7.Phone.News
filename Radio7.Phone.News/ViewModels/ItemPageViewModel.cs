@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System.Windows;
+using GalaSoft.MvvmLight;
 using System;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -23,6 +24,21 @@ namespace Radio7.Phone.News.ViewModels
             _messenger.Register<NavigateToStringCompleteMessage>(this, NavigateToStringComplete);
 
             ContentLevelCommand = new RelayCommand<string>(SetContentLevel, ContentLevelCommandCanExecute);
+            DownloadArticleCommand = new RelayCommand<Uri>(BeginLoad);
+        }
+
+        public void BeginLoad(Uri url)
+        {
+            Original = url;
+            _pageService.BeginGetPage(url);
+        }
+
+        public void CreatePage(string title, string html, Uri url)
+        {
+            Original = url;
+
+            var page = _pageService.CreatePage(title, html, url);
+            _messenger.Send(new NavigateToStringMessage(page, url));
         }
 
         private void NavigateToStringComplete(NavigateToStringCompleteMessage message)
@@ -58,17 +74,15 @@ namespace Radio7.Phone.News.ViewModels
 
         private void PageServiceOnGetPageComplete(object sender, GetPageCompleteEventArgs getPageCompleteEventArgs)
         {
-            Title = getPageCompleteEventArgs.Title;
-            Summary = getPageCompleteEventArgs.Summary;
-            Article = getPageCompleteEventArgs.Html;
-            Original = getPageCompleteEventArgs.Url;
+            WithDispatcher(() =>
+            {
+                Title = getPageCompleteEventArgs.Title;
+                Summary = getPageCompleteEventArgs.Summary;
+                Article = getPageCompleteEventArgs.Html;
+                Original = getPageCompleteEventArgs.Url;
 
-            SetContentLevel(ContentLevel.ToString());
-        }
-
-        public void BeginLoad(Uri url)
-        {
-            _pageService.BeginGetPage(url);
+                SetContentLevel(ContentLevel.ToString());
+            });
         }
 
         private ContentLevel _contentLevel = ContentLevel.Article;
@@ -86,13 +100,16 @@ namespace Radio7.Phone.News.ViewModels
 
         public RelayCommand<string> ContentLevelCommand { get; set; }
 
+        public RelayCommand<Uri> DownloadArticleCommand { get; set; }
+
         public string Title { get; set; }
 
         public string Summary { get; set; }
 
         public string Article { get; set; }
 
-        public Uri Original { get; set; }
+        private Uri _original;
+        public Uri Original { get { return _original; } set { _original = value; RaisePropertyChanged("Original"); } }
 
         public void LoadNextView()
         {
@@ -120,5 +137,11 @@ namespace Radio7.Phone.News.ViewModels
 
             SetContentLevel(newContentLevel.ToString());
         }
+
+        private static void WithDispatcher(Action action)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(action);
+        }
     }
 }
+

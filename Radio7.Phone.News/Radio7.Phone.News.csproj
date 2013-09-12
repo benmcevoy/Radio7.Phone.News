@@ -56,6 +56,10 @@
     <Reference Include="GalaSoft.MvvmLight.WP71">
       <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.WP71.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Release\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
@@ -75,6 +79,10 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.XPath, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.XPath.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -88,7 +96,15 @@
     <Compile Include="Messages\NavigateToStringMessage.cs" />
     <Compile Include="Messages\NavigateToStringCompleteMessage.cs" />
     <Compile Include="Messages\ProgressMessage.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\ContentLevel.cs" />
+    <Compile Include="Services\CommentService.cs" />
+    <Compile Include="Services\Comments\DefaultCommentExtractor.cs" />
+    <Compile Include="Services\Comments\HackerNewsCommentExtractor.cs" />
+    <Compile Include="Services\Comments\ICommentExtractor.cs" />
+    <Compile Include="Services\Comments\SlashdotCommentExtractor.cs" />
+    <Compile Include="Services\GetCommentsCompleteEventArgs.cs" />
+    <Compile Include="Services\ICommentService.cs" />
     <Compile Include="Services\INewsService.cs" />
     <Compile Include="Services\NewsService.cs" />
     <Compile Include="Services\GetNewsCompleteEventArgs.cs" />
@@ -100,6 +116,7 @@
     <Compile Include="Infrastructure\ResourceHelper.cs" />
     <Compile Include="Services\PageService.cs" />
     <Compile Include="ViewModels\AddFeedPageViewModel.cs" />
+    <Compile Include="ViewModels\CommentsViewModel.cs" />
     <Compile Include="ViewModels\FeedPageViewModel.cs" />
     <Compile Include="Models\NewsItem.cs" />
     <Compile Include="Models\RelatedNewsItem.cs" />
@@ -114,6 +131,9 @@
     <Compile Include="Views\ChangeDisplaySettingsPage.xaml.cs">
       <DependentUpon>ChangeDisplaySettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Comments.xaml.cs">
+      <DependentUpon>Comments.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FeedPage.xaml.cs">
       <DependentUpon>FeedPage.xaml</DependentUpon>
     </Compile>
@@ -126,6 +146,7 @@
     <Compile Include="Views\ListFeedsPage.xaml.cs">
       <DependentUpon>ListFeedsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WebBrowserAttachedProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -139,6 +160,10 @@
     <Page Include="Views\ChangeDisplaySettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Comments.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\FeedPage.xaml">
       <SubType>Designer</SubType>
@@ -196,6 +221,10 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Radio7.Phone.HNews\Radio7.Portable.StrategyResolver\Radio7.Portable.StrategyResolver.csproj">
+      <Project>{E9965B9E-AC1B-4041-9577-C3A97C494289}</Project>
+      <Name>Radio7.Portable.StrategyResolver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Radio7.Phone.HtmlCleaner\Radio7.Phone.HtmlCleaner.csproj">
       <Project>{27C4D892-9554-45DD-8D26-EBA59D84087B}</Project>
       <Name>Radio7.Phone.HtmlCleaner</Name>
@@ -205,7 +234,9 @@
       <Name>Rss.Manager</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

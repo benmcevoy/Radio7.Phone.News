@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml.Linq;
+using Radio7.Portable.StrategyResolver;
 using Rss.Manager.RelatedLinks;
 
 namespace Rss.Manager
@@ -24,7 +25,7 @@ namespace Rss.Manager
             Items = new List<Item>();
             HtmlUri = htmlUri;
 
-            _relatedLinksParser = new RelatedLinksParserResolver().Resolve(FeedUri.Host);
+            _relatedLinksParser = new StrategyResolver<IRelatedLinksParser>().Resolve(FeedUri.Host, new NoRelatedLinksParser());
         }
 
         public void GetItemsFromWeb()
@@ -50,7 +51,7 @@ namespace Rss.Manager
 
             foreach (var item in Items)
             {
-                item.RelatedLinks = _relatedLinksParser.GetRelatedLinks(item.Raw);
+                item.RelatedLinks = _relatedLinksParser.GetRelatedLinks(item);
             }
         }
 

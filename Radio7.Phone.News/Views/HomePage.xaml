@@ -25,14 +25,11 @@
         </ItemsPanelTemplate>
     </phone:PhoneApplicationPage.Resources>
 
-   
-    
-    <!--LayoutRoot contains the root grid where all other page content is placed-->
     <Grid x:Name="Self" DataContext="{Binding HomePageViewModel, Source={StaticResource ViewModelLocator}}">
-        <controls:Panorama Title="my application">
+        <controls:Panorama>
 
             <!--Panorama item one-->
-            <controls:PanoramaItem Header="feeds">
+            <controls:PanoramaItem Header="feeds" Orientation="Horizontal" Width="640">
                 <Grid>
                     <ListBox ItemsSource="{Binding Topics}" ItemsPanel="{StaticResource WrapItemsPanelTemplate}">
                         <ListBox.ItemTemplate>

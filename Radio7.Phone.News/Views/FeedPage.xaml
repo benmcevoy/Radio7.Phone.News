@@ -29,7 +29,7 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="GAYBOS NEWS" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="{Binding Topic.Title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
@@ -46,45 +46,43 @@
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="10,0,0,0" BorderBrush="{Binding ElementName=Self, Path=DataContext.Topic.AccentBrush}"  Margin="0,0,0,17">
-                            <HyperlinkButton Margin="0,3,0,3" Grid.Row="0" Command="{Binding ElementName=Self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}">
-                                <HyperlinkButton.Template>
-                                    <ControlTemplate TargetType="HyperlinkButton">
-                                        <Grid >
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition/>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <TextBlock Text="{Binding Title}" TextWrapping="Wrap"  Margin="12,-6,12,0"  />
-                                            <TextBlock Grid.Row="1" Text="{Binding Snippet}" TextWrapping="Wrap" Margin="12,3,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <HyperlinkButton Margin="0,5,0,5" Grid.Row="0" Command="{Binding ElementName=Self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}">
+                            <HyperlinkButton.Template>
+                                <ControlTemplate TargetType="HyperlinkButton">
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding Title}" TextWrapping="Wrap"  Margin="12,-6,12,0"  />
+                                        <TextBlock Grid.Row="1" Text="{Binding Snippet}" TextWrapping="Wrap" Margin="12,3,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
 
-                                            <ItemsControl Grid.Row="2" ItemsSource="{Binding RelatedNewsItems}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <toolkit:WrapPanel/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <HyperlinkButton Command="{Binding ElementName=Self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding Url}" >
-                                                            <HyperlinkButton.Template>
-                                                                <ControlTemplate TargetType="HyperlinkButton">
-                                                                    <TextBlock Text="{Binding Title}" 
+                                        <ItemsControl Grid.Row="2" ItemsSource="{Binding RelatedNewsItems}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <toolkit:WrapPanel/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <HyperlinkButton Command="{Binding ElementName=Self, Path=DataContext.LaunchCommand}" CommandParameter="{Binding}" >
+                                                        <HyperlinkButton.Template>
+                                                            <ControlTemplate TargetType="HyperlinkButton">
+                                                                <TextBlock Text="{Binding Title}" 
                                                                        TextTrimming="WordEllipsis"
                                                                        Style="{StaticResource PhoneTextNormalStyle}" Foreground ="{Binding ElementName=Self, Path=DataContext.Topic.AccentBrush}"/>
-                                                                </ControlTemplate>
-                                                            </HyperlinkButton.Template>
-                                                        </HyperlinkButton>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </HyperlinkButton.Template>
-                            </HyperlinkButton>
-                        </Border>
+                                                            </ControlTemplate>
+                                                        </HyperlinkButton.Template>
+                                                    </HyperlinkButton>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </ControlTemplate>
+                            </HyperlinkButton.Template>
+                        </HyperlinkButton>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

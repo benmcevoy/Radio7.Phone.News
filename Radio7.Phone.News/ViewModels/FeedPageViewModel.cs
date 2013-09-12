@@ -26,7 +26,7 @@ namespace Radio7.Phone.News.ViewModels
 
             _newsService.GetNewsComplete += NewsServiceOnGetNewsComplete;
 
-            LaunchCommand = new RelayCommand<Uri>(Launch);
+            LaunchCommand = new RelayCommand<NewsItem>(Launch);
             NewsItems = Enumerable.Empty<NewsItem>();
         }
 
@@ -46,15 +46,27 @@ namespace Radio7.Phone.News.ViewModels
             _newsService.BeginGetNews(Topic.Url);
         }
 
-        private void Launch(Uri uri)
+        private void Launch(NewsItem newsItem)
         {
             const string splitOn = "&url=";
-            var url = uri.ToString().Decode();
+            var url = newsItem.Url.ToString().Decode();
             var startIndex = url.LastIndexOf(splitOn, StringComparison.Ordinal);
 
             if (startIndex > -1)
             {
                 url = url.Substring(startIndex + splitOn.Length);
+            }
+
+            // TODO: this is dodgy. How to navigate safely with an object?
+            CurrentItem = newsItem;
+
+            if (newsItem is RelatedNewsItem)
+            {
+                if ((newsItem as RelatedNewsItem).IsComment)
+                {
+                    _navigationService.NavigateTo(new Uri("/Views/Comments.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));
+                    return;
+                }
             }
 
             _navigationService.NavigateTo(new Uri("/Views/ItemPage.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));
@@ -64,9 +76,11 @@ namespace Radio7.Phone.News.ViewModels
 
         public IEnumerable<NewsItem> NewsItems { get; set; }
 
-        public RelayCommand<Uri> LaunchCommand { get; set; }
+        public RelayCommand<NewsItem> LaunchCommand { get; set; }
 
-        public static void WithDispatcher(Action action)
+        public static NewsItem CurrentItem { get; set; }
+
+        private static void WithDispatcher(Action action)
         {
             Deployment.Current.Dispatcher.BeginInvoke(action);
         }
