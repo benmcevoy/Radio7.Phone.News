@@ -43,6 +43,7 @@ namespace Radio7.Phone.News.Data
                     new Topic("technology", 7, new Uri("http://news.google.com/?ned=au&topic=tc&output=rss", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/technology.png"),
                     new Topic("hacker news", 8, new Uri("https://news.ycombinator.com/rss", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/hacker.png"),
                     new Topic("slashdot", 9, new Uri("http://rss.slashdot.org/Slashdot/slashdot", UriKind.Absolute), Color.FromArgb(255,100,118,135), "/Content/slashdot.png"),
+                    new Topic("bookmarks", 10, new Uri("http://benmcevoy.com.au/bm/bm.ashx", UriKind.Absolute), Color.FromArgb(255,109,135,100), "/Content/bm.png"),
                 }; 
     }
 }

@@ -27,6 +27,17 @@ namespace Radio7.Phone.News.Data
             return _style;
         }
 
+        private static string _commentsStyle;
+        public string GetCommentsStyle()
+        {
+            if (string.IsNullOrEmpty(_commentsStyle))
+            {
+                _commentsStyle = ResourceHelper.LoadStringFromResource(new Uri("/Radio7.Phone.News;component/Resources/Css/comments.css", UriKind.Relative));
+            }
+
+            return _commentsStyle;
+        }
+
         private static string _wrapper;
         public string GetWrapper()
         {
@@ -36,6 +47,17 @@ namespace Radio7.Phone.News.Data
             }
 
             return _wrapper;
+        }
+
+        private static string _commentsWrapper;
+        public string GetCommentsWrapper()
+        {
+            if (string.IsNullOrEmpty(_commentsWrapper))
+            {
+                _commentsWrapper = ResourceHelper.LoadStringFromResource(new Uri("/Radio7.Phone.News;component/Resources/Html/CommentsWrapper.html", UriKind.Relative));
+            }
+
+            return _commentsWrapper;
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-namespace Rss.Manager
+namespace Radio7.Portable.Rss
 {
     public class Feed
     {
@@ -121,9 +121,9 @@ namespace Rss.Manager
                                 let pubDate = f.Element("pubDate")
 
                                 select new Item(link.Value,
-                                                encoded == null ? "" : encoded.Value,
-                                                HttpUtility.HtmlDecode(title.Value),
-                                               pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
+                                                encoded == null ? "no description found..." : encoded.Value,
+                                                WebUtility.HtmlDecode(title.Value),
+                                                pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
                     }
                 }
 
@@ -138,8 +138,8 @@ namespace Rss.Manager
                             let pubDate = f.Element("pubDate")
 
                             select new Item(link.Value,
-                                            description == null ? "" : description.Value,
-                                           HttpUtility.HtmlDecode(title.Value),
+                                            description == null ? "no description found..." : description.Value,
+                                           WebUtility.HtmlDecode(title.Value),
                                             pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
             }
             return null;
@@ -196,8 +196,8 @@ namespace Rss.Manager
                     let pubDate = f.Element(_atomNamespace + "published")
 
                     select new Item(useIdForHref ? id.Value : link.Attribute("href").Value,
-                                    content == null ? "" : content.Value,
-                                    HttpUtility.HtmlDecode(title.Value),
+                                    content == null ? "no description found..." : content.Value,
+                                    WebUtility.HtmlDecode(title.Value),
                                     pubDate == null ? new DateTime().ToString(CultureInfo.InvariantCulture) : pubDate.Value)).ToList();
         }
 

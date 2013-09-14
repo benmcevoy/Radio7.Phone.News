@@ -2,12 +2,13 @@
 // -----------------------------------------------------------------------
 // Copyright (c) David Kean. All rights reserved.
 // -----------------------------------------------------------------------
+
 using System;
 using System.Globalization;
 using System.IO;
 using Radio7.Portable.Rss.Entities;
 
-namespace Radio7.Phone.HtmlCleaner
+namespace Radio7.Portable.Rss
 {
     /// <summary>
     ///     Provides methods for encoding and decoding HTML when processing Web requests.

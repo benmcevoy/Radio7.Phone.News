@@ -5,7 +5,7 @@
 using System;
 using System.Globalization;
 using System.IO;
-using Radio7.Phone.HtmlCleaner.Entities;
+using Radio7.Portable.Rss.Entities;
 
 namespace Radio7.Phone.HtmlCleaner
 {

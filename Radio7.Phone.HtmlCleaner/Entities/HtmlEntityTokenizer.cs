@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace Radio7.Phone.HtmlCleaner.Entities
+namespace Radio7.Portable.Rss.Entities
 {
     // Breaks up a HTML string into content and entity tokens.
     //
@@ -70,18 +70,19 @@ namespace Radio7.Phone.HtmlCleaner.Entities
 
         public Token? Next()
         {
-            _text.Clear();
+            _text.Length = 0;
 
-            int startIndex = _index;
+            var startIndex = _index;
 
-            if (!ParseNext())
-                return null;
+            if (!ParseNext()) return null;
 
-            Token token = new Token();
-            token.Text = _text.ToString();
-            token.StartIndex = startIndex + 1;
-            token.EndIndex = _index + 1;
-            token.Type = _type;
+            var token = new Token
+                {
+                    Text = _text.ToString(),
+                    StartIndex = startIndex + 1,
+                    EndIndex = _index + 1,
+                    Type = _type
+                };
 
             return token;
         }

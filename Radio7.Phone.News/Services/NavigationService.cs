@@ -8,7 +8,6 @@ namespace Radio7.Phone.News.Services
     public class NavigationService : INavigationService
     {
         private PhoneApplicationFrame _mainFrame;
-        
 
         public void NavigateTo(Uri pageUri)
         {

@@ -3,7 +3,10 @@ using System.Linq;
 using GalaSoft.MvvmLight.Messaging;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Models;
-using Rss.Manager;
+using Radio7.Phone.News.Services.RelatedNewsItems;
+using Radio7.Phone.News.Services.Snippets;
+using Radio7.Portable.Rss;
+using Radio7.Portable.StrategyResolver;
 
 namespace Radio7.Phone.News.Services
 {
@@ -11,10 +14,14 @@ namespace Radio7.Phone.News.Services
     {
         private readonly IMessenger _messenger;
         private Feed _feed;
+        private readonly StrategyResolver<IRelatedNewsItemsParser> _relatedLinksResolver;
+        private readonly StrategyResolver<ISnippetExtractor> _snippetExtractorResolver;
 
-        public NewsService(IMessenger messenger)
+        public NewsService(IMessenger messenger, StrategyResolver<IRelatedNewsItemsParser> relatedLinksResolver, StrategyResolver<ISnippetExtractor> snippetExtractorResolver)
         {
             _messenger = messenger;
+            _relatedLinksResolver = relatedLinksResolver;
+            _snippetExtractorResolver = snippetExtractorResolver;
         }
 
         public void BeginGetNews(Uri url)
@@ -31,15 +38,10 @@ namespace Radio7.Phone.News.Services
             var newsItems = _feed.Items.Select(i => new NewsItem
             {
                 Title = i.Title,
-                Url = new Uri(i.Id, UriKind.Absolute),
-                Snippet = i.Snippet.Trim(),
+                Url = i.Url,
+                Snippet = _snippetExtractorResolver.Resolve(_feed.FeedUri.Host, new DefaultSnippetExtractor()).Extract(i.Raw, 140),
                 Content = i.Content,
-                RelatedNewsItems = i.RelatedLinks.Select(r => new RelatedNewsItem
-                {
-                    Title = r.Title,
-                    Url = new Uri(r.Link, UriKind.Absolute),
-                    IsComment = r.IsComment
-                }).ToList()
+                RelatedNewsItems = _relatedLinksResolver.Resolve(_feed.FeedUri.Host, new NoRelatedNewsItemsParser()).GetRelatedNewsItems(i).ToList()
             });
 
             if (GetNewsComplete != null)

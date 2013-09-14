@@ -6,11 +6,14 @@ using Microsoft.Phone.Tasks;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
+using Radio7.Phone.News.Services;
 
 namespace Radio7.Phone.News.Views
 {
     public partial class ItemPage : PhoneApplicationPage
     {
+        private readonly IStateService _stateService = new StateService();
+
         public ItemPage()
         {
             InitializeComponent();
@@ -64,18 +67,20 @@ namespace Radio7.Phone.News.Views
             base.OnNavigatedTo(e);
 
             string url;
+            var currentItem = _stateService.CurrentItem;
 
             if (ViewModel == null) return;
+            if (currentItem == null) return;
             if (!NavigationContext.QueryString.TryGetValue("url", out url)) return;
 
-            if (string.IsNullOrEmpty(FeedPageViewModel.CurrentItem.Content))
+            if (string.IsNullOrEmpty(currentItem.Content))
             {
                 ViewModel.BeginLoad(new Uri(HttpUtility.HtmlDecode(url)));
             }
             else
             {
-                ViewModel.CreatePage(FeedPageViewModel.CurrentItem.Title,
-                                     FeedPageViewModel.CurrentItem.Content,
+                ViewModel.CreatePage(currentItem.Title,
+                                     currentItem.Content,
                                      new Uri(HttpUtility.HtmlDecode(url)));
             }
         }
@@ -88,6 +93,16 @@ namespace Radio7.Phone.News.Views
         private void WithDispatcher(Action action)
         {
             Dispatcher.BeginInvoke(action);
+        }
+
+        private void DownloadButton_OnClick(object sender, EventArgs e)
+        {
+            ViewModel.DownloadArticleCommand.Execute(ViewModel.Original);
+        }
+
+        private void ViewOriginalButton_OnClick(object sender, EventArgs e)
+        {
+            ViewModel.ViewOriginalCommand.Execute(ViewModel.Original);
         }
     }
 }

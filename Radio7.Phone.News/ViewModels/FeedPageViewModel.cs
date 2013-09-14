@@ -9,6 +9,7 @@ using Radio7.Phone.News.Models;
 using Radio7.Phone.News.Services;
 using Radio7.Phone.News.Data;
 using System.Net;
+using Radio7.Phone.News.Views;
 
 namespace Radio7.Phone.News.ViewModels
 {
@@ -17,12 +18,15 @@ namespace Radio7.Phone.News.ViewModels
         private readonly INewsService _newsService;
         private readonly INavigationService _navigationService;
         private readonly TopicRepository _topicRepository;
+        private readonly IStateService _stateService;
 
-        public FeedPageViewModel(INewsService newsService, INavigationService navigationService, TopicRepository topicRepository)
+        public FeedPageViewModel(INewsService newsService, INavigationService navigationService, 
+            TopicRepository topicRepository, IStateService stateService)
         {
             _newsService = newsService;
             _navigationService = navigationService;
             _topicRepository = topicRepository;
+            _stateService = stateService;
 
             _newsService.GetNewsComplete += NewsServiceOnGetNewsComplete;
 
@@ -57,8 +61,7 @@ namespace Radio7.Phone.News.ViewModels
                 url = url.Substring(startIndex + splitOn.Length);
             }
 
-            // TODO: this is dodgy. How to navigate safely with an object?
-            CurrentItem = newsItem;
+            _stateService.CurrentItem = newsItem;
 
             if (newsItem is RelatedNewsItem)
             {
@@ -77,8 +80,6 @@ namespace Radio7.Phone.News.ViewModels
         public IEnumerable<NewsItem> NewsItems { get; set; }
 
         public RelayCommand<NewsItem> LaunchCommand { get; set; }
-
-        public static NewsItem CurrentItem { get; set; }
 
         private static void WithDispatcher(Action action)
         {

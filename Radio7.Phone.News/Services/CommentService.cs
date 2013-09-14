@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using GalaSoft.MvvmLight.Messaging;
+using Radio7.Phone.News.Data;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Models;
 using Radio7.Phone.News.Services.Comments;
@@ -15,11 +16,14 @@ namespace Radio7.Phone.News.Services
     {
         private readonly IMessenger _messenger;
         private readonly StrategyResolver<ICommentExtractor> _commentExtractorResolver;
+        private readonly HtmlRepository _htmlRepository;
 
-        public CommentService(IMessenger messenger, StrategyResolver<ICommentExtractor> commentExtractorResolver)
+        public CommentService(IMessenger messenger, 
+            StrategyResolver<ICommentExtractor> commentExtractorResolver, HtmlRepository htmlRepository)
         {
             _messenger = messenger;
             _commentExtractorResolver = commentExtractorResolver;
+            _htmlRepository = htmlRepository;
         }
 
         public void BeginGetComments(Uri url)
@@ -47,16 +51,7 @@ namespace Radio7.Phone.News.Services
 
         private string WrapComments(IEnumerable<Comment> comments)
         {
-            var result = new StringBuilder(@"<html lang='en'>
-<head><title></title>
-<meta name='viewport' content='width=480' />
-<style type='text/css'>
-body, #body {{ background: black !important; margin: 10px; padding:0; width: 450px;}} 
-h3 { margin: 0 0 0px 0; font-size: 32px; font-weight: 100; }
-.comment {{ background: black !important; padding:0; font-size: 20px !important; margin: 0 0 25px 0; color: white !important;  }} 
-font {{ background: black !important; padding:0; color: white !important; font-size: 18px !important; }}</style>
-</head><body>
-<div id='body'>");
+            var result = new StringBuilder();
 
             var commentArray = comments as Comment[] ?? comments.ToArray();
 
@@ -74,7 +69,7 @@ font {{ background: black !important; padding:0; color: white !important; font-s
 
             result.Append("</div></body></html>");
 
-            return result.ToString();
+            return string.Format(_htmlRepository.GetCommentsWrapper(), result, _htmlRepository.GetStyle(), _htmlRepository.GetCommentsStyle());
         }
 
         public event EventHandler<GetCommentsCompleteEventArgs> GetCommentsComplete;

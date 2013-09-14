@@ -27,10 +27,5 @@ namespace Radio7.Phone.News.Views
         {
             get { return Self.DataContext as FeedPageViewModel; }
         }
-
-        private void WithDispatcher(Action action)
-        {
-            Dispatcher.BeginInvoke(action);
-        }
     }
 }

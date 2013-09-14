@@ -1,8 +1,11 @@
 ﻿using System.Linq;
 using HtmlAgilityPack;
+using Radio7.Phone.HtmlCleaner;
+using Radio7.Portable.StrategyResolver;
 
-namespace Radio7.Phone.HtmlCleaner.Extractors.Snippet
+namespace Radio7.Phone.News.Services.Snippets
 {
+    [StrategyFor("news.google.com")]
     public class GoogleNewsRssSnippetExtractor : ISnippetExtractor
     {
         public string Extract(string html, int length)

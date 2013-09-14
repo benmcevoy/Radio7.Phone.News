@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Radio7.Phone.HtmlCleaner.Entities
+namespace Radio7.Portable.Rss.Entities
 {
     internal static class HtmlEncodingServices
     {

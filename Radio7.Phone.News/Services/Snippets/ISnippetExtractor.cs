@@ -1,4 +1,4 @@
-﻿namespace Radio7.Phone.HtmlCleaner.Extractors.Snippet
+﻿namespace Radio7.Phone.News.Services.Snippets
 {
     public interface ISnippetExtractor
     {

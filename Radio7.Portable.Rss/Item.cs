@@ -1,7 +1,6 @@
 ﻿using System;
-using Radio7.Phone.HtmlCleaner.Cleaners;
 
-namespace Rss.Manager
+namespace Radio7.Portable.Rss
 {
     public class Item
     {
@@ -9,16 +8,28 @@ namespace Rss.Manager
         {
             Id = id;
             Raw = raw;
-            Content = HtmlCleaner.Clean(raw);
+            Content = raw;
             Title = title;
             PublishedDateTime = publishedDateTime;
         }
 
         public string Id { get; set; }
 
+        private Uri _url;
         public Uri Url
         {
-            get { return new Uri(Id); }
+            get
+            {
+                if (_url == null)
+                {
+                    if (!Uri.TryCreate(Id, UriKind.Absolute, out _url))
+                    {
+                        _url = new Uri("http://google.com/");
+                    }
+                }
+                
+                return _url;
+            }
         }
 
         public string Raw { get; set; }

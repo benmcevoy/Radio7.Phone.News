@@ -3,17 +3,26 @@ using System.Net;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
+using Radio7.Phone.News.Services;
 using Radio7.Phone.News.ViewModels;
 
 namespace Radio7.Phone.News.Views
 {
     public partial class Comments : PhoneApplicationPage
     {
+        private IStateService _stateService = new StateService();
+
         public Comments()
         {
             InitializeComponent();
 
             Browser.Navigating += BrowserOnNavigating;
+
+            Browser.LoadCompleted += (sender, args) =>
+                {
+                    Browser.OpacityMask = null;
+                    Browser.Opacity = 1;
+                };
         }
 
         private void BrowserOnNavigating(object sender, NavigatingEventArgs navigatingEventArgs)
@@ -26,13 +35,14 @@ namespace Radio7.Phone.News.Views
         {
             base.OnNavigatedTo(e);
 
-            Browser.NavigateToString("");
-
             string url;
+            var currentItem = _stateService.CurrentItem;
 
             if (!NavigationContext.QueryString.TryGetValue("url", out url)) return;
+            if (ViewModel == null) return;
+            if (currentItem == null) return;
 
-            if (ViewModel != null) ViewModel.GetComments(new Uri(HttpUtility.HtmlDecode(url)));
+            ViewModel.GetComments(new Uri(HttpUtility.HtmlDecode(url)));
         }
 
         private CommentsViewModel ViewModel

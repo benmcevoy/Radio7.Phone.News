@@ -1,4 +1,6 @@
-﻿namespace Radio7.Phone.HtmlCleaner.Extractors.Snippet
+﻿using Radio7.Phone.HtmlCleaner;
+
+namespace Radio7.Phone.News.Services.Snippets
 {
     public class DefaultSnippetExtractor : ISnippetExtractor
     {

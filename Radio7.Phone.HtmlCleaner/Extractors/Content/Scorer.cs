@@ -81,7 +81,12 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
         {
             if (htmlDocument.DocumentNode.FirstChild == null) yield break;
 
-            foreach (var htmlNode in htmlDocument.DocumentNode.SelectNodes("//*"))
+            var nodes = htmlDocument.DocumentNode.SelectNodes("//*");
+
+            // might not be html, could be a txt file?
+            if (nodes == null) yield break;
+
+            foreach (var htmlNode in nodes)
             {
                 if (htmlNode.ParentNode == null) continue;
                 if (htmlNode.ParentNode.Name == "body") continue;

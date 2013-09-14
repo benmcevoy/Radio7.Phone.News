@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
-namespace Radio7.Phone.HtmlCleaner.Entities
+namespace Radio7.Portable.Rss.Entities
 {
     internal class HtmlEntityDecoder
     {

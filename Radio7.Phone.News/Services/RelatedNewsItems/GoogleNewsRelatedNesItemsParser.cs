@@ -4,16 +4,18 @@ using System.Diagnostics;
 using System.Linq;
 using HtmlAgilityPack;
 using Radio7.Phone.HtmlCleaner;
+using Radio7.Portable.Rss;
 using Radio7.Portable.StrategyResolver;
+using Radio7.Phone.News.Models;
 
-namespace Rss.Manager.RelatedLinks
+namespace Radio7.Phone.News.Services.RelatedNewsItems
 {
     [StrategyFor("news.google.com")]
-    public class GoogleNewsRelatedLinksParser : IRelatedLinksParser
+    public class GoogleNewsRelatedNesItemsParser : IRelatedNewsItemsParser
     {
-        public IEnumerable<RelatedLink> GetRelatedLinks(Item item)
+        public IEnumerable<RelatedNewsItem> GetRelatedNewsItems(Item item)
         {
-            var results = new List<RelatedLink>();
+            var results = new List<RelatedNewsItem>();
 
             try
             {
@@ -44,10 +46,10 @@ namespace Rss.Manager.RelatedLinks
 
                 foreach (var relatedLink in links)
                 {
-                    var result = new RelatedLink
+                    var result = new RelatedNewsItem
                         {
                             Title = relatedLink.InnerText.Decode().StripTags(),
-                            Link = relatedLink.GetAttributeValue("href", "")
+                            Url = new Uri(relatedLink.GetAttributeValue("href", ""))
                         };
 
                     results.Add(result);

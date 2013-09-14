@@ -12,7 +12,6 @@ namespace Radio7.Phone.News.ViewModels
         public CommentsViewModel(ICommentService commentService)
         {
             _commentService = commentService;
-
             _commentService.GetCommentsComplete += CommentServiceOnGetCommentsComplete;
         }
 
@@ -26,7 +25,6 @@ namespace Radio7.Phone.News.ViewModels
             WithDispatcher(() =>
                 {
                     Comments = getCommentsCompleteEventArgs.CommentsHtml;
-
                     RaisePropertyChanged("Comments");
                 });
         }

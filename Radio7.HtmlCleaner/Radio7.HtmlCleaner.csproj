@@ -108,15 +108,6 @@
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Content\TextNodeScorer.cs">
       <Link>Extractors\Content\TextNodeScorer.cs</Link>
     </Compile>
-    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Snippet\DefaultSnippetExtractor.cs">
-      <Link>Extractors\Snippet\DefaultSnippetExtractor.cs</Link>
-    </Compile>
-    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Snippet\GoogleNewsRssSnippetExtractor.cs">
-      <Link>Extractors\Snippet\GoogleNewsRssSnippetExtractor.cs</Link>
-    </Compile>
-    <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Snippet\ISnippetExtractor.cs">
-      <Link>Extractors\Snippet\ISnippetExtractor.cs</Link>
-    </Compile>
     <Compile Include="..\Radio7.Phone.HtmlCleaner\Extractors\Title\Candidate.cs">
       <Link>Extractors\Title\Candidate.cs</Link>
     </Compile>
@@ -165,6 +156,7 @@
       <Name>Radio7.Portable.OpenTextSummarizer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
