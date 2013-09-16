@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Net;
 using System.Windows.Navigation;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Tasks;
+using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Services;
 using Radio7.Phone.News.ViewModels;
+using Radio7.Phone.News.Models;
 
 namespace Radio7.Phone.News.Views
 {
     public partial class Comments : PhoneApplicationPage
     {
-        private IStateService _stateService = new StateService();
+        private readonly IStateService _stateService = new StateService();
 
         public Comments()
         {
             InitializeComponent();
+
+            Messenger.Default.Register<NavigateToStringMessage>(this, NavigateToString);
 
             Browser.Navigating += BrowserOnNavigating;
 
@@ -23,6 +28,21 @@ namespace Radio7.Phone.News.Views
                     Browser.OpacityMask = null;
                     Browser.Opacity = 1;
                 };
+        }
+
+        private void NavigateToString(NavigateToStringMessage message)
+        {
+            WithDispatcher(() =>
+            {
+                if (string.IsNullOrEmpty(message.Content))
+                {
+                    Browser.Navigate(message.Url);
+                }
+                else
+                {
+                    Browser.NavigateToString(message.Content);
+                }
+            });
         }
 
         private void BrowserOnNavigating(object sender, NavigatingEventArgs navigatingEventArgs)
@@ -36,12 +56,13 @@ namespace Radio7.Phone.News.Views
             base.OnNavigatedTo(e);
 
             string url;
-            var currentItem = _stateService.CurrentItem;
+            var currentItem = _stateService.CurrentItem as RelatedNewsItem;
 
             if (!NavigationContext.QueryString.TryGetValue("url", out url)) return;
             if (ViewModel == null) return;
             if (currentItem == null) return;
 
+            CommentTitle.Text = currentItem.CommentTitle.ToUpper();
             ViewModel.GetComments(new Uri(HttpUtility.HtmlDecode(url)));
         }
 
@@ -57,6 +78,22 @@ namespace Radio7.Phone.News.Views
             var newHeight = height * 1.5D;
 
             thisBrowser.Height = newHeight;
+        }
+
+        private void ArticleButton_OnClick(object sender, EventArgs e)
+        {
+            // TODO:
+            ViewModel.ViewArticleCommand.Execute(null);
+        }
+
+        private void ViewOriginalButton_OnClick(object sender, EventArgs e)
+        {
+            ViewModel.ViewOriginalCommand.Execute(ViewModel.Original);
+        }
+
+        private void WithDispatcher(Action action)
+        {
+            Dispatcher.BeginInvoke(action);
         }
     }
 }

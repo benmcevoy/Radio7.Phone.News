@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Radio7.Portable.Rss;
 using Radio7.Portable.StrategyResolver;
 using Radio7.Phone.News.Models;
+using Rss.Manager;
 
 namespace Radio7.Phone.News.Services.RelatedNewsItems
 {
@@ -14,7 +14,8 @@ namespace Radio7.Phone.News.Services.RelatedNewsItems
                 {
                     Url = item.Url, 
                     Title = "comments", 
-                    IsComment = true
+                    IsComment = true,
+                    CommentTitle = item.Title
                 } };
         }
     }

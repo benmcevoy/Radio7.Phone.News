@@ -3,5 +3,7 @@
     public class RelatedNewsItem : NewsItem
     {
         public bool IsComment { get; set; }
+
+        public string CommentTitle { get; set; }
     }
 }

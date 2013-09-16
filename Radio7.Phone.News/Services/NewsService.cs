@@ -5,8 +5,8 @@ using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Models;
 using Radio7.Phone.News.Services.RelatedNewsItems;
 using Radio7.Phone.News.Services.Snippets;
-using Radio7.Portable.Rss;
 using Radio7.Portable.StrategyResolver;
+using Rss.Manager;
 
 namespace Radio7.Phone.News.Services
 {

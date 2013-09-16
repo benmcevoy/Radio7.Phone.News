@@ -26,9 +26,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="hNews" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="comments" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel Grid.Row="0" Margin="12,12,0,12">
+            <TextBlock x:Name="CommentTitle" 
+                       FontFamily="Segoe WP Semibold"
+                       TextWrapping="Wrap" 
+                       Margin="9,6,0,0" 
+                       FontSize="32"
+                       Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="ContentPanel" Margin="12">
@@ -44,5 +48,12 @@
             </ScrollViewer>
         </Grid>
     </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton x:Name="ArticleButton" IconUri="\Content\article.png" Text="article" Click="ArticleButton_OnClick"/>
+            <shell:ApplicationBarIconButton x:Name="OriginalButton" IconUri="\Content\browser.png" Text="original" Click="ViewOriginalButton_OnClick"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

@@ -30,8 +30,9 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="\Content\download.png" Text="download" Click="DownloadButton_OnClick"/>
-            <shell:ApplicationBarIconButton IconUri="\Content\browser.png" Text="original" Click="ViewOriginalButton_OnClick"/>
+            <shell:ApplicationBarIconButton x:Name="CommentsButton" IconUri="\Content\comment.png" Text="comments" Click="CommentsButton_OnClick"/>
+            <shell:ApplicationBarIconButton x:Name="DownloadButton" IconUri="\Content\download.png" Text="download" Click="DownloadButton_OnClick"/>
+            <shell:ApplicationBarIconButton x:Name="OriginalButton" IconUri="\Content\browser.png" Text="original" Click="ViewOriginalButton_OnClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Radio7.Phone.News.Models;
-using Radio7.Portable.Rss;
+using Rss.Manager;
 
 namespace Radio7.Phone.News.Services.RelatedNewsItems
 {

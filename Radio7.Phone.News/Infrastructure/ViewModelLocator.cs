@@ -32,7 +32,7 @@ namespace Radio7.Phone.News.Infrastructure
         
         public AddFeedPageViewModel AddFeedPageViewModel { get { return new AddFeedPageViewModel(TopicRepository); } }
         
-        public CommentsViewModel CommentsViewModel { get { return new CommentsViewModel(CommentService); } }
+        public CommentsViewModel CommentsViewModel { get { return new CommentsViewModel(CommentService, Messenger.Default); } }
     }
 }
 

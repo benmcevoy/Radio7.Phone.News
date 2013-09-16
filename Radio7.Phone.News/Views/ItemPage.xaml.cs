@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.ViewModels;
@@ -66,6 +68,9 @@ namespace Radio7.Phone.News.Views
         {
             base.OnNavigatedTo(e);
 
+            // TODO:
+            SetAppBarButtonEnabled("comments", false);
+
             string url;
             var currentItem = _stateService.CurrentItem;
 
@@ -75,24 +80,35 @@ namespace Radio7.Phone.News.Views
 
             if (string.IsNullOrEmpty(currentItem.Content))
             {
+                SetAppBarButtonEnabled("download", false);
+
                 ViewModel.BeginLoad(new Uri(HttpUtility.HtmlDecode(url)));
             }
             else
             {
+                SetAppBarButtonEnabled("download", true);
+
                 ViewModel.CreatePage(currentItem.Title,
                                      currentItem.Content,
                                      new Uri(HttpUtility.HtmlDecode(url)));
             }
         }
 
+        private void SetAppBarButtonEnabled(string buttonText, bool isEnabled)
+        {
+            var button =
+                ApplicationBar.Buttons.Cast<ApplicationBarIconButton>()
+                              .FirstOrDefault(b => b.Text.ToLowerInvariant() == buttonText.ToLowerInvariant());
+
+            if (button != null)
+            {
+                button.IsEnabled = isEnabled;
+            }
+        }
+
         private ItemPageViewModel ViewModel
         {
             get { return Self.DataContext as ItemPageViewModel; }
-        }
-
-        private void WithDispatcher(Action action)
-        {
-            Dispatcher.BeginInvoke(action);
         }
 
         private void DownloadButton_OnClick(object sender, EventArgs e)
@@ -103,6 +119,17 @@ namespace Radio7.Phone.News.Views
         private void ViewOriginalButton_OnClick(object sender, EventArgs e)
         {
             ViewModel.ViewOriginalCommand.Execute(ViewModel.Original);
+        }
+
+        private void CommentsButton_OnClick(object sender, EventArgs e)
+        {
+            // TODO:
+            ViewModel.ViewCommentsCommand.Execute(null);
+        }
+
+        private void WithDispatcher(Action action)
+        {
+            Dispatcher.BeginInvoke(action);
         }
     }
 }

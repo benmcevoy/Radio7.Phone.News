@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using HtmlAgilityPack;
 using Radio7.Phone.HtmlCleaner;
-using Radio7.Portable.Rss;
 using Radio7.Portable.StrategyResolver;
 using Radio7.Phone.News.Models;
+using Rss.Manager;
 
 namespace Radio7.Phone.News.Services.RelatedNewsItems
 {

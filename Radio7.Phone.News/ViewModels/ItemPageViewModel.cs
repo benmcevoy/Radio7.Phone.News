@@ -21,6 +21,7 @@ namespace Radio7.Phone.News.ViewModels
 
             DownloadArticleCommand = new RelayCommand<Uri>(BeginLoad);
             ViewOriginalCommand = new RelayCommand<Uri>(ViewOriginal);
+            ViewCommentsCommand = new RelayCommand<object>(ViewComments);
         }
 
         public void BeginLoad(Uri url)
@@ -32,6 +33,11 @@ namespace Radio7.Phone.News.ViewModels
         public void ViewOriginal(Uri url)
         {
             _messenger.Send(new NavigateToStringMessage("", Original));
+        }
+
+        public void ViewComments(object todo)
+        {
+            // TODO:
         }
 
         public void CreatePage(string title, string html, Uri url)
@@ -58,6 +64,8 @@ namespace Radio7.Phone.News.ViewModels
         public RelayCommand<Uri> DownloadArticleCommand { get; set; }
 
         public RelayCommand<Uri> ViewOriginalCommand { get; set; }
+
+        public RelayCommand<object> ViewCommentsCommand { get; set; }
 
         public string Title { get; set; }
 
