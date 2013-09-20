@@ -150,12 +150,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Radio7.Portable.OpenTextSummarizer\Radio7.Portable.OpenTextSummarizer.csproj">
-      <Project>{5e51329e-d368-444e-a731-abce9946fda5}</Project>
-      <Name>Radio7.Portable.OpenTextSummarizer</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

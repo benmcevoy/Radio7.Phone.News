@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using HtmlAgilityPack;
 using System;
 using Radio7.Phone.HtmlCleaner.Entities;
 using Radio7.Phone.HtmlCleaner.Extractors.Title;
-using Radio7.Portable.OpenTextSummarizer;
 
 namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 {
@@ -21,7 +19,6 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
 
             var title = new TitleExtractor().Extract(html);
             var text = NormalizeText(extractedContent);
-            var summary = GetSummary(text);
 
             return new ExtractedContent
                 {
@@ -29,8 +26,6 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
                     Title = title,
                     Html = extractedContent.ConvertToUtf8(),
                     Text = text,
-                    Summary = ToText(summary.Sentences),
-                    Keywords = summary.Concepts,
                     Domain = GetDomain(documentUrl)
                 };
         }
@@ -47,30 +42,11 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             return host;
         }
 
-        private SummarizedDocument GetSummary(string text)
-        {
-            var summary = Summarizer.Summarize(new SummarizerArguments
-                {
-                    InputString = text,
-                    DisplayPercent = 0,
-                    DisplayLines = 2
-                });
-
-            return summary;
-        }
-
-        private string ToText(IEnumerable<string> sentances)
-        {
-            var newLine = Environment.NewLine + Environment.NewLine;
-            return string.Join(newLine, sentances);
-        }
-
         private string NormalizeText(HtmlDocument htmlDocument)
         {
             Cleaners.HtmlCleaner.With(htmlDocument).RemoveElements("sub");
 
             var result = new StringBuilder();
-            //htmlDocument.DocumentNode.SelectNodes("//text()[normalize-space(.) != '']");
             var innerText = htmlDocument.DocumentNode.InnerText;
             var sentances = innerText.Split(new[] { ".", "?", "!", ";", ".\"", "?\"", "!\"", "|", ".)" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -105,17 +81,6 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             var scorer = new Scorer();
             var candidates = scorer.Score(htmlDocument).ToArray();
 
-            // scoring startegy should be passed in somehow
-            // var rawscores = candidates.OrderByDescending(c => c.RawScore);
-            //foreach (var rawscore in candidates)
-            //{
-            //    if (rawscore.RawScore > 2)
-            //    {
-            //        Debug.WriteLine("{2}", rawscore.Score, rawscore.RawScore,
-            //                        rawscore.HtmlNode.InnerText);
-            //    }
-            //}
-
             // post-process
             var topCandidate = candidates.OrderByDescending(c => c.Score).FirstOrDefault();
             var result = new HtmlDocument();
@@ -128,23 +93,6 @@ namespace Radio7.Phone.HtmlCleaner.Extractors.Content
             Cleaners.HtmlCleaner.With(result).Clean().RemoveAllAttributesExcept("src", "href");
 
             return result;
-            // select top candidate
-            // process top candidate siblings
-            //  assign score bonus if top.class == sibling class (20% bonus)
-            //  if sibling score > threshold ( Math.max(10, topCandidate.readability.contentScore * 0.2); then append
-            //  if sibling is p with more than 80 characters and low link density (<.25) then append
-            //  if append
-            //      if not a div or p then convert to div
-            //  remove classnames, id's 
-
-            // if the final content is less than 250 characters then 
-            // retry with differnet flags,
-            // e.g. allow unlikelys, add class weights, less cleaning
-            // a SIEVE
-
-            // we need a clone of the original doc for this to work
-
-            //return htmlDocument;
         }
 
         private void CleanAndNormalize(HtmlDocument htmlDocument, Uri documentUrl)

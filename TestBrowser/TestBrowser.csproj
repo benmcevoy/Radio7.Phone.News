@@ -37,6 +37,10 @@
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Radio7.Portable.OpenTextSummarizer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Radio7.Portable.OpenTextSummarizer.1.0.0\lib\portable-net4+sl4+wp7\Radio7.Portable.OpenTextSummarizer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -87,6 +91,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -100,10 +105,6 @@
     <ProjectReference Include="..\Radio7.HtmlCleaner\Radio7.HtmlCleaner.csproj">
       <Project>{4a2ea62e-65b5-4e4f-943b-03be945cb529}</Project>
       <Name>Radio7.HtmlCleaner</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Radio7.Portable.OpenTextSummarizer\Radio7.Portable.OpenTextSummarizer.csproj">
-      <Project>{5e51329e-d368-444e-a731-abce9946fda5}</Project>
-      <Name>Radio7.Portable.OpenTextSummarizer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

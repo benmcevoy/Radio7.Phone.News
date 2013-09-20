@@ -6,7 +6,7 @@ using HtmlAgilityPack;
 using Radio7.Phone.HtmlCleaner;
 using Radio7.Portable.StrategyResolver;
 using Radio7.Phone.News.Models;
-using Rss.Manager;
+using Radio7.Portable.Rss;
 
 namespace Radio7.Phone.News.Services.RelatedNewsItems
 {

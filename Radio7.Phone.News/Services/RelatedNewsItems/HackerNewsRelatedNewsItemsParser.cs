@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Radio7.Portable.StrategyResolver;
 using Radio7.Phone.News.Models;
-using Rss.Manager;
+using Radio7.Portable.Rss;
 
 namespace Radio7.Phone.News.Services.RelatedNewsItems
 {
