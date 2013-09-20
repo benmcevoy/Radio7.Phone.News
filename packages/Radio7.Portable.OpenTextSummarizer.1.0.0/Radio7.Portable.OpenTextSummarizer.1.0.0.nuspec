@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Radio7.Portable.OpenTextSummarizer</id>
+    <version>1.0.0</version>
+    <title>Radio7.Portable.OpenTextSummarizer</title>
+    <authors>Radio7 Software</authors>
+    <owners>Radio7 Software</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Automatic text summarization. Ported from http://ots.codeplex.com/ to use PCL.</description>
+    <summary>Automatic text summarization.</summary>
+    <tags>c# PCL Summary</tags>
+  </metadata>
+</package>
