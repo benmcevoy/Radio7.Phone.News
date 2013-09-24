@@ -50,11 +50,13 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GalaSoft.MvvmLight.Extras.WP71">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras.WP71, Version=4.1.27.22669, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\sl4-wp71\GalaSoft.MvvmLight.Extras.WP71.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.WP71">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.WP71.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.WP71, Version=4.1.27.22669, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\sl4-wp71\GalaSoft.MvvmLight.WP71.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,24 +64,21 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Radio7.Phone.HtmlCleaner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Radio7.Phone.HtmlCleaner.1.0.0\lib\sl4-wp71\Radio7.Phone.HtmlCleaner.dll</HintPath>
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\sl4-wp71\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Radio7.Portable.Rss, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Radio7.Portable.Rss.1.0.0\lib\portable-net4+sl4+wp7\Radio7.Portable.Rss.dll</HintPath>
+    <Reference Include="Radio7.Phone.HtmlCleaner">
+      <HintPath>..\packages\Radio7.Phone.HtmlCleaner.1.0.2\lib\sl4-wp71\Radio7.Phone.HtmlCleaner.dll</HintPath>
     </Reference>
-    <Reference Include="Radio7.Portable.StrategyResolver, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Radio7.Portable.Rss">
+      <HintPath>..\packages\Radio7.Portable.Rss.1.0.1\lib\portable-net4+sl4+wp7\Radio7.Portable.Rss.dll</HintPath>
+    </Reference>
+    <Reference Include="Radio7.Portable.StrategyResolver">
       <HintPath>..\packages\Radio7.Portable.StrategyResolver.1.0.0\lib\portable-net4+sl4+wp7\Radio7.Portable.StrategyResolver.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
@@ -87,16 +86,15 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\sl4-wp71\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq">
       <Private>True</Private>
-      <HintPath>..\packages\Radio7.Portable.Rss.1.0.0\lib\portable-net4+sl4+wp7\System.Xml.Linq.dll</HintPath>
+      <HintPath>..\packages\Radio7.Portable.Rss.1.0.1\lib\portable-net4+sl4+wp7\System.Xml.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.XPath, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Xml.XPath">
       <HintPath>..\packages\System.Xml.XPath.SL4.2.0.5.0\lib\System.Xml.XPath.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -104,7 +102,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ContentLevelToColorConverter.cs" />
     <Compile Include="Converters\EnumBooleanConverter.cs" />
     <Compile Include="Data\HtmlRepository.cs" />
     <Compile Include="Data\TopicRepository.cs" />
@@ -113,7 +110,6 @@
     <Compile Include="Messages\NavigateToStringCompleteMessage.cs" />
     <Compile Include="Messages\ProgressMessage.cs" />
     <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\ContentLevel.cs" />
     <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\Comments\DefaultCommentExtractor.cs" />
     <Compile Include="Services\Comments\HackerNewsCommentExtractor.cs" />

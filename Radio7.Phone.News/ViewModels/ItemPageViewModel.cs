@@ -53,7 +53,6 @@ namespace Radio7.Phone.News.ViewModels
             WithDispatcher(() =>
             {
                 Title = getPageCompleteEventArgs.Title;
-                Summary = getPageCompleteEventArgs.Summary;
                 Article = getPageCompleteEventArgs.Html;
                 Original = getPageCompleteEventArgs.Url;
 
@@ -68,8 +67,6 @@ namespace Radio7.Phone.News.ViewModels
         public RelayCommand<object> ViewCommentsCommand { get; set; }
 
         public string Title { get; set; }
-
-        public string Summary { get; set; }
 
         public string Article { get; set; }
 

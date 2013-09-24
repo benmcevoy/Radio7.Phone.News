@@ -26,6 +26,7 @@ namespace Radio7.Phone.News.Services
             _url = uri;
 
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+            webRequest.AllowAutoRedirect = true;
 
             webRequest.CookieContainer = new CookieContainer();
             // seemed like a good idea, but most mobile sites are "modern"(ish), getting crap like ajax in the content and so on. Gratuitous Ajax.
@@ -56,11 +57,10 @@ namespace Radio7.Phone.News.Services
                     var ce = new ContentExtractor();
                     var clean = ce.Extract(html, response.ResponseUri);
                     var page = CreatePage(_url.ToString(), clean.Title, clean.Html, clean.Domain);
-                    var summary = CreatePage(_url.ToString(), clean.Title, ToHtml(clean.Summary), clean.Domain);
 
                     if (GetPageComplete != null)
                     {
-                        GetPageComplete(this, new GetPageCompleteEventArgs(clean.Url, clean.Title, clean.Text, summary, clean.Keywords, page));
+                        GetPageComplete(this, new GetPageCompleteEventArgs(clean.Url, clean.Title, clean.Text, page));
                     }
                 }
             }
@@ -70,25 +70,12 @@ namespace Radio7.Phone.News.Services
 
                 var page = CreatePage("#", "An error occurred", "<br/><br/><br/><br/>", "");
 
-                GetPageComplete(this, new GetPageCompleteEventArgs(null, "", "", page, null, page));
+                GetPageComplete(this, new GetPageCompleteEventArgs(null, "", "", page));
             }
             finally
             {
                 _messenger.Send(new ProgressMessage());
             }
-        }
-
-        private string ToHtml(string text)
-        {
-            var paragraphs = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            var result = new StringBuilder((int)(text.Length * 1.2));
-
-            foreach (var paragraph in paragraphs)
-            {
-                result.AppendFormat("<p>{0}</p>", paragraph);
-            }
-
-            return result.ToString();
         }
 
         private string CreatePage(string url, string title, string body, string domain)
