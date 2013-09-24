@@ -231,6 +231,7 @@
     <Content Include="Content\download.png" />
     <Content Include="Content\bm.png" />
     <Content Include="Content\hacker.png" />
+    <Content Include="Content\phone.png" />
     <Content Include="Content\slashdot.png" />
     <Content Include="README_FIRST.txt" />
     <Resource Include="Resources\Html\CommentsWrapper.html" />
