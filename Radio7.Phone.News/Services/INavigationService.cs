@@ -7,7 +7,7 @@ namespace Radio7.Phone.News.Services
     {
         event NavigatingCancelEventHandler Navigating;
 
-        void NavigateTo(Uri pageUri);
+        void NavigateTo(Uri pageUri, bool popStack = false);
 
         void GoBack();
     }

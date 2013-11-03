@@ -3,6 +3,7 @@ using System.Linq;
 using GalaSoft.MvvmLight.Messaging;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Models;
+using Radio7.Phone.News.Services.Comments;
 using Radio7.Phone.News.Services.RelatedNewsItems;
 using Radio7.Phone.News.Services.Snippets;
 using Radio7.Portable.StrategyResolver;
@@ -16,8 +17,11 @@ namespace Radio7.Phone.News.Services
         private Feed _feed;
         private readonly StrategyResolver<IRelatedNewsItemsParser> _relatedLinksResolver;
         private readonly StrategyResolver<ISnippetExtractor> _snippetExtractorResolver;
+        private static readonly DefaultSnippetExtractor DefaultSnippetExtractor = new DefaultSnippetExtractor();
+        private static readonly NoRelatedNewsItemsParser DefaultRelatedNewsItemsParser = new NoRelatedNewsItemsParser();
 
-        public NewsService(IMessenger messenger, StrategyResolver<IRelatedNewsItemsParser> relatedLinksResolver, StrategyResolver<ISnippetExtractor> snippetExtractorResolver)
+        public NewsService(IMessenger messenger, StrategyResolver<IRelatedNewsItemsParser> relatedLinksResolver,
+            StrategyResolver<ISnippetExtractor> snippetExtractorResolver)
         {
             _messenger = messenger;
             _relatedLinksResolver = relatedLinksResolver;
@@ -39,10 +43,17 @@ namespace Radio7.Phone.News.Services
             {
                 Title = i.Title,
                 Url = i.Url,
-                Snippet = _snippetExtractorResolver.Resolve(_feed.FeedUri.Host, new DefaultSnippetExtractor()).Extract(i.Raw, 140),
+                Snippet = _snippetExtractorResolver.Resolve(_feed.FeedUri.Host, DefaultSnippetExtractor).Extract(i.Raw, 140),
                 Content = i.Content,
-                RelatedNewsItems = _relatedLinksResolver.Resolve(_feed.FeedUri.Host, new NoRelatedNewsItemsParser()).GetRelatedNewsItems(i).ToList()
-            });
+                HasComments = _relatedLinksResolver.Resolve(_feed.FeedUri.Host, DefaultRelatedNewsItemsParser).HasComments(),
+                CommentsItem = _relatedLinksResolver.Resolve(_feed.FeedUri.Host, DefaultRelatedNewsItemsParser).GetCommentsUrl(i),
+                RelatedNewsItems = _relatedLinksResolver.Resolve(_feed.FeedUri.Host, DefaultRelatedNewsItemsParser).GetRelatedNewsItems(i).ToList()
+            }).ToList();
+
+            foreach (var newsItem in newsItems.Where(i => i.CommentsItem != null))
+            {
+                newsItem.CommentsItem.Article = newsItem;
+            }
 
             if (GetNewsComplete != null)
             {

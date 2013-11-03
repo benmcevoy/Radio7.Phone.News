@@ -11,19 +11,17 @@ namespace Radio7.Phone.News.ViewModels
     public class HomePageViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private readonly TopicRepository _topicRepository;
         
         public HomePageViewModel(INavigationService navigationService, TopicRepository topicRepository)
         {
             _navigationService = navigationService;
-            _topicRepository = topicRepository;
 
             NavigateCommand = new RelayCommand<Topic>(Navigate);
             AddFeedCommand = new RelayCommand(AddFeed);
             ListFeedsCommand = new RelayCommand(ListFeeds);
             ChangeDisplayCommand = new RelayCommand(ChangeDisplaySettings);
 
-            Topics = _topicRepository.Get();
+            Topics = topicRepository.Get();
         }
 
         private void Navigate(Topic topic)

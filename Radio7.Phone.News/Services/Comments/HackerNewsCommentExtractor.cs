@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
 using Radio7.Phone.News.Models;
@@ -43,7 +44,7 @@ namespace Radio7.Phone.News.Services.Comments
             if (commentTitle != null)
             {
                 var title = commentTitle.First().InnerText.Trim();
-                var end = title.IndexOf(" | ");
+                var end = title.IndexOf(" | ", StringComparison.Ordinal);
 
                 if (end > -1)
                 {

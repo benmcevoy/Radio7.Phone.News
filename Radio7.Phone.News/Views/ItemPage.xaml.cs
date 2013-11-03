@@ -6,6 +6,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Radio7.Phone.News.Messages;
+using Radio7.Phone.News.Models;
 using Radio7.Phone.News.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Radio7.Phone.News.Services;
@@ -59,6 +60,12 @@ namespace Radio7.Phone.News.Views
                     }
                     else
                     {
+                        var currentItem = _stateService.CurrentItem;
+
+                        currentItem.Content = message.Content;
+
+                        _stateService.CurrentItem = currentItem;
+
                         Browser.NavigateToString(message.Content);
                     }
                 });
@@ -68,15 +75,15 @@ namespace Radio7.Phone.News.Views
         {
             base.OnNavigatedTo(e);
 
-            // TODO:
-            SetAppBarButtonEnabled("comments", false);
-
             string url;
             var currentItem = _stateService.CurrentItem;
 
             if (ViewModel == null) return;
             if (currentItem == null) return;
             if (!NavigationContext.QueryString.TryGetValue("url", out url)) return;
+
+            SetAppBarButtonEnabled("comments", currentItem.HasComments);
+            ViewModel.CommentsNewsItem = currentItem.CommentsItem;
 
             if (string.IsNullOrEmpty(currentItem.Content))
             {
@@ -114,6 +121,8 @@ namespace Radio7.Phone.News.Views
         private void DownloadButton_OnClick(object sender, EventArgs e)
         {
             ViewModel.DownloadArticleCommand.Execute(ViewModel.Original);
+
+            SetAppBarButtonEnabled("download", false);
         }
 
         private void ViewOriginalButton_OnClick(object sender, EventArgs e)
@@ -123,8 +132,7 @@ namespace Radio7.Phone.News.Views
 
         private void CommentsButton_OnClick(object sender, EventArgs e)
         {
-            // TODO:
-            ViewModel.ViewCommentsCommand.Execute(null);
+            ViewModel.ViewCommentsCommand.Execute(ViewModel.CommentsNewsItem);
         }
 
         private void WithDispatcher(Action action)

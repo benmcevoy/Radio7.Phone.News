@@ -29,5 +29,21 @@ namespace Radio7.Phone.News.Services.RelatedNewsItems
 
             return new Uri(regex.Match(link).Groups[1].Value);
         }
+
+        public bool HasComments()
+        {
+            return true;
+        }
+
+        public RelatedNewsItem GetCommentsUrl(Item item)
+        {
+            return new RelatedNewsItem
+            {
+                Url = GetHref(item.Content),
+                Title = "comments",
+                IsComment = true,
+                CommentTitle = item.Title
+            };
+        }
     }
 }

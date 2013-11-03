@@ -7,5 +7,9 @@ namespace Radio7.Phone.News.Services.RelatedNewsItems
     public interface IRelatedNewsItemsParser
     {
         IEnumerable<RelatedNewsItem> GetRelatedNewsItems(Item item);
+
+        bool HasComments();
+
+        RelatedNewsItem GetCommentsUrl(Item item);
     }
 }

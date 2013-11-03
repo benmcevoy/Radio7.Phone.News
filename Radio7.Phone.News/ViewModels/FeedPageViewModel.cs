@@ -9,7 +9,6 @@ using Radio7.Phone.News.Models;
 using Radio7.Phone.News.Services;
 using Radio7.Phone.News.Data;
 using System.Net;
-using Radio7.Phone.News.Views;
 
 namespace Radio7.Phone.News.ViewModels
 {

@@ -28,11 +28,13 @@ namespace Radio7.Phone.News.Infrastructure
         public FeedPageViewModel FeedPageViewModel { get { return new FeedPageViewModel(NewsService, 
             NavigationService, TopicRepository, StateService); } }
         
-        public ItemPageViewModel ItemPageViewModel { get { return new ItemPageViewModel(PageService, Messenger.Default); } }
+        public ItemPageViewModel ItemPageViewModel { get { return new ItemPageViewModel(PageService, NavigationService, StateService, Messenger.Default); } }
         
         public AddFeedPageViewModel AddFeedPageViewModel { get { return new AddFeedPageViewModel(TopicRepository); } }
         
-        public CommentsViewModel CommentsViewModel { get { return new CommentsViewModel(CommentService, Messenger.Default); } }
+        public CommentsViewModel CommentsViewModel { get { return new CommentsViewModel(CommentService, NavigationService, StateService, Messenger.Default); } }
+
+        public ListFeedsPageViewModel ListFeedsPageViewModel { get { return new ListFeedsPageViewModel(TopicRepository); } }
     }
 }
 

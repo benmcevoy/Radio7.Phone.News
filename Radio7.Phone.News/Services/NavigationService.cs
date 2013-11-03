@@ -9,10 +9,15 @@ namespace Radio7.Phone.News.Services
     {
         private PhoneApplicationFrame _mainFrame;
 
-        public void NavigateTo(Uri pageUri)
+        public void NavigateTo(Uri pageUri, bool popStack = false)
         {
             if (EnsureMainFrame())
             {
+                if (popStack)
+                {
+                    _mainFrame.RemoveBackEntry();
+                }
+
                 _mainFrame.Navigate(pageUri);
             }
         }

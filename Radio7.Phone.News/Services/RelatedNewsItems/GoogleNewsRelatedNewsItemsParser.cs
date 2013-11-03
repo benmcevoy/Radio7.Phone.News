@@ -11,7 +11,7 @@ using Radio7.Portable.Rss;
 namespace Radio7.Phone.News.Services.RelatedNewsItems
 {
     [StrategyFor("news.google.com")]
-    public class GoogleNewsRelatedNesItemsParser : IRelatedNewsItemsParser
+    public class GoogleNewsRelatedNewsItemsParser : IRelatedNewsItemsParser
     {
         public IEnumerable<RelatedNewsItem> GetRelatedNewsItems(Item item)
         {
@@ -61,6 +61,16 @@ namespace Radio7.Phone.News.Services.RelatedNewsItems
             }
 
             return results;
+        }
+
+        public bool HasComments()
+        {
+            return false;
+        }
+
+        public RelatedNewsItem GetCommentsUrl(Item item)
+        {
+            return null;
         }
     }
 }

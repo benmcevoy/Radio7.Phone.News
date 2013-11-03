@@ -40,6 +40,12 @@ namespace Radio7.Phone.News.Views
                 }
                 else
                 {
+                    var currentItem = _stateService.CurrentItem;
+
+                    currentItem.Content = message.Content;
+
+                    _stateService.CurrentItem = currentItem;
+
                     Browser.NavigateToString(message.Content);
                 }
             });
@@ -62,6 +68,7 @@ namespace Radio7.Phone.News.Views
             if (ViewModel == null) return;
             if (currentItem == null) return;
 
+            ViewModel.Article = currentItem.Article;
             CommentTitle.Text = currentItem.CommentTitle.ToUpper();
             ViewModel.GetComments(new Uri(HttpUtility.HtmlDecode(url)));
         }
@@ -82,8 +89,7 @@ namespace Radio7.Phone.News.Views
 
         private void ArticleButton_OnClick(object sender, EventArgs e)
         {
-            // TODO:
-            ViewModel.ViewArticleCommand.Execute(null);
+            ViewModel.ViewArticleCommand.Execute(ViewModel.Article);
         }
 
         private void ViewOriginalButton_OnClick(object sender, EventArgs e)

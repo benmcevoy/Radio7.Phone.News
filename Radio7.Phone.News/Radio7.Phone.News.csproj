@@ -126,7 +126,7 @@
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Infrastructure\ResourceHelper.cs" />
     <Compile Include="Services\PageService.cs" />
-    <Compile Include="Services\RelatedNewsItems\GoogleNewsRelatedNesItemsParser.cs" />
+    <Compile Include="Services\RelatedNewsItems\GoogleNewsRelatedNewsItemsParser.cs" />
     <Compile Include="Services\RelatedNewsItems\HackerNewsRelatedNewsItemsParser.cs" />
     <Compile Include="Services\RelatedNewsItems\IRelatedNewsItemsParser.cs" />
     <Compile Include="Services\RelatedNewsItems\NoRelatedNewsItemsParser.cs" />
@@ -145,6 +145,7 @@
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\ItemPageViewModel.cs" />
     <Compile Include="Services\GetPageCompleteEventArgs.cs" />
+    <Compile Include="ViewModels\ListFeedsPageViewModel.cs" />
     <Compile Include="Views\AddFeedPage.xaml.cs">
       <DependentUpon>AddFeedPage.xaml</DependentUpon>
     </Compile>
