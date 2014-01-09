@@ -3,8 +3,10 @@ using System.IO;
 using System.Net;
 using System.Text;
 using GalaSoft.MvvmLight.Messaging;
+using Radio7.Phone.HtmlCleaner.Entities;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
 using Radio7.Phone.News.Data;
+using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Messages;
 
 namespace Radio7.Phone.News.Services
@@ -23,6 +25,8 @@ namespace Radio7.Phone.News.Services
 
         public void BeginGetPage(Uri uri)
         {
+            _messenger.Send(ProgressMessage.EmptyMessage);
+
             _url = uri;
 
             var webRequest = (HttpWebRequest)WebRequest.Create(uri);
@@ -32,8 +36,6 @@ namespace Radio7.Phone.News.Services
             // seemed like a good idea, but most mobile sites are "modern"(ish), getting crap like ajax in the content and so on. Gratuitous Ajax.
             // webRequest.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3";
             webRequest.BeginGetResponse(OnLoad, webRequest);
-
-            _messenger.Send(new ProgressMessage(" "));
         }
 
         public string CreatePage(string title, string html, Uri url)
@@ -58,10 +60,7 @@ namespace Radio7.Phone.News.Services
                     var clean = ce.Extract(html, response.ResponseUri);
                     var page = CreatePage(_url.ToString(), clean.Title, clean.Html, clean.Domain);
 
-                    if (GetPageComplete != null)
-                    {
-                        GetPageComplete(this, new GetPageCompleteEventArgs(clean.Url, clean.Title, clean.Text, page));
-                    }
+                    RaiseGetPageComplete(clean, page);
                 }
             }
             catch (WebException)
@@ -75,6 +74,14 @@ namespace Radio7.Phone.News.Services
             finally
             {
                 _messenger.Send(new ProgressMessage());
+            }
+        }
+
+        private void RaiseGetPageComplete(ExtractedContent clean, string page)
+        {
+            if (GetPageComplete != null)
+            {
+                GetPageComplete(this, new GetPageCompleteEventArgs(clean.Url, clean.Title, clean.Text, page));
             }
         }
 

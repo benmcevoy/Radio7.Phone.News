@@ -44,7 +44,7 @@ namespace Radio7.Phone.News.Services
                 GetCommentsComplete(this, new GetCommentsCompleteEventArgs(html));
             };
 
-            _messenger.Send(new ProgressMessage(" "));
+            _messenger.Send(ProgressMessage.EmptyMessage);
 
             webClient.DownloadStringAsync(url);
         }

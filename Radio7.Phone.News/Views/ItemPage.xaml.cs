@@ -6,7 +6,6 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using Radio7.Phone.News.Messages;
-using Radio7.Phone.News.Models;
 using Radio7.Phone.News.ViewModels;
 using GalaSoft.MvvmLight.Messaging;
 using Radio7.Phone.News.Services;
@@ -21,9 +20,9 @@ namespace Radio7.Phone.News.Views
         {
             InitializeComponent();
 
-            Messenger.Default.Register<NavigateToStringMessage>(this, NavigateToString);
-
             Browser.Navigating += BrowserOnNavigating;
+
+            Messenger.Default.Register<NavigateToStringMessage>(this, NavigateToString);
 
             Browser.LoadCompleted += (sender, args) =>
             {

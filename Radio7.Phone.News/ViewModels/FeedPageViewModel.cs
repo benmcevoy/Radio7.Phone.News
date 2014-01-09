@@ -64,11 +64,10 @@ namespace Radio7.Phone.News.ViewModels
 
             if (newsItem is RelatedNewsItem)
             {
-                if ((newsItem as RelatedNewsItem).IsComment)
-                {
-                    _navigationService.NavigateTo(new Uri("/Views/Comments.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));
-                    return;
-                }
+                if (!(newsItem as RelatedNewsItem).IsComment) return;
+
+                _navigationService.NavigateTo(new Uri("/Views/Comments.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));
+                return;
             }
 
             _navigationService.NavigateTo(new Uri("/Views/ItemPage.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));

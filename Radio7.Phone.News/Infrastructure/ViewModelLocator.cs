@@ -12,13 +12,14 @@ namespace Radio7.Phone.News.Infrastructure
     public class ViewModelLocator
     {
         private readonly static IStateService StateService = new StateService();
+        private readonly static ICacheProvider CacheProvider = new CacheProvider();
         private readonly static INavigationService NavigationService = new NavigationService();
         private readonly static TopicRepository TopicRepository = new TopicRepository();
         private readonly static HtmlRepository HtmlRepository = new HtmlRepository();
         private readonly static IPageService PageService = new PageService(HtmlRepository, Messenger.Default);
-        
+
         private readonly static INewsService NewsService = new NewsService(Messenger.Default, 
-            new StrategyResolver<IRelatedNewsItemsParser>(), new StrategyResolver<ISnippetExtractor>());
+            new StrategyResolver<IRelatedNewsItemsParser>(), new StrategyResolver<ISnippetExtractor>(), CacheProvider);
         
         private readonly static ICommentService CommentService = new CommentService(Messenger.Default,
             new StrategyResolver<ICommentExtractor>(), HtmlRepository);

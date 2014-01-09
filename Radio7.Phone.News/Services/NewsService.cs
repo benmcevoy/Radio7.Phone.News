@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GalaSoft.MvvmLight.Messaging;
+using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Messages;
 using Radio7.Phone.News.Models;
-using Radio7.Phone.News.Services.Comments;
 using Radio7.Phone.News.Services.RelatedNewsItems;
 using Radio7.Phone.News.Services.Snippets;
 using Radio7.Portable.StrategyResolver;
@@ -17,20 +18,31 @@ namespace Radio7.Phone.News.Services
         private Feed _feed;
         private readonly StrategyResolver<IRelatedNewsItemsParser> _relatedLinksResolver;
         private readonly StrategyResolver<ISnippetExtractor> _snippetExtractorResolver;
+        private readonly ICacheProvider _cacheProvider;
         private static readonly DefaultSnippetExtractor DefaultSnippetExtractor = new DefaultSnippetExtractor();
         private static readonly NoRelatedNewsItemsParser DefaultRelatedNewsItemsParser = new NoRelatedNewsItemsParser();
 
         public NewsService(IMessenger messenger, StrategyResolver<IRelatedNewsItemsParser> relatedLinksResolver,
-            StrategyResolver<ISnippetExtractor> snippetExtractorResolver)
+            StrategyResolver<ISnippetExtractor> snippetExtractorResolver, ICacheProvider cacheProvider)
         {
             _messenger = messenger;
             _relatedLinksResolver = relatedLinksResolver;
             _snippetExtractorResolver = snippetExtractorResolver;
+            _cacheProvider = cacheProvider;
         }
 
+        // TODO: use aysnc await, no more events
         public void BeginGetNews(Uri url)
         {
-            _messenger.Send(new ProgressMessage(" "));
+            _messenger.Send(ProgressMessage.EmptyMessage);
+
+            var newsItems = _cacheProvider.Get<IEnumerable<NewsItem>>(url.ToString());
+
+            if (newsItems != null)
+            {
+                RaiseGetNewsComplete(newsItems);
+                return;
+            }
 
             _feed = new Feed(url);
             _feed.FeedLoaded += OnFeedLoaded;
@@ -55,6 +67,13 @@ namespace Radio7.Phone.News.Services
                 newsItem.CommentsItem.Article = newsItem;
             }
 
+            _cacheProvider.Set(_feed.FeedUri.ToString(), newsItems);
+
+            RaiseGetNewsComplete(newsItems);
+        }
+
+        private void RaiseGetNewsComplete(IEnumerable<NewsItem> newsItems)
+        {
             if (GetNewsComplete != null)
             {
                 GetNewsComplete(this, new GetNewsCompleteEventArgs(newsItems));

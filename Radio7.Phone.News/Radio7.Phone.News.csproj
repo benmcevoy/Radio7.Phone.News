@@ -103,11 +103,14 @@
     <Compile Include="Converters\EnumBooleanConverter.cs" />
     <Compile Include="Data\HtmlRepository.cs" />
     <Compile Include="Data\TopicRepository.cs" />
+    <Compile Include="Infrastructure\CacheProvider.cs" />
+    <Compile Include="Infrastructure\ICacheProvider.cs" />
     <Compile Include="Infrastructure\ProgressMessageListener.cs" />
     <Compile Include="Messages\NavigateToStringMessage.cs" />
     <Compile Include="Messages\NavigateToStringCompleteMessage.cs" />
     <Compile Include="Messages\ProgressMessage.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Services\CachePage.cs" />
     <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\Comments\DefaultCommentExtractor.cs" />
     <Compile Include="Services\Comments\HackerNewsCommentExtractor.cs" />

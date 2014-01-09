@@ -16,5 +16,7 @@
         public string Message { get; set; }
 
         public bool IsFinished { get; set; }
+
+        public static ProgressMessage EmptyMessage { get { return new ProgressMessage(" "); } }
     }
 }
