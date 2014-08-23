@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Radio7.Phone.News.ViewModels;
@@ -26,6 +29,28 @@ namespace Radio7.Phone.News.Views
         private FeedPageViewModel ViewModel
         {
             get { return Self.DataContext as FeedPageViewModel; }
+        }
+
+        private double _duration;
+        private void VerticalCompression_Fired(object sender, EventArgs e)
+        {
+            _duration = DateTime.Now.Ticks;
+
+            Debug.WriteLine("VerticalCompression_Fired");
+        }
+
+        private void NoVerticalCompression_Fired(object sender, EventArgs e)
+        {
+            var d = DateTime.Now.Ticks - _duration;
+
+            Debug.WriteLine("NoVerticalCompression_Fired");
+            Debug.WriteLine(d);
+
+            if (d > 10000000)
+            {
+                Debug.WriteLine("A second elapsed");
+                ViewModel.Refresh();
+            }
         }
     }
 }

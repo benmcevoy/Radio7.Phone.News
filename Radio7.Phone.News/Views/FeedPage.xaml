@@ -17,6 +17,49 @@
 
     <phone:PhoneApplicationPage.Resources>
         <view:ViewModelLocator x:Key="ViewModelLocator"/>
+        <Style x:Key="ScrollViewerStyle1" TargetType="ScrollViewer">
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ScrollStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="00:00:00.5"/>
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Scrolling">
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="VerticalScrollBar"/>
+                                            <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="HorizontalScrollBar"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="NotScrolling"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="VerticalCompressionStates">
+                                    <VisualState x:Name="CompressionTop">
+                                        <Storyboard Completed="VerticalCompression_Fired" />
+                                        </VisualState>  
+                                    <VisualState x:Name="NoVerticalCompression">
+                                        <Storyboard Completed="NoVerticalCompression_Fired" />
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <ScrollContentPresenter x:Name="ScrollContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}"/>
+                                <ScrollBar x:Name="VerticalScrollBar" HorizontalAlignment="Right" Height="Auto" IsHitTestVisible="False" IsTabStop="False" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Opacity="0" Orientation="Vertical" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{TemplateBinding VerticalOffset}" ViewportSize="{TemplateBinding ViewportHeight}" VerticalAlignment="Stretch" Width="5"/>
+                                <ScrollBar x:Name="HorizontalScrollBar" HorizontalAlignment="Stretch" Height="5" IsHitTestVisible="False" IsTabStop="False" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Opacity="0" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{TemplateBinding HorizontalOffset}" ViewportSize="{TemplateBinding ViewportWidth}" VerticalAlignment="Bottom" Width="Auto"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -36,7 +79,8 @@
             <ItemsControl Margin="0,0,-12,0" ItemsSource="{Binding NewsItems}">
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                        <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" 
+                                      Style="{StaticResource ScrollViewerStyle1}">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>
@@ -56,7 +100,7 @@
                                         </Grid.RowDefinitions>
                                         <TextBlock Text="{Binding Title}" TextWrapping="Wrap"  Margin="12,-6,12,0"  />
                                         <TextBlock Grid.Row="1" Text="{Binding Snippet}" TextWrapping="Wrap" Margin="12,3,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                        
+
                                         <ItemsControl Grid.Row="2" ItemsSource="{Binding RelatedNewsItems}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>

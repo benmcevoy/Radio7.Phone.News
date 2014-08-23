@@ -40,13 +40,18 @@ namespace Radio7.Phone.News.ViewModels
             WithDispatcher(() => RaisePropertyChanged("NewsItems"));
         }
 
+        public void Refresh()
+        {
+            _newsService.BeginGetNews(Topic.Url, true);
+        }
+
         public void Load(int topicId)
         {
             Topic = _topicRepository.Get(topicId);
 
             WithDispatcher(() => RaisePropertyChanged("Topic"));
 
-            _newsService.BeginGetNews(Topic.Url);
+            _newsService.BeginGetNews(Topic.Url, false);
         }
 
         private void Launch(NewsItem newsItem)
@@ -64,10 +69,12 @@ namespace Radio7.Phone.News.ViewModels
 
             if (newsItem is RelatedNewsItem)
             {
-                if (!(newsItem as RelatedNewsItem).IsComment) return;
-
-                _navigationService.NavigateTo(new Uri("/Views/Comments.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));
-                return;
+                if ((newsItem as RelatedNewsItem).IsComment)
+                {
+                    _navigationService.NavigateTo(new Uri("/Views/Comments.xaml?url=" + HttpUtility.HtmlEncode(url),
+                        UriKind.Relative));
+                    return;
+                }
             }
 
             _navigationService.NavigateTo(new Uri("/Views/ItemPage.xaml?url=" + HttpUtility.HtmlEncode(url), UriKind.Relative));

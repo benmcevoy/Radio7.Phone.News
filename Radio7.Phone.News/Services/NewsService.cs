@@ -32,16 +32,19 @@ namespace Radio7.Phone.News.Services
         }
 
         // TODO: use aysnc await, no more events
-        public void BeginGetNews(Uri url)
+        public void BeginGetNews(Uri url, bool refreshCache)
         {
             _messenger.Send(ProgressMessage.EmptyMessage);
 
-            var newsItems = _cacheProvider.Get<IEnumerable<NewsItem>>(url.ToString());
-
-            if (newsItems != null)
+            if (!refreshCache)
             {
-                RaiseGetNewsComplete(newsItems);
-                return;
+                var newsItems = _cacheProvider.Get<IEnumerable<NewsItem>>(url.ToString());
+
+                if (newsItems != null)
+                {
+                    RaiseGetNewsComplete(newsItems);
+                    return;
+                }
             }
 
             _feed = new Feed(url);
