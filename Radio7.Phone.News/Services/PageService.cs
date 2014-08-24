@@ -6,7 +6,6 @@ using GalaSoft.MvvmLight.Messaging;
 using Radio7.Phone.HtmlCleaner.Entities;
 using Radio7.Phone.HtmlCleaner.Extractors.Content;
 using Radio7.Phone.News.Data;
-using Radio7.Phone.News.Infrastructure;
 using Radio7.Phone.News.Messages;
 
 namespace Radio7.Phone.News.Services

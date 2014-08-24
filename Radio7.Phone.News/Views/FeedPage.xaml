@@ -42,11 +42,14 @@
                                     <VisualState x:Name="NotScrolling"/>
                                 </VisualStateGroup>
                                 <VisualStateGroup x:Name="VerticalCompressionStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="00:00:00.3"/>
+                                    </VisualStateGroup.Transitions>
                                     <VisualState x:Name="CompressionTop">
-                                        <Storyboard Completed="VerticalCompression_Fired" />
-                                        </VisualState>  
+                                        <Storyboard Completed="VerticalCompression_Fired"/>
+                                    </VisualState>
                                     <VisualState x:Name="NoVerticalCompression">
-                                        <Storyboard Completed="NoVerticalCompression_Fired" />
+                                        <Storyboard Completed="NoVerticalCompression_Fired"/>
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
