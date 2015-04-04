@@ -230,6 +230,8 @@
     <Content Include="Content\conversation.png" />
     <Content Include="Content\download.png" />
     <Content Include="Content\bm.png" />
+    <Content Include="Content\drum.png" />
+    <Content Include="Content\guardian.png" />
     <Content Include="Content\hacker.png" />
     <Content Include="Content\phone.png" />
     <Content Include="Content\slashdot.png" />
