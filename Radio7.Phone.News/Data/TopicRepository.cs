@@ -44,7 +44,7 @@ namespace Radio7.Phone.News.Data
                     // ben
                     new Topic("technology", 10, new Uri("http://news.google.com/?ned=au&topic=tc&output=rss", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/technology.png"),
                     new Topic("hacker news", 11, new Uri("https://news.ycombinator.com/rss", UriKind.Absolute), Color.FromArgb(255,0,80,239), "/Content/hacker.png"),
-                    new Topic("slashdot", 12, new Uri("http://rss.slashdot.org/Slashdot/slashdot", UriKind.Absolute), Color.FromArgb(255,100,118,135), "/Content/slashdot.png"),
+                    //new Topic("slashdot", 12, new Uri("http://rss.slashdot.org/Slashdot/slashdot", UriKind.Absolute), Color.FromArgb(255,100,118,135), "/Content/slashdot.png"),
                     new Topic("bookmarks", 13, new Uri("http://benmcevoy.azurewebsites.net/bm/bm.ashx", UriKind.Absolute), Color.FromArgb(255,109,135,100), "/Content/bm.png"),
                     
                 };
