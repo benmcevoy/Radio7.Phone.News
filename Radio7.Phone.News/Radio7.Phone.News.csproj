@@ -235,6 +235,7 @@
     <Content Include="Content\hacker.png" />
     <Content Include="Content\phone.png" />
     <Content Include="Content\slashdot.png" />
+    <Content Include="Content\znet.png" />
     <Content Include="README_FIRST.txt" />
     <Resource Include="Resources\Html\CommentsWrapper.html" />
     <Resource Include="Resources\Css\comments.css" />

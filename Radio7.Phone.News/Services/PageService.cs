@@ -39,6 +39,9 @@ namespace Radio7.Phone.News.Services
 
         public string CreatePage(string title, string html, Uri url)
         {
+            // html might just be plain text?
+            html = string.Format("<div>{0}</div>", html);
+
             var ce = new ContentExtractor();
             var clean = ce.Extract(html, url);
 
